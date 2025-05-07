@@ -10,20 +10,28 @@ interface IAccountRegistrar {
     function userEmail(address user) external view returns (string memory);
 }
 
+interface IPowerAsset {
+    function mintCheckInRewards(
+        address user,
+        address checkInNode,
+        address verifierNode
+    ) external;
+}
+
 contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
     using ECDSA for bytes32;
 
-    IAccountRegistrar public registrar;
+    IAccountRegistrar public accountRegistrar;
+    IPowerAsset public powerAsset;
 
     bytes32 private constant _CHECKIN_TYPEHASH =
         keccak256("CheckIn(address user,address checkInNode,uint256 nonce)");
     mapping(address => uint256) public nonces;
     mapping(address => mapping(uint256 => bool)) public checkedIn;
-
     mapping(address => bool) public isNode;
-    address[] public nodeList;
-
     mapping(address => mapping(uint256 => address)) public verifierNodeForDay;
+
+    address[] public nodeList;
 
     event VerifierNodeSelected(
         address indexed userAddr,
@@ -33,7 +41,7 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
     event CheckedIn(
         address indexed userAddr,
         address indexed checkInNode,
-        address indexed verifyNode,
+        address indexed verifierNode,
         uint256 day
     );
     event NodeAdded(address node);
@@ -45,9 +53,11 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
     }
 
     constructor(
-        address registrarAddress
+        address _registrarAddr,
+        address _powerAssetAddr
     ) EIP712("Aiverse-CheckIn-Manager", "1") Ownable(msg.sender) {
-        registrar = IAccountRegistrar(registrarAddress);
+        accountRegistrar = IAccountRegistrar(_registrarAddr);
+        powerAsset = IPowerAsset(_powerAssetAddr);
     }
 
     function addNode(address node) external onlyOwner {
@@ -100,7 +110,7 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
 
         address verifierNode;
         uint256 attempts = 0;
-        uint256 maxAttempts = 5; // 足够安全，即使只有2个节点
+        uint256 maxAttempts = 5;
 
         do {
             uint256 randomIndex = randomSeed % nodeList.length;
@@ -123,10 +133,11 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
         uint256 today = getToday();
 
         require(
-            bytes(registrar.userEmail(userAddr)).length > 0,
+            bytes(accountRegistrar.userEmail(userAddr)).length > 0,
             "User not registered"
         );
-        require(!checkedIn[userAddr][today], "Already checked in today");
+        require(!checkedIn[userAddr][today], "Already checked today");
+        require(isNode[checkInNode], "Invalid checkin Node");
 
         address verifierNode = verifierNodeForDay[userAddr][today];
         require(verifierNode == msg.sender, "Non-designated verifier node");
@@ -152,6 +163,7 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
 
         checkedIn[userAddr][today] = true;
         nonces[userAddr]++;
+        powerAsset.mintCheckInRewards(userAddr, checkInNode, msg.sender);
 
         emit CheckedIn(userAddr, checkInNode, msg.sender, today);
     }
