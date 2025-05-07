@@ -14,13 +14,14 @@ contract PowerAsset is Ownable, EIP712, ReentrancyGuard {
     uint256 public constant SIGNATURE_EXPIRY = 1 hours;
     bytes32 private constant _TRANSFER_TYPEHASH =
         keccak256(
-            "Transfer(address from,address to,uint256 amount,uint256 nonce,uint256 expireAt)"
+            "Transfer(address from,address to,uint256 amount,uint256 nonce,uint256 expireAt,address executor)"
         );
 
     uint256 public startTime;
     uint256 public totalPower;
     address public accountRegistrar;
     address public checkInManager;
+    address public stakeController;
 
     mapping(address => uint256) public nonces;
     mapping(address => uint256) private powerBalance;
@@ -40,18 +41,28 @@ contract PowerAsset is Ownable, EIP712, ReentrancyGuard {
         checkInManager = _checkInManager;
     }
 
+    function setStakeController(address _stakeController) external onlyOwner {
+        stakeController = _stakeController;
+    }
+
     function balanceOf(address userAddr) external view returns (uint256) {
         return powerBalance[userAddr];
     }
 
     function transfer(address to, uint256 amount) external nonReentrant {
-        require(to != address(0), "Invalid address");
-        require(powerBalance[msg.sender] >= amount, "Insufficient power");
+        _transfer(msg.sender, to, amount);
+    }
 
-        powerBalance[msg.sender] -= amount;
-        powerBalance[to] += amount;
-
-        emit Transfer(msg.sender, to, amount);
+    function transferFrom(
+        address from,
+        address to,
+        uint256 amount
+    ) external nonReentrant {
+        require(
+            msg.sender == stakeController,
+            "Only StakeController can transfer"
+        );
+        _transfer(from, to, amount);
     }
 
     function transferWithSig(
@@ -61,13 +72,11 @@ contract PowerAsset is Ownable, EIP712, ReentrancyGuard {
         uint256 expireAt,
         bytes memory fromSignature
     ) external nonReentrant {
-        require((from != address(0)) && (to != address(0)), "Invalid address");
         require(block.timestamp <= expireAt, "Signature expired");
         require(
             expireAt <= block.timestamp + SIGNATURE_EXPIRY,
             "Expiry too far in future"
         );
-        require(powerBalance[from] >= amount, "Insufficient power");
 
         uint256 currentNonce = nonces[from];
 
@@ -78,7 +87,8 @@ contract PowerAsset is Ownable, EIP712, ReentrancyGuard {
                 to,
                 amount,
                 currentNonce,
-                expireAt
+                expireAt,
+                msg.sender
             )
         );
 
@@ -87,10 +97,8 @@ contract PowerAsset is Ownable, EIP712, ReentrancyGuard {
         require(recovered == from, "Invalid signature");
 
         nonces[from]++;
-        powerBalance[from] -= amount;
-        powerBalance[to] += amount;
 
-        emit Transfer(from, to, amount);
+        _transfer(from, to, amount);
     }
 
     function mintRegistrationRewards(
@@ -138,5 +146,15 @@ contract PowerAsset is Ownable, EIP712, ReentrancyGuard {
         emit Mint(userAddr, userReward);
         emit Mint(checkInNode, checkInNodeReward);
         emit Mint(verifierNode, verifierReward);
+    }
+
+    function _transfer(address from, address to, uint256 amount) internal {
+        require((from != address(0)) && (to != address(0)), "Invalid address");
+        require(powerBalance[from] >= amount, "Insufficient power");
+
+        powerBalance[from] -= amount;
+        powerBalance[to] += amount;
+
+        emit Transfer(from, to, amount);
     }
 }
