@@ -18,7 +18,9 @@ contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
 
     uint256 public constant SIGNATURE_EXPIRY = 1 hours;
     bytes32 private constant _REGISTRATION_TYPEHASH =
-        keccak256("Registration(address userAddr,string email,uint256 nonce)");
+        keccak256(
+            "Registration(address userAddr,string email,uint256 nonce,uint256 expireAt)"
+        );
 
     IPowerAsset public powerAsset;
 
@@ -39,13 +41,14 @@ contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
         string memory email,
         bytes memory ownerSignature,
         bytes memory userSignature,
-        uint256 expiry
+        uint256 expireAt
     ) external onlyOwner nonReentrant {
-        require(block.timestamp <= expiry, "Signature expired");
+        require(block.timestamp <= expireAt, "Signature expired");
         require(
-            expiry <= block.timestamp + SIGNATURE_EXPIRY,
+            expireAt <= block.timestamp + SIGNATURE_EXPIRY,
             "Expiry too far in future"
         );
+
         require(userAddr != address(0), "Invalid user address");
         require(
             bytes(email).length > 0 && bytes(email).length <= 256,
@@ -57,8 +60,8 @@ contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
             "Address already registered"
         );
 
-        _verifySignature(userAddr, email, ownerSignature, owner(), expiry);
-        _verifySignature(userAddr, email, userSignature, userAddr, expiry);
+        _verifySignature(userAddr, email, ownerSignature, owner(), expireAt);
+        _verifySignature(userAddr, email, userSignature, userAddr, expireAt);
         _register(userAddr, email);
     }
 
@@ -66,22 +69,22 @@ contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
         address userAddr,
         string memory email,
         bytes memory signature,
-        address signer,
-        uint256 expiry
+        address expectedSigner,
+        uint256 expireAt
     ) internal view {
-        bytes32 digest = _hashTypedDataV4(
-            keccak256(
-                abi.encode(
-                    _REGISTRATION_TYPEHASH,
-                    userAddr,
-                    keccak256(bytes(email)),
-                    nonces[userAddr],
-                    expiry
-                )
+        uint256 nonce = nonces[userAddr];
+        bytes32 structHash = keccak256(
+            abi.encode(
+                _REGISTRATION_TYPEHASH,
+                userAddr,
+                keccak256(bytes(email)),
+                nonce,
+                expireAt
             )
         );
-        address recoveredSigner = digest.recover(signature);
-        require(recoveredSigner == signer, "Invalid signature");
+        bytes32 digest = _hashTypedDataV4(structHash);
+        address recovered = digest.recover(signature);
+        require(recovered == expectedSigner, "Invalid signature");
     }
 
     function _register(address userAddr, string memory email) internal {

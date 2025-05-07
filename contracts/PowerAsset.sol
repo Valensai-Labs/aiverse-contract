@@ -2,23 +2,33 @@
 pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 
-contract ComputingPowerAsset is Ownable, ReentrancyGuard {
+contract PowerAsset is Ownable, EIP712, ReentrancyGuard {
+    using ECDSA for bytes32;
+
     uint8 public constant DECIMALS = 18;
     uint256 public constant UNIT = 10 ** DECIMALS;
+    uint256 public constant SIGNATURE_EXPIRY = 1 hours;
+    bytes32 private constant _TRANSFER_TYPEHASH =
+        keccak256(
+            "Transfer(address from,address to,uint256 amount,uint256 nonce,uint256 expireAt)"
+        );
 
     uint256 public startTime;
     uint256 public totalPower;
     address public accountRegistrar;
     address public checkInManager;
 
+    mapping(address => uint256) public nonces;
     mapping(address => uint256) private powerBalance;
 
     event Transfer(address indexed from, address indexed to, uint256 amount);
     event Mint(address indexed to, uint256 amount);
 
-    constructor() Ownable(msg.sender) {
+    constructor() EIP712("Aiverse-Power-Asset", "1") Ownable(msg.sender) {
         startTime = block.timestamp;
     }
 
@@ -42,6 +52,45 @@ contract ComputingPowerAsset is Ownable, ReentrancyGuard {
         powerBalance[to] += amount;
 
         emit Transfer(msg.sender, to, amount);
+    }
+
+    function transferWithSig(
+        address from,
+        address to,
+        uint256 amount,
+        uint256 expireAt,
+        bytes memory fromSignature
+    ) external nonReentrant {
+        require((from != address(0)) && (to != address(0)), "Invalid address");
+        require(block.timestamp <= expireAt, "Signature expired");
+        require(
+            expireAt <= block.timestamp + SIGNATURE_EXPIRY,
+            "Expiry too far in future"
+        );
+        require(powerBalance[from] >= amount, "Insufficient power");
+
+        uint256 currentNonce = nonces[from];
+
+        bytes32 structHash = keccak256(
+            abi.encode(
+                _TRANSFER_TYPEHASH,
+                from,
+                to,
+                amount,
+                currentNonce,
+                expireAt
+            )
+        );
+
+        bytes32 digest = _hashTypedDataV4(structHash);
+        address recovered = digest.recover(fromSignature);
+        require(recovered == from, "Invalid signature");
+
+        nonces[from]++;
+        powerBalance[from] -= amount;
+        powerBalance[to] += amount;
+
+        emit Transfer(from, to, amount);
     }
 
     function mintRegistrationRewards(

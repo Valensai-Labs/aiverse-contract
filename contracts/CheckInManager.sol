@@ -23,9 +23,13 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
 
     IAccountRegistrar public accountRegistrar;
     IPowerAsset public powerAsset;
-
+    
+    uint256 public constant SIGNATURE_EXPIRY = 1 hours;
     bytes32 private constant _CHECKIN_TYPEHASH =
-        keccak256("CheckIn(address user,address checkInNode,uint256 nonce)");
+        keccak256(
+            "CheckIn(address userAddr,address checkInNode,uint256 nonce,uint256 expireAt)"
+        );
+
     mapping(address => uint256) public nonces;
     mapping(address => mapping(uint256 => bool)) public checkedIn;
     mapping(address => bool) public isNode;
@@ -127,11 +131,17 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
     function checkIn(
         address userAddr,
         address checkInNode,
+        uint256 expireAt,
         bytes memory userSig,
         bytes memory verifierSig
     ) external onlyNode nonReentrant {
-        uint256 today = getToday();
+        require(block.timestamp <= expireAt, "Signature expired");
+        require(
+            expireAt <= block.timestamp + SIGNATURE_EXPIRY,
+            "Expiry too far in future"
+        );
 
+        uint256 today = getToday();
         require(
             bytes(accountRegistrar.userEmail(userAddr)).length > 0,
             "User not registered"
@@ -147,7 +157,8 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
                 _CHECKIN_TYPEHASH,
                 userAddr,
                 checkInNode,
-                nonces[userAddr]
+                nonces[userAddr],
+                expireAt
             )
         );
         bytes32 digest = _hashTypedDataV4(structHash);
