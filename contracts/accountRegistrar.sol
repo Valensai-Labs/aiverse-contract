@@ -4,10 +4,12 @@ pragma solidity ^0.8.28;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract AccountRegistrar is Ownable, EIP712 {
+contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
     using ECDSA for bytes32;
 
+    uint256 public constant SIGNATURE_EXPIRY = 1 hours;
     bytes32 private constant _REGISTRATION_TYPEHASH =
         keccak256("Registration(address userAddr,string email,uint256 nonce)");
     mapping(address => string) public userEmail;
@@ -15,17 +17,24 @@ contract AccountRegistrar is Ownable, EIP712 {
     mapping(address => uint256) public nonces;
 
     event UserRegistered(address indexed user, string email);
-    event EmailUpdated(address indexed user, string oldEmail, string newEmail);
-    event RegistrationRevoked(address indexed user, string email);
 
-    constructor() EIP712("AccountRegistrar", "1") Ownable(msg.sender) {}
+    constructor()
+        EIP712("Aiverse-Account-Registrar", "1")
+        Ownable(msg.sender)
+    {}
 
     function registerByEmail(
         address userAddr,
         string memory email,
         bytes memory ownerSignature,
-        bytes memory userSignature
-    ) external onlyOwner {
+        bytes memory userSignature,
+        uint256 expiry
+    ) external onlyOwner nonReentrant {
+        require(block.timestamp <= expiry, "Signature expired");
+        require(
+            expiry <= block.timestamp + SIGNATURE_EXPIRY,
+            "Expiry too far in future"
+        );
         require(userAddr != address(0), "Invalid user address");
         require(
             bytes(email).length > 0 && bytes(email).length <= 256,
@@ -37,22 +46,17 @@ contract AccountRegistrar is Ownable, EIP712 {
             "Address already registered"
         );
 
-        _verifySignature(userAddr, email, ownerSignature, owner());
-        _verifySignature(userAddr, email, userSignature, userAddr);
+        _verifySignature(userAddr, email, ownerSignature, owner(), expiry);
+        _verifySignature(userAddr, email, userSignature, userAddr, expiry);
         _register(userAddr, email);
-    }
-
-    function getAddrByEmail(string memory email) public view returns (address) {
-        address addr = emailToAddr[email];
-        require(addr != address(0), "No address found for this email");
-        return addr;
     }
 
     function _verifySignature(
         address userAddr,
         string memory email,
         bytes memory signature,
-        address signer
+        address signer,
+        uint256 expiry
     ) internal view {
         bytes32 digest = _hashTypedDataV4(
             keccak256(
@@ -60,7 +64,8 @@ contract AccountRegistrar is Ownable, EIP712 {
                     _REGISTRATION_TYPEHASH,
                     userAddr,
                     keccak256(bytes(email)),
-                    nonces[userAddr]
+                    nonces[userAddr],
+                    expiry
                 )
             )
         );
