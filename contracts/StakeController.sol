@@ -2,6 +2,7 @@
 pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
@@ -10,6 +11,17 @@ interface IPowerAsset {
     function transfer(address to, uint256 amount) external;
 
     function transferFrom(address from, address to, uint256 amount) external;
+}
+
+interface INodeManager {
+    function getAllNodes() external view returns (address[] memory);
+    function owner() external view returns (address);
+    function isNode(address addr) external view returns (bool);
+}
+
+interface IAiverseCoin {
+    function getMintAmountByDay(uint256 day) external view returns (uint256);
+    function userClaimToken(address userAddr, uint256 amount) external;
 }
 
 contract StakeController is Ownable, EIP712, ReentrancyGuard {
@@ -36,35 +48,50 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         );
 
     mapping(address => uint256) public nonces;
+    mapping(uint256 => uint256) public rewardPerPower;
+    mapping(address => uint256) public nodeTotalPower;
+    mapping(address => uint256) public nodeLastSettledDay;
+    mapping(uint256 => uint256) public totalPowerSnapshot;
+    mapping(uint256 => mapping(address => uint256))
+        public nodeTotalPowerSnapshot;
     mapping(address => mapping(address => StakeInfo)) public userStakeInfo;
     mapping(address => address[]) public userStakedNodes;
-    mapping(address => uint256) public nodeTotalPower;
-    mapping(address => mapping(uint256 => uint256)) public rewardPerPower;
 
-    uint256 public foundationRewardPercentage = 5;
-    uint256 public nodeRewardPercentage = 20;
-    uint256 public userRewardPercentage = 75;
+    uint256 public constant mineRewardPercentage = 90;
 
     uint256 public constant DAY = 1 days;
-    uint256 public totalTokenReward;
 
-    address public tokenAddress;
+    uint256 public currentSnapshotDay;
+    uint256 public totalPower;
+    address public aicoinAddr;
     address public powerAssetAddr;
+    address public nodeManagerAddr;
 
-    event Staked(address indexed user, address indexed node, uint256 amount);
-    event Unstaked(address indexed user, address indexed node, uint256 amount);
-    event RewardClaimed(
-        address indexed user,
+    event Staked(
+        address indexed userAddr,
+        address indexed node,
+        uint256 amount
+    );
+    event Unstaked(
+        address indexed userAddr,
+        address indexed node,
+        uint256 amount
+    );
+    event UserClaimReward(
+        address indexed userAddr,
         address indexed node,
         uint256 reward
     );
+    event NodeClaimReward(address indexed node, uint256 reward);
 
     constructor(
-        address _tokenAddress,
-        address _powerAssetAddr
-    ) EIP712("Aiverse-Stake-Power", "1") Ownable(msg.sender) {
-        tokenAddress = _tokenAddress;
+        address _aicoinAddr,
+        address _powerAssetAddr,
+        address _nodeManagerAddr
+    ) EIP712("Aiverse-Stake-Controller", "1") Ownable(msg.sender) {
+        aicoinAddr = _aicoinAddr;
         powerAssetAddr = _powerAssetAddr;
+        nodeManagerAddr = _nodeManagerAddr;
     }
 
     function stake(address node, uint256 amount) external nonReentrant {
@@ -157,11 +184,19 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         );
     }
 
-    function claimReward(address node) external {
-        _claimReward(msg.sender, node);
+    function nodeClaimReward() external {
+        require(
+            INodeManager(nodeManagerAddr).isNode(msg.sender),
+            "Invalid Caller"
+        );
+        _nodeClaimReward(msg.sender);
     }
 
-    function claimRewardWithSig(
+    function userClaimReward(address node) external {
+        _userClaimReward(msg.sender, node);
+    }
+
+    function userClaimRewardWithSig(
         address userAddr,
         address node,
         uint256 expireAt,
@@ -189,34 +224,34 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
 
         nonces[userAddr]++;
 
-        _claimReward(userAddr, node);
+        _userClaimReward(userAddr, node);
     }
 
     function dailySettle() external onlyOwner {
-        uint256 currentDay = block.timestamp / 1 days;
+        uint256 currentDay = block.timestamp / DAY;
 
-        uint256 totalPower = 0;
-        for (uint i = 0; i < userStakedNodes[msg.sender].length; i++) {
-            address node = userStakedNodes[msg.sender][i];
-            totalPower += nodeTotalPower[node];
+        if (currentDay == currentSnapshotDay) {
+            return;
+        }
+        totalPowerSnapshot[currentDay] = totalPower;
+        uint256 totalReward = IAiverseCoin(aicoinAddr).getMintAmountByDay(
+            currentDay
+        );
+
+        uint256 mineReward = (totalReward * mineRewardPercentage) / 100;
+        uint256 foundationReward = totalReward - mineReward;
+        _transferToken(INodeManager(nodeManagerAddr).owner(), foundationReward);
+
+        address[] memory allNodes = INodeManager(nodeManagerAddr).getAllNodes();
+        for (uint i = 0; i < allNodes.length; i++) {
+            address node = allNodes[i];
+            nodeTotalPowerSnapshot[currentDay][node] = nodeTotalPower[node];
         }
 
-        uint256 totalReward = totalTokenReward;
+        uint256 unitReward = (mineReward * 1e18) / totalPower;
+        rewardPerPower[currentDay] = unitReward;
 
-        uint256 foundationReward = (totalReward * 5) / 100;
-        _transferToken(owner(), foundationReward);
-
-        for (uint i = 0; i < userStakedNodes[msg.sender].length; i++) {
-            address node = userStakedNodes[msg.sender][i];
-            uint256 nodeReward = (totalReward * 20) / 100;
-            uint256 nodeShare = (nodeTotalPower[node] * 100) / totalPower;
-            uint256 nodeSpecificReward = (nodeReward * nodeShare) / 100;
-
-            _transferToken(node, nodeSpecificReward);
-        }
-
-        uint256 userReward = (totalReward * 75) / 100;
-        _transferToken(msg.sender, userReward);
+        currentSnapshotDay = currentDay;
     }
 
     function _stake(address userAddr, address node, uint256 amount) internal {
@@ -234,10 +269,11 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         }
 
         uint256 currentDay = block.timestamp / DAY;
-        _settlePendingRewards(userAddr, node, currentDay);
+        _settleUserPendingRewards(userAddr, node, currentDay);
 
         userStakeInfo[userAddr][node].power += amount;
         nodeTotalPower[node] += amount;
+        totalPower += amount;
 
         emit Staked(userAddr, node, amount);
     }
@@ -250,20 +286,41 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         );
 
         uint256 currentDay = block.timestamp / DAY;
-        _settlePendingRewards(userAddr, node, currentDay);
+        _settleUserPendingRewards(userAddr, node, currentDay);
 
         userStakeInfo[userAddr][node].power -= amount;
         nodeTotalPower[node] -= amount;
+        totalPower -= amount;
 
         emit Unstaked(userAddr, node, amount);
     }
 
-    function _claimReward(address user, address node) internal {
-        StakeInfo storage info = userStakeInfo[user][node];
+    function _nodeClaimReward(address node) internal {
+        uint256 currentDay = block.timestamp / DAY;
+        uint256 lastSettledDay = nodeLastSettledDay[node];
+
+        uint256 reward = 0;
+        if (currentDay > lastSettledDay) {
+            for (uint256 day = lastSettledDay + 1; day <= currentDay; day++) {
+                uint256 rewardPerUnit = rewardPerPower[day];
+                uint256 powerSnapShot = nodeTotalPowerSnapshot[day][node];
+                reward += (rewardPerUnit * powerSnapShot) / 1e18;
+            }
+        }
+        require(reward > 0, "No rewards available");
+
+        nodeLastSettledDay[node] = currentDay;
+
+        _transferToken(node, reward);
+        emit NodeClaimReward(node, reward);
+    }
+
+    function _userClaimReward(address userAddr, address node) internal {
+        StakeInfo storage info = userStakeInfo[userAddr][node];
 
         if (info.power > 0) {
             uint256 currentDay = block.timestamp / DAY;
-            _settlePendingRewards(user, node, currentDay);
+            _settleUserPendingRewards(userAddr, node, currentDay);
         }
 
         uint256 reward = info.unclaimedReward;
@@ -271,39 +328,46 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
 
         info.unclaimedReward = 0;
 
-        _transferToken(user, reward);
-        emit RewardClaimed(user, node, reward);
+        _transferToken(userAddr, reward);
+        emit UserClaimReward(userAddr, node, reward);
     }
 
     function _transferToken(address to, uint256 amount) internal {
-        // require(IERC20(tokenAddress).transfer(to, amount), "Transfer failed");
+        IAiverseCoin(aicoinAddr).userClaimToken(to, amount);
     }
 
-    function _settlePendingRewards(
+    function _settleUserPendingRewards(
         address userAddr,
         address node,
         uint256 currentDay
     ) internal {
         StakeInfo storage stakeInfo = userStakeInfo[userAddr][node];
-        uint256 daysStaked = currentDay - stakeInfo.lastSettledDay;
-
-        if (daysStaked > 0) {
-            uint256 reward = _calculateReward(
-                node,
-                stakeInfo.power,
-                daysStaked
-            );
+        uint256 lastSettledDay = stakeInfo.lastSettledDay;
+        uint256 reward = _calculateReward(
+            stakeInfo.power,
+            lastSettledDay,
+            currentDay
+        );
+        if (reward > 0) {
             stakeInfo.unclaimedReward += reward;
             stakeInfo.lastSettledDay = currentDay;
         }
     }
 
     function _calculateReward(
-        address node,
         uint256 power,
-        uint256 daysStaked
+        uint256 lastSettledDay,
+        uint256 currentDay
     ) internal view returns (uint256) {
-        uint256 rewardPerUnit = rewardPerPower[node][block.timestamp / DAY];
-        return (rewardPerUnit * power * daysStaked) / 1e18;
+        uint256 totalReward = 0;
+        uint256 daysSinceLastClaim = currentDay - lastSettledDay;
+
+        if (daysSinceLastClaim > 0) {
+            for (uint256 day = lastSettledDay + 1; day <= currentDay; day++) {
+                uint256 rewardPerUnit = rewardPerPower[day];
+                totalReward += (rewardPerUnit * power) / 1e18;
+            }
+        }
+        return totalReward;
     }
 }
