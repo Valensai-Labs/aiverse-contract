@@ -30,6 +30,10 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         keccak256(
             "Unstake(address userAddr,address node,uint256 amount,uint256 nonce,uint256 expireAt,address executor)"
         );
+    bytes32 private constant _CLAIM_TYPEHASH =
+        keccak256(
+            "Claim(address userAddr,address node,uint256 nonce,uint256 expireAt,address executor)"
+        );
 
     mapping(address => uint256) public nonces;
     mapping(address => mapping(address => StakeInfo)) public userStakeInfo;
@@ -94,7 +98,6 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
             )
         );
         bytes32 digest = _hashTypedDataV4(structHash);
-
         address recovered = digest.recover(userSig);
         require(recovered == userAddr, "Invalid signature");
 
@@ -140,7 +143,6 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
             )
         );
         bytes32 digest = _hashTypedDataV4(structHash);
-
         address recovered = digest.recover(userSig);
         require(recovered == userAddr, "Invalid signature");
 
@@ -155,31 +157,39 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         );
     }
 
-    function claimRewards() external {
-        uint256 totalReward = 0;
-        uint256 currentDay = block.timestamp / DAY;
+    function claimReward(address node) external {
+        _claimReward(msg.sender, node);
+    }
 
-        for (uint i = 0; i < userStakedNodes[msg.sender].length; i++) {
-            address node = userStakedNodes[msg.sender][i];
-            StakeInfo storage info = userStakeInfo[msg.sender][node];
+    function claimRewardWithSig(
+        address userAddr,
+        address node,
+        uint256 expireAt,
+        bytes memory userSig
+    ) external nonReentrant {
+        require(block.timestamp <= expireAt, "Signature expired");
+        require(
+            expireAt <= block.timestamp + SIGNATURE_EXPIRY,
+            "Expiry too far in future"
+        );
 
-            if (info.power == 0) {
-                continue; 
-            }
+        bytes32 structHash = keccak256(
+            abi.encode(
+                _CLAIM_TYPEHASH,
+                userAddr,
+                node,
+                nonces[userAddr],
+                expireAt,
+                msg.sender
+            )
+        );
+        bytes32 digest = _hashTypedDataV4(structHash);
+        address recovered = digest.recover(userSig);
+        require(recovered == userAddr, "Invalid signature");
 
-            _settlePendingRewards(msg.sender, node, currentDay);
+        nonces[userAddr]++;
 
-            if (info.unclaimedReward > 0) {
-                uint256 reward = info.unclaimedReward;
-                totalReward += reward;
-                info.unclaimedReward = 0;
-
-                emit RewardClaimed(msg.sender, node, reward);
-            }
-        }
-
-        require(totalReward > 0, "No rewards available to claim");
-        _transferToken(msg.sender, totalReward);
+        _claimReward(userAddr, node);
     }
 
     function dailySettle() external onlyOwner {
@@ -246,6 +256,23 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         nodeTotalPower[node] -= amount;
 
         emit Unstaked(userAddr, node, amount);
+    }
+
+    function _claimReward(address user, address node) internal {
+        StakeInfo storage info = userStakeInfo[user][node];
+
+        if (info.power > 0) {
+            uint256 currentDay = block.timestamp / DAY;
+            _settlePendingRewards(user, node, currentDay);
+        }
+
+        uint256 reward = info.unclaimedReward;
+        require(reward > 0, "No rewards available");
+
+        info.unclaimedReward = 0;
+
+        _transferToken(user, reward);
+        emit RewardClaimed(user, node, reward);
     }
 
     function _transferToken(address to, uint256 amount) internal {
