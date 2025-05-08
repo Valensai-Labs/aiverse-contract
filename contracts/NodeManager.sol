@@ -51,8 +51,4 @@ contract NodeManager is Ownable, ReentrancyGuard {
         }
         emit NodeRemoved(node);
     }
-
-    function getAllNodes() external view returns (address[] memory) {
-        return nodeList;
-    }
 }

@@ -18,24 +18,28 @@ interface IPowerAsset {
     ) external;
 }
 
+interface INodeManager {
+    function owner() external view returns (address);
+    function isNode(address addr) external view returns (bool);
+    function nodeList() external view returns (address[] memory);
+}
+
 contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
     using ECDSA for bytes32;
 
+    INodeManager public nodeManager;
     IAccountRegistrar public accountRegistrar;
     IPowerAsset public powerAsset;
-    
+
     uint256 public constant SIGNATURE_EXPIRY = 1 hours;
     bytes32 private constant _CHECKIN_TYPEHASH =
         keccak256(
-            "CheckIn(address userAddr,address checkInNode,uint256 nonce,uint256 expireAt)"
+            "CheckIn(address userAddr,address checkInNode,uint256 nonce,uint256 chainid,uint256 expireAt)"
         );
 
     mapping(address => uint256) public nonces;
     mapping(address => mapping(uint256 => bool)) public checkedIn;
-    mapping(address => bool) public isNode;
     mapping(address => mapping(uint256 => address)) public verifierNodeForDay;
-
-    address[] public nodeList;
 
     event VerifierNodeSelected(
         address indexed userAddr,
@@ -48,53 +52,24 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
         address indexed verifierNode,
         uint256 day
     );
-    event NodeAdded(address node);
-    event NodeRemoved(address node);
-
-    modifier onlyNode() {
-        require(isNode[msg.sender], "Caller is not a valid node");
-        _;
-    }
 
     constructor(
+        address _nodeManagerAddr,
         address _registrarAddr,
         address _powerAssetAddr
     ) EIP712("Aiverse-CheckIn-Manager", "1") Ownable(msg.sender) {
+        nodeManager = INodeManager(_nodeManagerAddr);
         accountRegistrar = IAccountRegistrar(_registrarAddr);
         powerAsset = IPowerAsset(_powerAssetAddr);
     }
 
-    function addNode(address node) external onlyOwner {
-        require(!isNode[node], "Node already exists");
-        require(node != address(0), "Invalid node address");
-        isNode[node] = true;
-        nodeList.push(node);
-        emit NodeAdded(node);
-    }
-
-    function removeNode(address node) external onlyOwner {
-        require(isNode[node], "Node not found");
-        isNode[node] = false;
-
-        for (uint256 i = 0; i < nodeList.length; i++) {
-            if (nodeList[i] == node) {
-                nodeList[i] = nodeList[nodeList.length - 1];
-                nodeList.pop();
-                break;
-            }
-        }
-        emit NodeRemoved(node);
-    }
-
-    function getToday() public view returns (uint256) {
-        return block.timestamp / 1 days;
-    }
-
     function selectRandomVerifierNode(
         address userAddr
-    ) external onlyNode nonReentrant returns (address) {
+    ) external nonReentrant returns (address) {
+        _checkIsNode(msg.sender);
+        address[] memory nodeList = INodeManager(nodeManager).nodeList();
         require(nodeList.length > 1, "Not enough nodes to choose from");
-        uint256 today = getToday();
+        uint256 today = _getToday();
         require(
             verifierNodeForDay[userAddr][today] == address(0),
             "Verifier node already selected today"
@@ -134,20 +109,21 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
         uint256 expireAt,
         bytes memory userSig,
         bytes memory verifierSig
-    ) external onlyNode nonReentrant {
+    ) external nonReentrant {
+        _checkIsNode(msg.sender);
+        _checkIsNode(checkInNode);
         require(block.timestamp <= expireAt, "Signature expired");
         require(
             expireAt <= block.timestamp + SIGNATURE_EXPIRY,
             "Expiry too far in future"
         );
 
-        uint256 today = getToday();
+        uint256 today = _getToday();
         require(
             bytes(accountRegistrar.userEmail(userAddr)).length > 0,
             "User not registered"
         );
         require(!checkedIn[userAddr][today], "Already checked today");
-        require(isNode[checkInNode], "Invalid checkin Node");
 
         address verifierNode = verifierNodeForDay[userAddr][today];
         require(verifierNode == msg.sender, "Non-designated verifier node");
@@ -158,6 +134,7 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
                 userAddr,
                 checkInNode,
                 nonces[userAddr],
+                block.chainid,
                 expireAt
             )
         );
@@ -180,7 +157,7 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
     }
 
     function hasCheckedInToday(address userAddr) external view returns (bool) {
-        return checkedIn[userAddr][getToday()];
+        return checkedIn[userAddr][_getToday()];
     }
 
     function getNonce(address userAddr) external view returns (uint256) {
@@ -190,10 +167,14 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
     function getVerifierNodeForToday(
         address userAddr
     ) external view returns (address) {
-        return verifierNodeForDay[userAddr][getToday()];
+        return verifierNodeForDay[userAddr][_getToday()];
     }
 
-    function getAllNodes() external view returns (address[] memory) {
-        return nodeList;
+    function _checkIsNode(address addr) internal view {
+        require(INodeManager(nodeManager).isNode(addr), "Invalid Node");
+    }
+
+    function _getToday() internal view returns (uint256) {
+        return block.timestamp / 1 days;
     }
 }

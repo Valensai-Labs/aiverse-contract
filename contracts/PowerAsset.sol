@@ -14,7 +14,7 @@ contract PowerAsset is Ownable, EIP712, ReentrancyGuard {
     uint256 public constant SIGNATURE_EXPIRY = 1 hours;
     bytes32 private constant _TRANSFER_TYPEHASH =
         keccak256(
-            "Transfer(address from,address to,uint256 amount,uint256 nonce,uint256 expireAt,address executor)"
+            "Transfer(address from,address to,uint256 amount,uint256 nonce,uint256 chainid,uint256 expireAt,address executor)"
         );
 
     uint256 public startTime;
@@ -78,15 +78,14 @@ contract PowerAsset is Ownable, EIP712, ReentrancyGuard {
             "Expiry too far in future"
         );
 
-        uint256 currentNonce = nonces[from];
-
         bytes32 structHash = keccak256(
             abi.encode(
                 _TRANSFER_TYPEHASH,
                 from,
                 to,
                 amount,
-                currentNonce,
+                nonces[from],
+                block.chainid,
                 expireAt,
                 msg.sender
             )

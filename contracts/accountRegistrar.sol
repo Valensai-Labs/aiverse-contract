@@ -19,7 +19,7 @@ contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
     uint256 public constant SIGNATURE_EXPIRY = 1 hours;
     bytes32 private constant _REGISTRATION_TYPEHASH =
         keccak256(
-            "Registration(address userAddr,string email,uint256 nonce,uint256 expireAt)"
+            "Registration(address userAddr,string email,uint256 nonce,uint256 chainid,uint256 expireAt)"
         );
 
     IPowerAsset public powerAsset;
@@ -72,13 +72,13 @@ contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
         address expectedSigner,
         uint256 expireAt
     ) internal view {
-        uint256 nonce = nonces[userAddr];
         bytes32 structHash = keccak256(
             abi.encode(
                 _REGISTRATION_TYPEHASH,
                 userAddr,
                 keccak256(bytes(email)),
-                nonce,
+                nonces[userAddr],
+                block.chainid,
                 expireAt
             )
         );
@@ -88,9 +88,9 @@ contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
     }
 
     function _register(address userAddr, string memory email) internal {
+        nonces[userAddr]++;
         userEmail[userAddr] = email;
         emailToAddr[email] = userAddr;
-        nonces[userAddr]++;
         powerAsset.mintRegistrationRewards(userAddr, msg.sender);
         emit UserRegistered(userAddr, email);
     }

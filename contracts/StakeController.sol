@@ -14,9 +14,9 @@ interface IPowerAsset {
 }
 
 interface INodeManager {
-    function getAllNodes() external view returns (address[] memory);
     function owner() external view returns (address);
     function isNode(address addr) external view returns (bool);
+    function nodeList() external view returns (address[] memory);
 }
 
 interface IAiverseCoin {
@@ -36,16 +36,21 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
     uint256 public constant SIGNATURE_EXPIRY = 1 hours;
     bytes32 private constant _STAKE_TYPEHASH =
         keccak256(
-            "Stake(address userAddr,address node,uint256 amount,uint256 nonce,uint256 expireAt,address executor)"
+            "Stake(address userAddr,address node,uint256 amount,uint256 nonce,uint256 chainid,uint256 expireAt,address executor)"
         );
     bytes32 private constant _UNSTAKE_TYPEHASH =
         keccak256(
-            "Unstake(address userAddr,address node,uint256 amount,uint256 nonce,uint256 expireAt,address executor)"
+            "Unstake(address userAddr,address node,uint256 amount,uint256 nonce,uint256 chainid,uint256 expireAt,address executor)"
         );
     bytes32 private constant _CLAIM_TYPEHASH =
         keccak256(
-            "Claim(address userAddr,address node,uint256 nonce,uint256 expireAt,address executor)"
+            "Claim(address userAddr,address node,uint256 nonce,uint256 chainid,uint256 expireAt,address executor)"
         );
+
+    uint256 public constant MINE_REWARD_PERCENTAGE = 90;
+    uint256 constant NODE_REWARD_COEF = 20;
+    uint256 constant USER_REWARD_COEF = 80;
+    uint256 public constant MAX_DAYS_FOR_REWARD = 7;
 
     mapping(address => uint256) public nonces;
     mapping(uint256 => uint256) public rewardPerPower;
@@ -56,10 +61,6 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         public nodeTotalPowerSnapshot;
     mapping(address => mapping(address => StakeInfo)) public userStakeInfo;
     mapping(address => address[]) public userStakedNodes;
-
-    uint256 public constant mineRewardPercentage = 90;
-
-    uint256 public constant DAY = 1 days;
 
     uint256 public currentSnapshotDay;
     uint256 public totalPower;
@@ -107,11 +108,7 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         bytes memory userSig
     ) external nonReentrant {
         require(amount > 0, "Invalid amount");
-        require(block.timestamp <= expireAt, "Signature expired");
-        require(
-            expireAt <= block.timestamp + SIGNATURE_EXPIRY,
-            "Expiry too far in future"
-        );
+        _checkSigExpire(expireAt);
 
         bytes32 structHash = keccak256(
             abi.encode(
@@ -120,6 +117,7 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
                 node,
                 amount,
                 nonces[userAddr],
+                block.chainid,
                 expireAt,
                 msg.sender
             )
@@ -152,11 +150,7 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         bytes memory userSig
     ) external nonReentrant {
         require(amount > 0, "Invalid amount");
-        require(block.timestamp <= expireAt, "Signature expired");
-        require(
-            expireAt <= block.timestamp + SIGNATURE_EXPIRY,
-            "Expiry too far in future"
-        );
+        _checkSigExpire(expireAt);
 
         bytes32 structHash = keccak256(
             abi.encode(
@@ -165,6 +159,7 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
                 node,
                 amount,
                 nonces[userAddr],
+                block.chainid,
                 expireAt,
                 msg.sender
             )
@@ -184,15 +179,12 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         );
     }
 
-    function nodeClaimReward() external {
-        require(
-            INodeManager(nodeManagerAddr).isNode(msg.sender),
-            "Invalid Caller"
-        );
+    function nodeClaimReward() external nonReentrant {
+        _checkIsNode(msg.sender);
         _nodeClaimReward(msg.sender);
     }
 
-    function userClaimReward(address node) external {
+    function userClaimReward(address node) external nonReentrant {
         _userClaimReward(msg.sender, node);
     }
 
@@ -202,11 +194,7 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         uint256 expireAt,
         bytes memory userSig
     ) external nonReentrant {
-        require(block.timestamp <= expireAt, "Signature expired");
-        require(
-            expireAt <= block.timestamp + SIGNATURE_EXPIRY,
-            "Expiry too far in future"
-        );
+        _checkSigExpire(expireAt);
 
         bytes32 structHash = keccak256(
             abi.encode(
@@ -214,6 +202,7 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
                 userAddr,
                 node,
                 nonces[userAddr],
+                block.chainid,
                 expireAt,
                 msg.sender
             )
@@ -227,22 +216,19 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         _userClaimReward(userAddr, node);
     }
 
-    function dailySettle() external onlyOwner {
-        uint256 currentDay = block.timestamp / DAY;
-
-        if (currentDay == currentSnapshotDay) {
-            return;
-        }
+    function dailySettle() external onlyOwner nonReentrant {
+        uint256 currentDay = _getCurrentDay();
+        require(currentDay == currentSnapshotDay, "Already Snapshot today");
         totalPowerSnapshot[currentDay] = totalPower;
         uint256 totalReward = IAiverseCoin(aicoinAddr).getMintAmountByDay(
             currentDay
         );
 
-        uint256 mineReward = (totalReward * mineRewardPercentage) / 100;
+        uint256 mineReward = (totalReward * MINE_REWARD_PERCENTAGE) / 100;
         uint256 foundationReward = totalReward - mineReward;
         _transferToken(INodeManager(nodeManagerAddr).owner(), foundationReward);
 
-        address[] memory allNodes = INodeManager(nodeManagerAddr).getAllNodes();
+        address[] memory allNodes = INodeManager(nodeManagerAddr).nodeList();
         for (uint i = 0; i < allNodes.length; i++) {
             address node = allNodes[i];
             nodeTotalPowerSnapshot[currentDay][node] = nodeTotalPower[node];
@@ -255,7 +241,9 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
     }
 
     function _stake(address userAddr, address node, uint256 amount) internal {
+        _checkIsNode(node);
         require(amount > 0, "Amount must be greater than 0");
+        require(totalPower > 0, "No power staked");
 
         bool isNewStake = true;
         for (uint i = 0; i < userStakedNodes[userAddr].length; i++) {
@@ -268,7 +256,7 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
             userStakedNodes[userAddr].push(node);
         }
 
-        uint256 currentDay = block.timestamp / DAY;
+        uint256 currentDay = _getCurrentDay();
         _settleUserPendingRewards(userAddr, node, currentDay);
 
         userStakeInfo[userAddr][node].power += amount;
@@ -279,13 +267,14 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
     }
 
     function _unstake(address userAddr, address node, uint256 amount) internal {
+        _checkIsNode(node);
         require(amount > 0, "Amount must be greater than 0");
         require(
             userStakeInfo[userAddr][node].power >= amount,
             "Insufficient staked amount"
         );
 
-        uint256 currentDay = block.timestamp / DAY;
+        uint256 currentDay = _getCurrentDay();
         _settleUserPendingRewards(userAddr, node, currentDay);
 
         userStakeInfo[userAddr][node].power -= amount;
@@ -296,17 +285,29 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
     }
 
     function _nodeClaimReward(address node) internal {
-        uint256 currentDay = block.timestamp / DAY;
+        uint256 currentDay = _getCurrentDay();
         uint256 lastSettledDay = nodeLastSettledDay[node];
 
         uint256 reward = 0;
         if (currentDay > lastSettledDay) {
-            for (uint256 day = lastSettledDay + 1; day <= currentDay; day++) {
+            uint256 correctLastSettledDay = (currentDay - MAX_DAYS_FOR_REWARD >
+                lastSettledDay)
+                ? currentDay - MAX_DAYS_FOR_REWARD
+                : lastSettledDay;
+            for (
+                uint256 day = correctLastSettledDay + 1;
+                day <= currentDay;
+                day++
+            ) {
                 uint256 rewardPerUnit = rewardPerPower[day];
                 uint256 powerSnapShot = nodeTotalPowerSnapshot[day][node];
-                reward += (rewardPerUnit * powerSnapShot) / 1e18;
+                reward +=
+                    ((rewardPerUnit * powerSnapShot) * NODE_REWARD_COEF) /
+                    100 /
+                    1e18;
             }
         }
+
         require(reward > 0, "No rewards available");
 
         nodeLastSettledDay[node] = currentDay;
@@ -319,7 +320,7 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         StakeInfo storage info = userStakeInfo[userAddr][node];
 
         if (info.power > 0) {
-            uint256 currentDay = block.timestamp / DAY;
+            uint256 currentDay = _getCurrentDay();
             _settleUserPendingRewards(userAddr, node, currentDay);
         }
 
@@ -360,14 +361,40 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
         uint256 currentDay
     ) internal view returns (uint256) {
         uint256 totalReward = 0;
-        uint256 daysSinceLastClaim = currentDay - lastSettledDay;
 
-        if (daysSinceLastClaim > 0) {
-            for (uint256 day = lastSettledDay + 1; day <= currentDay; day++) {
+        if (currentDay > lastSettledDay) {
+            uint256 correctLastSettledDay = (currentDay - MAX_DAYS_FOR_REWARD >
+                lastSettledDay)
+                ? currentDay - MAX_DAYS_FOR_REWARD
+                : lastSettledDay;
+            for (
+                uint256 day = correctLastSettledDay + 1;
+                day <= currentDay;
+                day++
+            ) {
                 uint256 rewardPerUnit = rewardPerPower[day];
-                totalReward += (rewardPerUnit * power) / 1e18;
+                totalReward +=
+                    ((rewardPerUnit * power) * USER_REWARD_COEF) /
+                    100 /
+                    1e18;
             }
         }
         return totalReward;
+    }
+
+    function _getCurrentDay() internal view returns (uint256) {
+        return block.timestamp / 1 days;
+    }
+
+    function _checkIsNode(address addr) internal view {
+        require(INodeManager(nodeManagerAddr).isNode(addr), "Invalid Caller");
+    }
+
+    function _checkSigExpire(uint256 expireAt) internal view {
+        require(block.timestamp <= expireAt, "Signature expired");
+        require(
+            expireAt <= block.timestamp + SIGNATURE_EXPIRY,
+            "Expiry too far in future"
+        );
     }
 }
