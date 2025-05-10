@@ -17,18 +17,19 @@ contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
     using ECDSA for bytes32;
 
     uint256 public constant SIGNATURE_EXPIRY = 1 hours;
+
     bytes32 private constant _REGISTRATION_TYPEHASH =
         keccak256(
-            "Registration(address userAddr,string email,uint256 nonce,uint256 chainid,uint256 expireAt)"
+            "Registration(address userAddr,bytes32 emailHash,uint256 nonce,uint256 chainid,uint256 expireAt)"
         );
 
     IPowerAsset public powerAsset;
 
-    mapping(address => string) public userEmail;
-    mapping(string => address) public emailToAddr;
+    mapping(address => bytes32) public userEmailHash;
+    mapping(bytes32 => address) public emailHashToAddr;
     mapping(address => uint256) public nonces;
 
-    event UserRegistered(address indexed user, string email);
+    event UserRegistered(address indexed user, bytes32 emailHash);
 
     constructor(
         address _powerAssetAddr
@@ -38,7 +39,7 @@ contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
 
     function registerByEmail(
         address userAddr,
-        string memory email,
+        bytes32 emailHash,
         bytes memory ownerSignature,
         bytes memory userSignature,
         uint256 expireAt
@@ -48,26 +49,38 @@ contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
             expireAt <= block.timestamp + SIGNATURE_EXPIRY,
             "Expiry too far in future"
         );
-
         require(userAddr != address(0), "Invalid user address");
+
         require(
-            bytes(email).length > 0 && bytes(email).length <= 256,
-            "Invalid email length"
+            emailHashToAddr[emailHash] == address(0),
+            "Email already registered"
         );
-        require(emailToAddr[email] == address(0), "Email already registered");
         require(
-            bytes(userEmail[userAddr]).length == 0,
+            userEmailHash[userAddr] == bytes32(0),
             "Address already registered"
         );
 
-        _verifySignature(userAddr, email, ownerSignature, owner(), expireAt);
-        _verifySignature(userAddr, email, userSignature, userAddr, expireAt);
-        _register(userAddr, email);
+        _verifySignature(
+            userAddr,
+            emailHash,
+            ownerSignature,
+            owner(),
+            expireAt
+        );
+        _verifySignature(
+            userAddr,
+            emailHash,
+            userSignature,
+            userAddr,
+            expireAt
+        );
+
+        _register(userAddr, emailHash);
     }
 
     function _verifySignature(
         address userAddr,
-        string memory email,
+        bytes32 emailHash,
         bytes memory signature,
         address expectedSigner,
         uint256 expireAt
@@ -76,7 +89,7 @@ contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
             abi.encode(
                 _REGISTRATION_TYPEHASH,
                 userAddr,
-                keccak256(bytes(email)),
+                emailHash,
                 nonces[userAddr],
                 block.chainid,
                 expireAt
@@ -87,11 +100,11 @@ contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
         require(recovered == expectedSigner, "Invalid signature");
     }
 
-    function _register(address userAddr, string memory email) internal {
+    function _register(address userAddr, bytes32 emailHash) internal {
         nonces[userAddr]++;
-        userEmail[userAddr] = email;
-        emailToAddr[email] = userAddr;
+        userEmailHash[userAddr] = emailHash;
+        emailHashToAddr[emailHash] = userAddr;
         powerAsset.mintRegistrationRewards(userAddr, msg.sender);
-        emit UserRegistered(userAddr, email);
+        emit UserRegistered(userAddr, emailHash);
     }
 }

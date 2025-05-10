@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 interface IAccountRegistrar {
-    function userEmail(address user) external view returns (string memory);
+    function userEmailHash(address user) external view returns (bytes32);
 }
 
 interface IPowerAsset {
@@ -108,7 +108,7 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
         address checkInNode,
         uint256 expireAt,
         bytes memory userSig,
-        bytes memory verifierSig
+        bytes memory checkInNodeSig
     ) external nonReentrant {
         _checkIsNode(msg.sender);
         _checkIsNode(checkInNode);
@@ -120,7 +120,7 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
 
         uint256 today = _getToday();
         require(
-            bytes(accountRegistrar.userEmail(userAddr)).length > 0,
+            accountRegistrar.userEmailHash(userAddr) != bytes32(0),
             "User not registered"
         );
         require(!checkedIn[userAddr][today], "Already checked today");
@@ -143,10 +143,10 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
         address recoveredUser = digest.recover(userSig);
         require(recoveredUser == userAddr, "Invalid user signature");
 
-        address recoveredVerifier = digest.recover(verifierSig);
+        address recoveredCheckInNode = digest.recover(checkInNodeSig);
         require(
-            recoveredVerifier == verifierNode,
-            "Invalid verifier signature"
+            recoveredCheckInNode == checkInNode,
+            "Invalid checkIn node signature"
         );
 
         checkedIn[userAddr][today] = true;
