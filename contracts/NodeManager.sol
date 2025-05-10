@@ -5,21 +5,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 contract NodeManager is Ownable, ReentrancyGuard {
+    
+    address[] public nodeList;
     mapping(address => bool) public isNode;
 
-    address[] public nodeList;
-
-    event VerifierNodeSelected(
-        address indexed userAddr,
-        address indexed verifierNode,
-        uint256 indexed day
-    );
-    event CheckedIn(
-        address indexed userAddr,
-        address indexed checkInNode,
-        address indexed verifierNode,
-        uint256 day
-    );
     event NodeAdded(address node);
     event NodeRemoved(address node);
 
