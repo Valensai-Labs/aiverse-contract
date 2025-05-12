@@ -1,12 +1,20 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract PowerAsset is Ownable, EIP712, ReentrancyGuard {
+contract PowerAsset is
+    Initializable,
+    OwnableUpgradeable,
+    EIP712Upgradeable,
+    ReentrancyGuardUpgradeable,
+    UUPSUpgradeable
+{
     using ECDSA for bytes32;
 
     uint8 public constant DECIMALS = 18;
@@ -29,7 +37,17 @@ contract PowerAsset is Ownable, EIP712, ReentrancyGuard {
     event Transfer(address indexed from, address indexed to, uint256 amount);
     event Mint(address indexed to, uint256 amount);
 
-    constructor() EIP712("Aiverse-Power-Asset", "1") Ownable(msg.sender) {
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize() public initializer {
+        __Ownable_init(msg.sender);
+        __EIP712_init("Aiverse-Power-Asset", "1");
+        __ReentrancyGuard_init();
+        __UUPSUpgradeable_init();
+
         startTime = block.timestamp;
     }
 
@@ -96,7 +114,6 @@ contract PowerAsset is Ownable, EIP712, ReentrancyGuard {
         require(recovered == from, "Invalid signature");
 
         nonces[from]++;
-
         _transfer(from, to, amount);
     }
 
@@ -156,4 +173,9 @@ contract PowerAsset is Ownable, EIP712, ReentrancyGuard {
 
         emit Transfer(from, to, amount);
     }
+
+    /// @dev UUPS upgradeability authorization
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyOwner {}
 }

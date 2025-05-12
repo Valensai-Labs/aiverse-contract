@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 interface IPowerAsset {
     function mintRegistrationRewards(
@@ -13,7 +15,13 @@ interface IPowerAsset {
     ) external;
 }
 
-contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
+contract AccountRegistrar is
+    Initializable,
+    OwnableUpgradeable,
+    ReentrancyGuardUpgradeable,
+    EIP712Upgradeable,
+    UUPSUpgradeable
+{
     using ECDSA for bytes32;
 
     uint256 public constant SIGNATURE_EXPIRY = 1 hours;
@@ -31,9 +39,17 @@ contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
 
     event UserRegistered(address indexed user, bytes32 emailHash);
 
-    constructor(
-        address _powerAssetAddr
-    ) EIP712("Aiverse-Account-Registrar", "1") Ownable(msg.sender) {
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize(address _powerAssetAddr) public initializer {
+        __Ownable_init(msg.sender);
+        __ReentrancyGuard_init();
+        __EIP712_init("Aiverse-Account-Registrar", "1");
+        __UUPSUpgradeable_init();
+
         powerAsset = IPowerAsset(_powerAssetAddr);
     }
 
@@ -107,4 +123,9 @@ contract AccountRegistrar is Ownable, EIP712, ReentrancyGuard {
         powerAsset.mintRegistrationRewards(userAddr, msg.sender);
         emit UserRegistered(userAddr, emailHash);
     }
+
+    /// @dev UUPS authorization logic
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyOwner {}
 }

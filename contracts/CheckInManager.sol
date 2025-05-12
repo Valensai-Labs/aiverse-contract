@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 interface IAccountRegistrar {
     function userEmailHash(address user) external view returns (bytes32);
@@ -24,7 +26,13 @@ interface INodeManager {
     function nodeList() external view returns (address[] memory);
 }
 
-contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
+contract CheckInManager is
+    Initializable,
+    OwnableUpgradeable,
+    EIP712Upgradeable,
+    ReentrancyGuardUpgradeable,
+    UUPSUpgradeable
+{
     using ECDSA for bytes32;
 
     INodeManager public nodeManager;
@@ -53,22 +61,31 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
         uint256 day
     );
 
-    constructor(
+    function initialize(
         address _nodeManagerAddr,
         address _registrarAddr,
-        address _powerAssetAddr
-    ) EIP712("Aiverse-CheckIn-Manager", "1") Ownable(msg.sender) {
+        address _powerAssetAddr,
+        address owner_
+    ) public initializer {
+        __Ownable_init(msg.sender);
+        __EIP712_init("Aiverse-CheckIn-Manager", "1");
+        __ReentrancyGuard_init();
+        __UUPSUpgradeable_init();
+
         nodeManager = INodeManager(_nodeManagerAddr);
         accountRegistrar = IAccountRegistrar(_registrarAddr);
         powerAsset = IPowerAsset(_powerAssetAddr);
+
+        _transferOwnership(owner_);
     }
 
     function selectRandomVerifierNode(
         address userAddr
     ) external nonReentrant returns (address) {
         _checkIsNode(msg.sender);
-        address[] memory nodeList = INodeManager(nodeManager).nodeList();
-        require(nodeList.length > 1, "Not enough nodes to choose from");
+        address[] memory nodeListArray = nodeManager.nodeList();
+        require(nodeListArray.length > 1, "Not enough nodes to choose from");
+
         uint256 today = _getToday();
         require(
             verifierNodeForDay[userAddr][today] == address(0),
@@ -92,14 +109,15 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
         uint256 maxAttempts = 5;
 
         do {
-            uint256 randomIndex = randomSeed % nodeList.length;
-            verifierNode = nodeList[randomIndex];
+            uint256 randomIndex = randomSeed % nodeListArray.length;
+            verifierNode = nodeListArray[randomIndex];
             randomSeed = uint256(keccak256(abi.encodePacked(randomSeed)));
             attempts++;
             require(attempts < maxAttempts, "Failed to select verifier node");
         } while (verifierNode == msg.sender);
 
         verifierNodeForDay[userAddr][today] = verifierNode;
+        emit VerifierNodeSelected(userAddr, verifierNode, today);
         return verifierNode;
     }
 
@@ -171,10 +189,12 @@ contract CheckInManager is Ownable, EIP712, ReentrancyGuard {
     }
 
     function _checkIsNode(address addr) internal view {
-        require(INodeManager(nodeManager).isNode(addr), "Invalid Node");
+        require(nodeManager.isNode(addr), "Invalid Node");
     }
 
     function _getToday() internal view returns (uint256) {
         return block.timestamp / 1 days;
     }
+
+    function _authorizeUpgrade(address) internal override onlyOwner {}
 }

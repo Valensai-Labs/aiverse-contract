@@ -1,22 +1,30 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract AiverseCoin is ERC20, Ownable {
+contract AiverseCoin is Initializable, ERC20Upgradeable, OwnableUpgradeable, UUPSUpgradeable {
     uint256 public constant HALVING_PERIOD_DAYS = 1460;
-    uint256 public constant MAX_TOTAL_SUPPLY = 2_100_000_000 ether;
+    uint256 public constant MAX_TOTAL_SUPPLY = 210_000_000_000 ether;
 
     uint256 public initialDailyReward;
     uint256 public startDay;
     address public stakeController;
     uint256 public lastMintedDay;
 
-    constructor(
-        string memory name_,
-        string memory symbol_
-    ) ERC20(name_, symbol_) Ownable(msg.sender) {
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize(string memory name_, string memory symbol_) public initializer {
+        __ERC20_init(name_, symbol_);
+        __Ownable_init(msg.sender);
+        __UUPSUpgradeable_init();
+
         startDay = block.timestamp / 1 days;
         initialDailyReward = (MAX_TOTAL_SUPPLY / 2) / HALVING_PERIOD_DAYS;
     }
@@ -53,4 +61,7 @@ contract AiverseCoin is ERC20, Ownable {
         uint256 reward = initialDailyReward >> halvingEra;
         return reward;
     }
+
+    /// @dev Required by UUPSUpgradeable
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 }

@@ -1,15 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
-
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 interface IPowerAsset {
     function transfer(address to, uint256 amount) external;
-
     function transferFrom(address from, address to, uint256 amount) external;
 }
 
@@ -24,7 +22,12 @@ interface IAiverseCoin {
     function userClaimToken(address userAddr, uint256 amount) external;
 }
 
-contract StakeController is Ownable, EIP712, ReentrancyGuard {
+contract StakeController is
+    OwnableUpgradeable,
+    EIP712Upgradeable,
+    ReentrancyGuardUpgradeable,
+    UUPSUpgradeable
+{
     using ECDSA for bytes32;
 
     struct StakeInfo {
@@ -85,15 +88,29 @@ contract StakeController is Ownable, EIP712, ReentrancyGuard {
     );
     event NodeClaimReward(address indexed node, uint256 reward);
 
-    constructor(
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize(
         address _aicoinAddr,
         address _powerAssetAddr,
         address _nodeManagerAddr
-    ) EIP712("Aiverse-Stake-Controller", "1") Ownable(msg.sender) {
+    ) public initializer {
+        __Ownable_init(msg.sender);
+        __EIP712_init("Aiverse-Stake-Controller", "1");
+        __ReentrancyGuard_init();
+        __UUPSUpgradeable_init();
+
         aicoinAddr = _aicoinAddr;
         powerAssetAddr = _powerAssetAddr;
         nodeManagerAddr = _nodeManagerAddr;
     }
+
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyOwner {}
 
     function stake(address node, uint256 amount) external nonReentrant {
         _stake(msg.sender, node, amount);
