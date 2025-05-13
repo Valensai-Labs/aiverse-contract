@@ -31,7 +31,9 @@ async function main() {
   console.log("开始部署Aiverse合约套件...");
   // 获取部署账户
 
-  const [, otherAccount] = await hre.ethers.getSigners();
+  const [account, otherAccount] = await hre.ethers.getSigners();
+
+  console.log(account)
 
   const { powerAsset } = await hre.ignition.deploy(powerAssetModule);
 
