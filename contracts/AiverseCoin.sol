@@ -5,8 +5,14 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 
-contract AiverseCoin is Initializable, ERC20Upgradeable, OwnableUpgradeable, UUPSUpgradeable {
+contract AiverseCoin is
+    Initializable,
+    ERC20Upgradeable,
+    OwnableUpgradeable,
+    UUPSUpgradeable
+{
     uint256 public constant HALVING_PERIOD_DAYS = 1460;
     uint256 public constant MAX_TOTAL_SUPPLY = 210_000_000_000 ether;
 
@@ -20,7 +26,10 @@ contract AiverseCoin is Initializable, ERC20Upgradeable, OwnableUpgradeable, UUP
         _disableInitializers();
     }
 
-    function initialize(string memory name_, string memory symbol_) public initializer {
+    function initialize(
+        string memory name_,
+        string memory symbol_
+    ) public initializer {
         __ERC20_init(name_, symbol_);
         __Ownable_init(msg.sender);
         __UUPSUpgradeable_init();
@@ -48,7 +57,10 @@ contract AiverseCoin is Initializable, ERC20Upgradeable, OwnableUpgradeable, UUP
     }
 
     function userClaimToken(address userAddr, uint256 amount) external {
-        require(msg.sender == stakeController, "Only StakeController can transfer");
+        require(
+            msg.sender == stakeController,
+            "Only StakeController can transfer"
+        );
         _transfer(address(this), userAddr, amount);
     }
 
@@ -63,5 +75,7 @@ contract AiverseCoin is Initializable, ERC20Upgradeable, OwnableUpgradeable, UUP
     }
 
     /// @dev Required by UUPSUpgradeable
-    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyOwner {}
 }
