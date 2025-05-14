@@ -1,0 +1,8 @@
+{
+  "sepolia": {
+    "PowerAsset": "0x1Fc94AB0E519Fd8B0a6d4EDFfEb0624322eC224C"
+  },
+  "baseSepolia": {
+    "CheckIn": "0x54Bf4C8B93B37b41a5083f75891BF6419e11B2E0"
+  }
+}

@@ -3,6 +3,7 @@ import { expect } from "chai";
 import hre from "hardhat";
 import { getAddress, encodeFunctionData } from "viem";
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
+import { powerAssetModule } from "@/scripts/proxy-module";
 
 const proxyModule = buildModule("ProxyModule", (m) => {
   const proxyAdminOwner = m.getAccount(0);
@@ -21,29 +22,21 @@ const proxyModule = buildModule("ProxyModule", (m) => {
   return { proxyAdmin, proxy };
 });
 
-const powerAssetModule = buildModule("DemoModule", (m) => {
-  const { proxy, proxyAdmin } = m.useModule(proxyModule);
-  const powerAsset = m.contractAt("PowerAsset", proxy);
-  return { powerAsset, proxy, proxyAdmin };
-});
+// const powerAssetModule = buildModule("DemoModule", (m) => {
+//   const { proxy, proxyAdmin } = m.useModule(proxyModule);
+//   const powerAsset = m.contractAt("PowerAsset", proxy);
+//   return { powerAsset, proxy, proxyAdmin };
+// });
 
 async function main() {
-  console.log("开始部署Aiverse合约套件...");
-  // 获取部署账户
-
   const [account, otherAccount] = await hre.ethers.getSigners();
-
-  console.log(account)
-
-  const { powerAsset } = await hre.ignition.deploy(powerAssetModule);
-
+  const { contractInstance: powerAsset } = await hre.ignition.deploy(
+    powerAssetModule
+  );
   const powerAssetTyped = await hre.ethers.getContractAt(
     "PowerAsset",
     powerAsset.target
   );
-
-  console.log(powerAsset.target);
-
   expect(await powerAssetTyped.connect(otherAccount).version()).to.equal(
     "1.0.0"
   );

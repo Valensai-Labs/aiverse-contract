@@ -2,5 +2,9 @@
   "ProxyModule#PowerAsset": "0xa955853954fEE352Ef4407E4FEc1B5226093EDf9",
   "ProxyModule#TransparentUpgradeableProxy": "0x01Bb8CE193Cf0fcb7f1Aa9547aCCacc7af00b405",
   "ProxyModule#ProxyAdmin": "0x1048B6886C9eACb7AE68E7fc7ae29b10651E2292",
-  "DemoModule#PowerAsset": "0x01Bb8CE193Cf0fcb7f1Aa9547aCCacc7af00b405"
+  "DemoModule#PowerAsset": "0x01Bb8CE193Cf0fcb7f1Aa9547aCCacc7af00b405",
+  "PowerAsset_ProxyModule#PowerAsset": "0xE65A9e189c57100C6327380099403b855C8F28b7",
+  "PowerAsset_ProxyModule#TransparentUpgradeableProxy": "0x1Fc94AB0E519Fd8B0a6d4EDFfEb0624322eC224C",
+  "PowerAsset_ProxyModule#ProxyAdmin": "0x2809D2E02Bb4B803c89Cd64248054B3f3CD03408",
+  "PowerAsset_Module#PowerAsset": "0x1Fc94AB0E519Fd8B0a6d4EDFfEb0624322eC224C"
 }

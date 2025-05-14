@@ -9,7 +9,17 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@openzeppelin/*": ["node_modules/@openzeppelin/*"]
-    }
-  }
+      "@/*": ["./*"],
+      "@openzeppelin/*": ["node_modules/@openzeppelin/*"],
+    },
+  },
+  "include": [
+    ".eslintrc.cjs",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.cjs",
+    "**/*.mjs"
+  ],
+  "exclude": ["node_modules"]
 }
