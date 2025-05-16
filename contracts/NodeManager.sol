@@ -2,15 +2,15 @@
 pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 contract NodeManager is
     Initializable,
     OwnableUpgradeable,
-    ReentrancyGuardUpgradeable,
-    UUPSUpgradeable
+    PausableUpgradeable,
+    ReentrancyGuardUpgradeable
 {
     address[] public nodeList;
     mapping(address => bool) public isNode;
@@ -23,15 +23,15 @@ contract NodeManager is
         _;
     }
 
-    function initialize() public initializer {
+    function initialize() public virtual initializer {
         __Ownable_init(msg.sender);
+        __Pausable_init();
         __ReentrancyGuard_init();
-        __UUPSUpgradeable_init();
     }
 
-    function _authorizeUpgrade(
-        address newImplementation
-    ) internal override onlyOwner {}
+    function version() public pure returns (string memory) {
+        return "1.0.0";
+    }
 
     function addNode(address node) external onlyOwner {
         require(!isNode[node], "Node already exists");
