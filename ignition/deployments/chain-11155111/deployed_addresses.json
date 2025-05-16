@@ -6,5 +6,9 @@
   "NodeManager_ProxyModule#NodeManager": "0xF4F9bBc329616B6D23937E94074D9DF65c82594C",
   "NodeManager_ProxyModule#TransparentUpgradeableProxy": "0xb008d0009535515a46fF0E6614e1A0f75aC412dd",
   "NodeManager_ProxyModule#ProxyAdmin": "0xeA3c6D50d00010eFD7d00eA35FE6556610A88D9e",
-  "NodeManager_Module#NodeManager": "0xb008d0009535515a46fF0E6614e1A0f75aC412dd"
+  "NodeManager_Module#NodeManager": "0xb008d0009535515a46fF0E6614e1A0f75aC412dd",
+  "AiverseCoin_ProxyModule#AiverseCoin": "0x77315d8E638f290dE65B3150870A312EA5bEdDd4",
+  "AiverseCoin_ProxyModule#TransparentUpgradeableProxy": "0x4d70bbcC8f8F3979cbc1D94144C0E585025e6573",
+  "AiverseCoin_ProxyModule#ProxyAdmin": "0x01f565B018d4B63EeB632E2C09909E9C145d5503",
+  "AiverseCoin_Module#AiverseCoin": "0x4d70bbcC8f8F3979cbc1D94144C0E585025e6573"
 }
