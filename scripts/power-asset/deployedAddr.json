@@ -1,6 +1,7 @@
 {
   "sepolia": {
-    "PowerAsset": "0xE65A9e189c57100C6327380099403b855C8F28b7"
+    "PowerAssetProxy": "0xe736CD4496c679352cdf5BD800107eDbb565723E",
+    "PowerAsset": "0x21CF9D76629A890C604DC74d847Ea72ce357286F"
   },
   "baseSepolia": {
     "PowerAsset": "0x54Bf4C8B93B37b41a5083f75891BF6419e11B2E0"

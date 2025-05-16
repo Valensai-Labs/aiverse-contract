@@ -4,7 +4,7 @@ import "hardhat-deploy";
 import * as dotenv from "dotenv";
 import { ProxyAgent, setGlobalDispatcher } from "undici";
 
-const proxyAgent = new ProxyAgent("http://127.0.0.1:7899");
+const proxyAgent = new ProxyAgent("http://127.0.0.1:7890");
 setGlobalDispatcher(proxyAgent);
 
 dotenv.config();
