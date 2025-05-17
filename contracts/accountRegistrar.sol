@@ -3,8 +3,8 @@ pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
@@ -18,9 +18,9 @@ interface IPowerAsset {
 contract AccountRegistrar is
     Initializable,
     OwnableUpgradeable,
-    ReentrancyGuardUpgradeable,
+    PausableUpgradeable,
     EIP712Upgradeable,
-    UUPSUpgradeable
+    ReentrancyGuardUpgradeable
 {
     using ECDSA for bytes32;
 
@@ -39,18 +39,17 @@ contract AccountRegistrar is
 
     event UserRegistered(address indexed user, bytes32 emailHash);
 
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
-        _disableInitializers();
-    }
-
-    function initialize(address _powerAssetAddr) public initializer {
+    function initialize(address _powerAssetAddr) public virtual initializer {
         __Ownable_init(msg.sender);
-        __ReentrancyGuard_init();
         __EIP712_init("Aiverse-Account-Registrar", "1");
-        __UUPSUpgradeable_init();
+        __Pausable_init();
+        __ReentrancyGuard_init();
 
         powerAsset = IPowerAsset(_powerAssetAddr);
+    }
+
+    function version() public pure returns (string memory) {
+        return "1.0.0";
     }
 
     function registerByEmail(
@@ -123,9 +122,4 @@ contract AccountRegistrar is
         powerAsset.mintRegistrationRewards(userAddr, msg.sender);
         emit UserRegistered(userAddr, emailHash);
     }
-
-    /// @dev UUPS authorization logic
-    function _authorizeUpgrade(
-        address newImplementation
-    ) internal override onlyOwner {}
 }

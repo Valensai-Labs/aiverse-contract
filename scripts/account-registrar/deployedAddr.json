@@ -1,0 +1,9 @@
+{
+  "sepolia": {
+    "AccountRegistrarProxy": "0xe27EC36CC61e27C2Fd3Bf9DC2510A6CBB0FB1cb9",
+    "AccountRegistrar": "0x2F9bDbf64D5780a655641e324d88d97c0EaB7Eaf"
+  },
+  "baseSepolia": {
+    "AccountRegistrar": "0x54Bf4C8B93B37b41a5083f75891BF6419e11B2E0"
+  }
+}

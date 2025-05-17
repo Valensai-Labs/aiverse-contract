@@ -10,5 +10,9 @@
   "AiverseCoin_ProxyModule#AiverseCoin": "0x77315d8E638f290dE65B3150870A312EA5bEdDd4",
   "AiverseCoin_ProxyModule#TransparentUpgradeableProxy": "0x4d70bbcC8f8F3979cbc1D94144C0E585025e6573",
   "AiverseCoin_ProxyModule#ProxyAdmin": "0x01f565B018d4B63EeB632E2C09909E9C145d5503",
-  "AiverseCoin_Module#AiverseCoin": "0x4d70bbcC8f8F3979cbc1D94144C0E585025e6573"
+  "AiverseCoin_Module#AiverseCoin": "0x4d70bbcC8f8F3979cbc1D94144C0E585025e6573",
+  "AccountRegistrar_ProxyModule#AccountRegistrar": "0x2F9bDbf64D5780a655641e324d88d97c0EaB7Eaf",
+  "AccountRegistrar_ProxyModule#TransparentUpgradeableProxy": "0xe27EC36CC61e27C2Fd3Bf9DC2510A6CBB0FB1cb9",
+  "AccountRegistrar_ProxyModule#ProxyAdmin": "0xf9E0747aEA2750815c034ab7720AfAF101039866",
+  "AccountRegistrar_Module#AccountRegistrar": "0xe27EC36CC61e27C2Fd3Bf9DC2510A6CBB0FB1cb9"
 }
