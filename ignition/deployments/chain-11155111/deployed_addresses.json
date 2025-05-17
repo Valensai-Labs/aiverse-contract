@@ -14,5 +14,9 @@
   "AccountRegistrar_ProxyModule#AccountRegistrar": "0x2F9bDbf64D5780a655641e324d88d97c0EaB7Eaf",
   "AccountRegistrar_ProxyModule#TransparentUpgradeableProxy": "0xe27EC36CC61e27C2Fd3Bf9DC2510A6CBB0FB1cb9",
   "AccountRegistrar_ProxyModule#ProxyAdmin": "0xf9E0747aEA2750815c034ab7720AfAF101039866",
-  "AccountRegistrar_Module#AccountRegistrar": "0xe27EC36CC61e27C2Fd3Bf9DC2510A6CBB0FB1cb9"
+  "AccountRegistrar_Module#AccountRegistrar": "0xe27EC36CC61e27C2Fd3Bf9DC2510A6CBB0FB1cb9",
+  "CheckInManager_ProxyModule#CheckInManager": "0xd165D2e1b9FE57D4ea374bd505C4935B4CBaE44e",
+  "CheckInManager_ProxyModule#TransparentUpgradeableProxy": "0xE8CCbcb2C164d7eE8F7cE1dba87A5FB2e9576b25",
+  "CheckInManager_ProxyModule#ProxyAdmin": "0xf77c74008455ec5564E0Ce2d3F5fBe90dEaAEF03",
+  "CheckInManager_Module#CheckInManager": "0xE8CCbcb2C164d7eE8F7cE1dba87A5FB2e9576b25"
 }

@@ -3,9 +3,9 @@ pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 interface IAccountRegistrar {
@@ -22,16 +22,18 @@ interface IPowerAsset {
 
 interface INodeManager {
     function owner() external view returns (address);
+
     function isNode(address addr) external view returns (bool);
+
     function nodeList() external view returns (address[] memory);
 }
 
 contract CheckInManager is
     Initializable,
     OwnableUpgradeable,
+    PausableUpgradeable,
     EIP712Upgradeable,
-    ReentrancyGuardUpgradeable,
-    UUPSUpgradeable
+    ReentrancyGuardUpgradeable
 {
     using ECDSA for bytes32;
 
@@ -64,19 +66,20 @@ contract CheckInManager is
     function initialize(
         address _nodeManagerAddr,
         address _registrarAddr,
-        address _powerAssetAddr,
-        address owner_
-    ) public initializer {
+        address _powerAssetAddr
+    ) public virtual initializer {
         __Ownable_init(msg.sender);
+        __Pausable_init();
         __EIP712_init("Aiverse-CheckIn-Manager", "1");
         __ReentrancyGuard_init();
-        __UUPSUpgradeable_init();
 
         nodeManager = INodeManager(_nodeManagerAddr);
         accountRegistrar = IAccountRegistrar(_registrarAddr);
         powerAsset = IPowerAsset(_powerAssetAddr);
+    }
 
-        _transferOwnership(owner_);
+    function version() public pure returns (string memory) {
+        return "1.0.0";
     }
 
     function selectRandomVerifierNode(
@@ -195,6 +198,4 @@ contract CheckInManager is
     function _getToday() internal view returns (uint256) {
         return block.timestamp / 1 days;
     }
-
-    function _authorizeUpgrade(address) internal override onlyOwner {}
 }
