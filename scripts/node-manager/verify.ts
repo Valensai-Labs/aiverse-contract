@@ -11,7 +11,7 @@ async function main() {
     throw new Error(`No addresses found for network ${networkName}`);
   }
 
-  const NodeManagerAddr = networkAddrs["NodeManager"];
+  const NodeManagerAddr = networkAddrs["NodeManagerV1_0_1"];
   const NodeManagerProxyAddr = networkAddrs["NodeManagerProxy"];
   if (!NodeManagerAddr) {
     throw new Error(`NodeManager address not found for network ${networkName}`);

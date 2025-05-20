@@ -1,6 +1,6 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-function buildProxyModule(contractName: string) {
+export function buildProxyModule(contractName: string) {
   return buildModule(`${contractName}_ProxyModule`, (m) => {
     const proxyAdminOwner = m.getAccount(0);
     const impl = m.contract(contractName);
