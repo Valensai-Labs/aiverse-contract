@@ -1,0 +1,80 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.28;
+
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
+contract AiverseCoinV1_0_1 is
+    Initializable,
+    OwnableUpgradeable,
+    PausableUpgradeable,
+    ERC20Upgradeable,
+    ReentrancyGuardUpgradeable
+{
+    uint256 public constant HALVING_PERIOD_DAYS = 1460;
+    uint256 public constant MAX_TOTAL_SUPPLY = 210_000_000_000 ether;
+
+    uint256 public initialDailyReward;
+    uint256 public startDay;
+    address public stakeController;
+    uint256 public lastMintedDay;
+
+    function initialize(
+        string memory name_,
+        string memory symbol_
+    ) public initializer {
+        __Ownable_init(msg.sender);
+        __Pausable_init();
+        __ERC20_init(name_, symbol_);
+        __ReentrancyGuard_init();
+        startDay = block.timestamp / 1 days;
+        initialDailyReward = (MAX_TOTAL_SUPPLY / 2) / HALVING_PERIOD_DAYS;
+    }
+
+    function version() public pure returns (string memory) {
+        return "1.0.1";
+    }
+
+    function setStakeController(address _stakeController) external onlyOwner {
+        stakeController = _stakeController;
+    }
+
+    function mintToken() external nonReentrant {
+        require(msg.sender == stakeController, "Only StakeController can mint");
+        uint256 currentDay = block.timestamp / 1 days;
+        require(currentDay > lastMintedDay, "Already minted for today");
+
+        uint256 amount = getMintAmountByDay(currentDay);
+        require(
+            totalSupply() + amount <= MAX_TOTAL_SUPPLY,
+            "Exceeds max supply"
+        );
+
+        lastMintedDay = currentDay;
+        _mint(address(this), amount);
+    }
+
+    function userClaimToken(
+        address userAddr,
+        uint256 amount
+    ) external nonReentrant {
+        require(
+            msg.sender == stakeController,
+            "Only StakeController can transfer"
+        );
+        _transfer(address(this), userAddr, amount);
+    }
+
+    function getMintAmountByDay(uint256 day) public view returns (uint256) {
+        require(day >= startDay, "Invalid day");
+
+        uint256 daysSinceStart = day - startDay;
+        uint256 halvingEra = daysSinceStart / HALVING_PERIOD_DAYS;
+
+        uint256 reward = initialDailyReward >> halvingEra;
+        return reward;
+    }
+}

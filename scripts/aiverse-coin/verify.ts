@@ -11,7 +11,7 @@ async function main() {
     throw new Error(`No addresses found for network ${networkName}`);
   }
 
-  const AiverseCoinAddr = networkAddrs["AiverseCoin"];
+  const AiverseCoinAddr = networkAddrs["AiverseCoinV1_0_1"];
   const AiverseCoinProxyAddr = networkAddrs["AiverseCoinProxy"];
   if (!AiverseCoinAddr) {
     throw new Error(`AiverseCoin address not found for network ${networkName}`);
