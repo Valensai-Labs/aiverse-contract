@@ -234,6 +234,7 @@ contract StakeControllerV1_0_1 is
     }
 
     function dailySettle() external onlyOwner nonReentrant {
+        require(totalPower > 0, "No power staked");
         uint256 currentDay = _getCurrentDay();
         require(currentDay == currentSnapshotDay, "Already Snapshot today");
         totalPowerSnapshot[currentDay] = totalPower;
@@ -260,7 +261,6 @@ contract StakeControllerV1_0_1 is
     function _stake(address userAddr, address node, uint256 amount) internal {
         _checkIsNode(node);
         require(amount > 0, "Amount must be greater than 0");
-        require(totalPower > 0, "No power staked");
 
         bool isNewStake = true;
         for (uint i = 0; i < userStakedNodes[userAddr].length; i++) {

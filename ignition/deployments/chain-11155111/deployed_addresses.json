@@ -26,5 +26,7 @@
   "NodeManagerV1_0_1_Upgrade_Module#NodeManagerV1_0_1": "0xb008d0009535515a46fF0E6614e1A0f75aC412dd",
   "NodeManagerV1_0_1_Upgrade_ProxyModule#NodeManagerV1_0_1": "0xc7218D8546165215c5B292B2bb0B79be07D73e9b",
   "CheckInManagerV1_0_1_Upgrade_Module#CheckInManagerV1_0_1": "0x6D40724AB7745d093a89f6759C06D858ADB19583",
-  "CheckInManagerV1_0_1_Upgrade_ProxyModule#CheckInManagerV1_0_1": "0xac9ba239f26CB61B0181dB368C65F2749436BC8a"
+  "CheckInManagerV1_0_1_Upgrade_ProxyModule#CheckInManagerV1_0_1": "0xac9ba239f26CB61B0181dB368C65F2749436BC8a",
+  "StakeControllerV1_0_1_Upgrade_Module#StakeControllerV1_0_1": "0x6a45E45a78BB7828369bfBA1ea23111285CC0F9A",
+  "StakeControllerV1_0_1_Upgrade_ProxyModule#StakeControllerV1_0_1": "0x0efE9E4cbFe71BD6Be20449ca0Ab56109b64c19c"
 }
