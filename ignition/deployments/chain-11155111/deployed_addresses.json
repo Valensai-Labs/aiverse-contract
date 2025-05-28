@@ -34,5 +34,9 @@
   "StakeControllerV1_0_2_Upgrade_Module#StakeControllerV1_0_2": "0x6a45E45a78BB7828369bfBA1ea23111285CC0F9A",
   "StakeControllerV1_0_2_Upgrade_ProxyModule#StakeControllerV1_0_2": "0xa20374B1801d39f53fd9960772ee5a2186Cf7776",
   "StakeControllerV1_0_3_Upgrade_Module#StakeControllerV1_0_3": "0x6a45E45a78BB7828369bfBA1ea23111285CC0F9A",
-  "StakeControllerV1_0_3_Upgrade_ProxyModule#StakeControllerV1_0_3": "0x4379568944E54b502b9DDCeDD4396AA83daCD118"
+  "StakeControllerV1_0_3_Upgrade_ProxyModule#StakeControllerV1_0_3": "0x4379568944E54b502b9DDCeDD4396AA83daCD118",
+  "StakeControllerV1_0_4_Upgrade_Module#StakeControllerV1_0_4": "0x6a45E45a78BB7828369bfBA1ea23111285CC0F9A",
+  "StakeControllerV1_0_4_Upgrade_ProxyModule#StakeControllerV1_0_4": "0x0F68BF1DB3e07e1391e647Ad4996Fe325cF1AA2b",
+  "StakeControllerV1_0_5_Upgrade_Module#StakeControllerV1_0_5": "0x6a45E45a78BB7828369bfBA1ea23111285CC0F9A",
+  "StakeControllerV1_0_5_Upgrade_ProxyModule#StakeControllerV1_0_5": "0x31712ED808621d0518d2287B45b17e2495bbd1A7"
 }

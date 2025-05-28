@@ -11,7 +11,7 @@ async function main() {
     throw new Error(`No addresses found for network ${networkName}`);
   }
 
-  const StakeControllerAddr = networkAddrs["StakeControllerV1_0_3"];
+  const StakeControllerAddr = networkAddrs["StakeControllerV1_0_5"];
   const StakeControllerProxyAddr = networkAddrs["StakeControllerProxy"];
   if (!StakeControllerAddr) {
     throw new Error(`StakeController address not found for network ${networkName}`);
