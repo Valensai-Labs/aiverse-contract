@@ -31,8 +31,8 @@ function buildUpgradeContractModule(
 
 export const powerAssetUpgradeModule = buildUpgradeContractModule(
   "PowerAsset",
-  "V1_0_1",
-  buildUpgradeModule("PowerAsset", "V1_0_1")
+  "V1_0_2",
+  buildUpgradeModule("PowerAsset", "V1_0_2")
 );
 
 export const nodeManagerUpgradeModule = buildUpgradeContractModule(

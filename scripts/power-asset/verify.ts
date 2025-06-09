@@ -11,7 +11,7 @@ async function main() {
     throw new Error(`No addresses found for network ${networkName}`);
   }
 
-  const PowerAssetAddr = networkAddrs["PowerAsset"];
+  const PowerAssetAddr = networkAddrs["PowerAssetV1_0_2"];
   const PowerAssetProxyAddr = networkAddrs["PowerAssetProxy"];
   if (!PowerAssetAddr) {
     throw new Error(`PowerAsset address not found for network ${networkName}`);

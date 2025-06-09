@@ -11,7 +11,7 @@ async function main() {
     throw new Error(`No addresses found for network ${networkName}`);
   }
 
-  const AccountRegistrarAddr = networkAddrs["AccountRegistrar"];
+  const AccountRegistrarAddr = networkAddrs["AccountRegistrarV1_0_1"];
   const AccountRegistrarProxyAddr = networkAddrs["AccountRegistrarProxy"];
   if (!AccountRegistrarAddr) {
     throw new Error(
