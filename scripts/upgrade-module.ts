@@ -55,8 +55,8 @@ export const accountRegistrarUpgradeModule = buildUpgradeContractModule(
 
 export const checkInManagerUpgradeModule = buildUpgradeContractModule(
   "CheckInManager",
-  "V1_0_1",
-  buildUpgradeModule("CheckInManager", "V1_0_1")
+  "V1_0_2",
+  buildUpgradeModule("CheckInManager", "V1_0_2")
 );
 
 export const stakeControllerUpgradeModule = buildUpgradeContractModule(

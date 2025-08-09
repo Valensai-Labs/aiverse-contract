@@ -44,5 +44,7 @@
   "PowerAssetV1_0_1_Upgrade_Module#PowerAssetV1_0_1": "0xe736CD4496c679352cdf5BD800107eDbb565723E",
   "PowerAssetV1_0_1_Upgrade_ProxyModule#PowerAssetV1_0_1": "0x54EcbF388C687d0A03f68516F137B262b1E88FbF",
   "PowerAssetV1_0_2_Upgrade_Module#PowerAssetV1_0_2": "0xe736CD4496c679352cdf5BD800107eDbb565723E",
-  "PowerAssetV1_0_2_Upgrade_ProxyModule#PowerAssetV1_0_2": "0xCa11bb6F50fbf049Be3977D2b1fd3A8b07eD7566"
+  "PowerAssetV1_0_2_Upgrade_ProxyModule#PowerAssetV1_0_2": "0xCa11bb6F50fbf049Be3977D2b1fd3A8b07eD7566",
+  "CheckInManagerV1_0_2_Upgrade_Module#CheckInManagerV1_0_2": "0x6D40724AB7745d093a89f6759C06D858ADB19583",
+  "CheckInManagerV1_0_2_Upgrade_ProxyModule#CheckInManagerV1_0_2": "0x0c17b1e05F311E762F8aA101Ba60C7899bE429F6"
 }

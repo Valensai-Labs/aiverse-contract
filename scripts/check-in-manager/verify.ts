@@ -11,7 +11,7 @@ async function main() {
     throw new Error(`No addresses found for network ${networkName}`);
   }
 
-  const CheckInManagerAddr = networkAddrs["CheckInManagerV1_0_1"];
+  const CheckInManagerAddr = networkAddrs["CheckInManagerV1_0_2"];
   const CheckInManagerProxyAddr = networkAddrs["CheckInManagerProxy"];
   if (!CheckInManagerAddr) {
     throw new Error(
