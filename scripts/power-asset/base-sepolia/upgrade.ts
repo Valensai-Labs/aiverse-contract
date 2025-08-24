@@ -9,11 +9,11 @@ async function main() {
   );
   console.log(powerAssetUpgrade.target);
   const powerAssetTyped = await hre.ethers.getContractAt(
-    "PowerAssetV1_0_3",
+    "PowerAssetV1_0_4",
     powerAssetUpgrade.target
   );
   expect(await powerAssetTyped.connect(otherAccount).version()).to.equal(
-    "1.0.3"
+    "1.0.4"
   );
 }
 

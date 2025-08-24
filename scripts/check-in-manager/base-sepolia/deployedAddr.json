@@ -2,6 +2,7 @@
   "base-sepolia": {
     "CheckInManagerProxy": "0xF4F9bBc329616B6D23937E94074D9DF65c82594C",
     "CheckInManagerProxyAdmin": "0x795fB989BFCEDDa5b08F870Ef41A22b4156080a6",
-    "CheckInManagerV1_0_3": "0xe736CD4496c679352cdf5BD800107eDbb565723E"
+    "CheckInManagerV1_0_3": "0xe736CD4496c679352cdf5BD800107eDbb565723E",
+    "CheckInManagerV1_0_4": "0x4732eA81dea0d7C4CB952Bf040C2DCd87F8A20e6"
   }
 }

@@ -2,6 +2,7 @@
   "base-sepolia": {
     "PowerAssetProxy": "0x0bba8Ba13eE178Ae87a22E9e8aB2d2e033233cD8",
     "PowerAssetProxyAdmin": "0x7e90C88a889A9089Fae5887f7373d0f5A2a8FBE3",
-    "PowerAssetV1_0_3": "0x79543ce3104aCb46a8728C4d951847467d4E1aD7"
+    "PowerAssetV1_0_3": "0x79543ce3104aCb46a8728C4d951847467d4E1aD7",
+    "PowerAssetV1_0_4": "0x28923FE09B3164402d3A132777a17f8f69655D33"
   }
 }
