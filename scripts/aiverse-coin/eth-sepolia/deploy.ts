@@ -1,19 +1,19 @@
 import { expect } from "chai";
 import hre from "hardhat";
-import { aiverseCoinUpgradeModule } from "../upgrade-module";
+import { aiverseCoinModule } from "../../proxy-module/eth-sepolia";
 
 async function main() {
   const [account, otherAccount] = await hre.ethers.getSigners();
-  const { contractInstance: aiverseCoinUpgrade } = await hre.ignition.deploy(
-    aiverseCoinUpgradeModule
+  const { contractInstance: aiverseCoin } = await hre.ignition.deploy(
+    aiverseCoinModule
   );
-  console.log(aiverseCoinUpgrade.target);
+  console.log(aiverseCoin.target);
   const aiverseCoinTyped = await hre.ethers.getContractAt(
-    "AiverseCoinV1_0_1",
-    aiverseCoinUpgrade.target
+    "AiverseCoin",
+    aiverseCoin.target
   );
   expect(await aiverseCoinTyped.connect(otherAccount).version()).to.equal(
-    "1.0.1"
+    "1.0.0"
   );
 }
 

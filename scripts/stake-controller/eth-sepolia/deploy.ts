@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import hre from "hardhat";
-import { stakeControllerModule } from "../proxy-module";
+import { stakeControllerModule } from "../../proxy-module/eth-sepolia";
 
 async function main() {
   const [account, otherAccount] = await hre.ethers.getSigners();

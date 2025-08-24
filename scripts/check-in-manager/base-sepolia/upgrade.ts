@@ -1,19 +1,19 @@
 import { expect } from "chai";
 import hre from "hardhat";
-import { checkInManagerModule } from "../proxy-module";
+import { checkInManagerUpgradeModule } from "../../upgrade-module/base-sepolia";
 
 async function main() {
   const [account, otherAccount] = await hre.ethers.getSigners();
-  const { contractInstance: checkInManager } = await hre.ignition.deploy(
-    checkInManagerModule
+  const { contractInstance: checkInManagerUpgrade } = await hre.ignition.deploy(
+    checkInManagerUpgradeModule
   );
-  console.log(checkInManager.target);
+  console.log(checkInManagerUpgrade.target);
   const checkInManagerTyped = await hre.ethers.getContractAt(
-    "CheckInManager",
-    checkInManager.target
+    "CheckInManagerV1_0_3",
+    checkInManagerUpgrade.target
   );
   expect(await checkInManagerTyped.connect(otherAccount).version()).to.equal(
-    "1.0.0"
+    "1.0.3"
   );
 }
 

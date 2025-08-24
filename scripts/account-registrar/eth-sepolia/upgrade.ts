@@ -1,19 +1,18 @@
 import { expect } from "chai";
 import hre from "hardhat";
-import { accountRegistrarModule } from "../proxy-module";
+import { accountRegistrarUpgradeModule } from "../../upgrade-module/eth-sepolia";
 
 async function main() {
   const [account, otherAccount] = await hre.ethers.getSigners();
-  const { contractInstance: accountRegistrar } = await hre.ignition.deploy(
-    accountRegistrarModule
-  );
-  console.log(accountRegistrar.target);
+  const { contractInstance: accountRegistrarUpgrade } =
+    await hre.ignition.deploy(accountRegistrarUpgradeModule);
+  console.log(accountRegistrarUpgrade.target);
   const accountRegistrarTyped = await hre.ethers.getContractAt(
-    "AccountRegistrar",
-    accountRegistrar.target
+    "AccountRegistrarV1_0_2",
+    accountRegistrarUpgrade.target
   );
   expect(await accountRegistrarTyped.connect(otherAccount).version()).to.equal(
-    "1.0.0"
+    "1.0.2"
   );
 }
 

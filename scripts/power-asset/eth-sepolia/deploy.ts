@@ -1,19 +1,19 @@
 import { expect } from "chai";
 import hre from "hardhat";
-import { powerAssetUpgradeModule } from "../upgrade-module";
+import { powerAssetModule } from "../../proxy-module/eth-sepolia";
 
 async function main() {
   const [account, otherAccount] = await hre.ethers.getSigners();
-  const { contractInstance: powerAssetUpgrade } = await hre.ignition.deploy(
-    powerAssetUpgradeModule
+  const { contractInstance: powerAsset } = await hre.ignition.deploy(
+    powerAssetModule
   );
-  console.log(powerAssetUpgrade.target);
+  console.log(powerAsset.target);
   const powerAssetTyped = await hre.ethers.getContractAt(
-    "PowerAssetV1_0_2",
-    powerAssetUpgrade.target
+    "PowerAsset",
+    powerAsset.target
   );
   expect(await powerAssetTyped.connect(otherAccount).version()).to.equal(
-    "1.0.2"
+    "1.0.0"
   );
 }
 

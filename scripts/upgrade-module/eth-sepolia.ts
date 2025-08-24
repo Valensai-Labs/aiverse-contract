@@ -1,5 +1,5 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
-import { buildProxyModule } from "./proxy-module";
+import { buildProxyModule } from "../proxy-module/eth-sepolia";
 
 export function buildUpgradeModule(contractName: string, version: string) {
   return buildModule(`${contractName + version}_Upgrade_ProxyModule`, (m) => {
@@ -31,36 +31,36 @@ function buildUpgradeContractModule(
 
 export const powerAssetUpgradeModule = buildUpgradeContractModule(
   "PowerAsset",
-  "V1_0_2",
-  buildUpgradeModule("PowerAsset", "V1_0_2")
+  "V1_0_3",
+  buildUpgradeModule("PowerAsset", "V1_0_3")
 );
 
 export const nodeManagerUpgradeModule = buildUpgradeContractModule(
   "NodeManager",
-  "V1_0_1",
-  buildUpgradeModule("NodeManager", "V1_0_1")
+  "V1_0_2",
+  buildUpgradeModule("NodeManager", "V1_0_2")
 );
 
 export const aiverseCoinUpgradeModule = buildUpgradeContractModule(
   "AiverseCoin",
-  "V1_0_1",
-  buildUpgradeModule("AiverseCoin", "V1_0_1")
+  "V1_0_2",
+  buildUpgradeModule("AiverseCoin", "V1_0_2")
 );
 
 export const accountRegistrarUpgradeModule = buildUpgradeContractModule(
   "AccountRegistrar",
-  "V1_0_1",
-  buildUpgradeModule("AccountRegistrar", "V1_0_1")
+  "V1_0_2",
+  buildUpgradeModule("AccountRegistrar", "V1_0_2")
 );
 
 export const checkInManagerUpgradeModule = buildUpgradeContractModule(
   "CheckInManager",
-  "V1_0_2",
-  buildUpgradeModule("CheckInManager", "V1_0_2")
+  "V1_0_3",
+  buildUpgradeModule("CheckInManager", "V1_0_3")
 );
 
 export const stakeControllerUpgradeModule = buildUpgradeContractModule(
   "StakeController",
-  "V1_0_5",
-  buildUpgradeModule("StakeController", "V1_0_5")
+  "V1_0_6",
+  buildUpgradeModule("StakeController", "V1_0_6")
 );
