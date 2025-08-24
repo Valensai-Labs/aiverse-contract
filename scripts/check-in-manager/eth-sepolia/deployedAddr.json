@@ -4,8 +4,5 @@
     "CheckInManager": "0xd165D2e1b9FE57D4ea374bd505C4935B4CBaE44e",
     "CheckInManagerV1_0_1": "0xac9ba239f26CB61B0181dB368C65F2749436BC8a",
     "CheckInManagerV1_0_2": "0x0c17b1e05F311E762F8aA101Ba60C7899bE429F6"
-  },
-  "baseSepolia": {
-    "CheckInManager": "0x54Bf4C8B93B37b41a5083f75891BF6419e11B2E0"
   }
 }

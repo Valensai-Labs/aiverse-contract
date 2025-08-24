@@ -7,8 +7,5 @@
     "StakeControllerV1_0_3": "0x4379568944E54b502b9DDCeDD4396AA83daCD118",
     "StakeControllerV1_0_4": "0x0F68BF1DB3e07e1391e647Ad4996Fe325cF1AA2b",
     "StakeControllerV1_0_5": "0x31712ED808621d0518d2287B45b17e2495bbd1A7"
-  },
-  "baseSepolia": {
-    "StakeController": "0x54Bf4C8B93B37b41a5083f75891BF6419e11B2E0"
   }
 }

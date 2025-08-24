@@ -1,42 +1,70 @@
-import { run, network, ethers } from "hardhat";
 import * as fs from "fs";
+import { ethers, run } from "hardhat";
 import * as path from "path";
 
 async function main() {
   const addressPath = path.join(__dirname, "./deployedAddr.json");
+  if (!fs.existsSync(addressPath)) {
+    console.error("Error: deployedAddr.json not found in the same directory.");
+    process.exit(1);
+  }
   const addresses = JSON.parse(fs.readFileSync(addressPath, "utf8"));
-  const networkName = network.name;
-  const networkAddrs = addresses[networkName];
-  if (!networkAddrs) {
-    throw new Error(`No addresses found for network ${networkName}`);
+
+  const {
+    AiverseCoinV1_0_2: implementationAddr,
+    AiverseCoinProxy: proxyAddr,
+    AiverseCoinProxyAdmin: proxyAdminAddr,
+  } = addresses["base-sepolia"];
+
+  if (!implementationAddr || !proxyAddr || !proxyAdminAddr) {
+    console.error(
+      "Error: One or more contract addresses are missing from deployedAddr.json."
+    );
+    console.error(`Implementation Address: ${implementationAddr}`);
+    console.error(`Proxy Address: ${proxyAddr}`);
+    console.error(`Proxy Admin Address: ${proxyAdminAddr}`);
+    process.exit(1);
   }
 
-  const AiverseCoinAddr = networkAddrs["AiverseCoinV1_0_1"];
-  const AiverseCoinProxyAddr = networkAddrs["AiverseCoinProxy"];
-  if (!AiverseCoinAddr) {
-    throw new Error(`AiverseCoin address not found for network ${networkName}`);
-  }
-  if (!AiverseCoinProxyAddr) {
-    throw new Error(
-      `AiverseCoin Proxy address not found for network ${networkName}`
-    );
-  }
-  console.log(`Verifying contracts on ${networkName}...`);
-  console.log("AiverseCoin address:", AiverseCoinAddr);
-  console.log("AiverseCoinProxy address:", AiverseCoinProxyAddr);
+  console.log("Starting verification process for AiverseCoin...");
+  console.log(
+    `Verifying AiverseCoinV1_0_2 (Implementation): ${implementationAddr}`
+  );
+  console.log(`Verifying TransparentUpgradeableProxy (Proxy): ${proxyAddr}`);
+  console.log(`Verifying ProxyAdmin (Admin): ${proxyAdminAddr}`);
 
   try {
+    // 1. Verify Implementation Contract
     await run("verify:verify", {
-      address: AiverseCoinAddr,
+      address: implementationAddr,
+      constructorArguments: [],
     });
-    const [account, otherAccount] = await ethers.getSigners();
+    console.log("✅ AiverseCoinV1_0_2 implementation verified.");
+
+    // We need the deployer address for constructor arguments
+    const [deployer] = await ethers.getSigners();
+
+    // 2. Verify ProxyAdmin Contract
     await run("verify:verify", {
-      address: AiverseCoinProxyAddr,
-      constructorArguments: [AiverseCoinAddr, account.address, "0x"],
+      address: proxyAdminAddr,
+      constructorArguments: [deployer.address],
     });
-    console.log("Contract verification successful");
-  } catch (error) {
-    console.error("Contract verification failed", error);
+    console.log("✅ ProxyAdmin verified.");
+
+    // 3. Verify Proxy Contract
+    await run("verify:verify", {
+      address: proxyAddr,
+      constructorArguments: [implementationAddr, deployer.address, "0x"],
+    });
+    console.log("✅ TransparentUpgradeableProxy verified.");
+
+    console.log("\nAll AiverseCoin contracts verified successfully!");
+  } catch (error: any) {
+    if (error.message.toLowerCase().includes("already verified")) {
+      console.log("One or more contracts were already verified.");
+    } else {
+      console.error("Contract verification failed:", error);
+    }
   }
 }
 

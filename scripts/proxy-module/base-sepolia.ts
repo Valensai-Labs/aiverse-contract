@@ -2,7 +2,7 @@ import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 import hre from "hardhat";
 
 export function buildProxyModule(contractName: string) {
-  const chain = hre.network.name;
+  const chain = hre.network.name.replace("-", "_");
   return buildModule(`${chain}_${contractName}_ProxyModule`, (m) => {
     const proxyAdminOwner = m.getAccount(0);
     const impl = m.contract(contractName);
@@ -25,7 +25,7 @@ function buildProxiedContractModule(
   contractName: string,
   proxyModule: ReturnType<typeof buildModule>
 ) {
-  const chain = hre.network.name;
+  const chain = hre.network.name.replace("-", "_");
   return buildModule(`${chain}_${contractName}_Module`, (m) => {
     const { proxy, proxyAdmin } = m.useModule(proxyModule);
     const contractInstance = m.contractAt(contractName, proxy);

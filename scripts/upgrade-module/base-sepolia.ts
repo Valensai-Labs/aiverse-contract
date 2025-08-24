@@ -3,7 +3,7 @@ import hre from "hardhat";
 import { buildProxyModule } from "../proxy-module/base-sepolia";
 
 export function buildUpgradeModule(contractName: string, version: string) {
-  const chain = hre.network.name;
+  const chain = hre.network.name.replace("-", "_");
   return buildModule(
     `${chain}_${contractName + version}_Upgrade_ProxyModule`,
     (m) => {
@@ -23,7 +23,7 @@ function buildUpgradeContractModule(
   version: string,
   proxyModule: ReturnType<typeof buildModule>
 ) {
-  const chain = hre.network.name;
+  const chain = hre.network.name.replace("-", "_");
   return buildModule(
     `${chain}_${contractName + version}_Upgrade_Module`,
     (m) => {
@@ -41,35 +41,35 @@ function buildUpgradeContractModule(
 export const powerAssetUpgradeModule = buildUpgradeContractModule(
   "PowerAsset",
   "V1_0_3",
-  buildUpgradeModule("PowerAsset", "V1_0_3")
+  buildUpgradeModule("PowerAssetV1_0_3", "V1_0_3")
 );
 
 export const nodeManagerUpgradeModule = buildUpgradeContractModule(
   "NodeManager",
   "V1_0_2",
-  buildUpgradeModule("NodeManager", "V1_0_2")
+  buildUpgradeModule("NodeManagerV1_0_2", "V1_0_2")
 );
 
 export const aiverseCoinUpgradeModule = buildUpgradeContractModule(
   "AiverseCoin",
   "V1_0_2",
-  buildUpgradeModule("AiverseCoin", "V1_0_2")
+  buildUpgradeModule("AiverseCoinV1_0_2", "V1_0_2")
 );
 
 export const accountRegistrarUpgradeModule = buildUpgradeContractModule(
   "AccountRegistrar",
   "V1_0_2",
-  buildUpgradeModule("AccountRegistrar", "V1_0_2")
+  buildUpgradeModule("AccountRegistrarV1_0_2", "V1_0_2")
 );
 
 export const checkInManagerUpgradeModule = buildUpgradeContractModule(
   "CheckInManager",
   "V1_0_3",
-  buildUpgradeModule("CheckInManager", "V1_0_3")
+  buildUpgradeModule("CheckInManagerV1_0_3", "V1_0_3")
 );
 
 export const stakeControllerUpgradeModule = buildUpgradeContractModule(
   "StakeController",
   "V1_0_6",
-  buildUpgradeModule("StakeController", "V1_0_6")
+  buildUpgradeModule("StakeControllerV1_0_6", "V1_0_6")
 );

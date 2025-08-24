@@ -1,7 +1,7 @@
-import type { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import "hardhat-deploy";
 import * as dotenv from "dotenv";
+import "hardhat-deploy";
+import type { HardhatUserConfig } from "hardhat/config";
 import { ProxyAgent, setGlobalDispatcher } from "undici";
 
 const proxyAgent = new ProxyAgent("http://127.0.0.1:7890");
@@ -11,7 +11,7 @@ dotenv.config();
 
 const config: HardhatUserConfig = {
   sourcify: {
-    enabled: true
+    enabled: true,
   },
   solidity: {
     version: "0.8.28",
@@ -23,14 +23,7 @@ const config: HardhatUserConfig = {
     },
   },
   etherscan: {
-    apiKey: {
-      sepolia: process.env.ETHERSCAN_API_KEY ?? "",
-      // bscTestnet: process.env.BSCSCAN_API_KEY ?? "",
-      // baseSepolia: process.env.BASESCAN_API_KEY ?? "",
-      // ethereum: process.env.ETHERSCAN_API_KEY ?? "",
-      // bsc: process.env.BSCSCAN_API_KEY ?? "",
-      // base: process.env.BASESCAN_API_KEY ?? "",
-    },
+    apiKey: process.env.ETHERSCAN_API_KEY ?? "",
   },
   paths: {
     sources: "./contracts",
@@ -42,6 +35,13 @@ const config: HardhatUserConfig = {
     sepolia: {
       chainId: 11155111,
       url: "https://eth-sepolia.api.onfinality.io/public",
+      accounts: {
+        mnemonic: process.env.MNEMONICS,
+      },
+    },
+    "base-sepolia": {
+      chainId: 84532,
+      url: "https://sepolia.base.org",
       accounts: {
         mnemonic: process.env.MNEMONICS,
       },
