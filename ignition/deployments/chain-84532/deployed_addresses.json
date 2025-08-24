@@ -22,5 +22,7 @@
   "base_sepolia_StakeControllerV1_0_6_ProxyModule#StakeControllerV1_0_6": "0xb008d0009535515a46fF0E6614e1A0f75aC412dd",
   "base_sepolia_StakeControllerV1_0_6_ProxyModule#TransparentUpgradeableProxy": "0x7A187D96700327a3148154b7E108620cD6E5c876",
   "base_sepolia_StakeControllerV1_0_6_ProxyModule#ProxyAdmin": "0x16e30eCa16c3e28AC3e6970824dc2228586e81cb",
-  "base_sepolia_StakeControllerV1_0_6_Module#StakeControllerV1_0_6": "0x7A187D96700327a3148154b7E108620cD6E5c876"
+  "base_sepolia_StakeControllerV1_0_6_Module#StakeControllerV1_0_6": "0x7A187D96700327a3148154b7E108620cD6E5c876",
+  "base_sepolia_NodeManagerV1_0_3_Upgrade_Module#NodeManagerV1_0_3": "0x01Bb8CE193Cf0fcb7f1Aa9547aCCacc7af00b405",
+  "base_sepolia_NodeManagerV1_0_3_Upgrade_ProxyModule#NodeManagerV1_0_3": "0xe27EC36CC61e27C2Fd3Bf9DC2510A6CBB0FB1cb9"
 }

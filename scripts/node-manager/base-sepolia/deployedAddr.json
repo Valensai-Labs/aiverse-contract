@@ -2,6 +2,7 @@
   "base-sepolia": {
     "NodeManagerProxy": "0x01Bb8CE193Cf0fcb7f1Aa9547aCCacc7af00b405",
     "NodeManagerProxyAdmin": "0x1048B6886C9eACb7AE68E7fc7ae29b10651E2292",
-    "NodeManagerV1_0_2": "0xa955853954fEE352Ef4407E4FEc1B5226093EDf9"
+    "NodeManagerV1_0_2": "0xa955853954fEE352Ef4407E4FEc1B5226093EDf9",
+    "NodeManagerV1_0_3": "0xe27EC36CC61e27C2Fd3Bf9DC2510A6CBB0FB1cb9"
   }
 }

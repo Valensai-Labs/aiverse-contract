@@ -3,7 +3,7 @@ import hre from "hardhat";
 
 export function buildProxyModule(contractName: string) {
   const chain = hre.network.name.replace("-", "_");
-  return buildModule(`${chain}_${contractName}_ProxyModule`, (m) => {
+  return buildModule(`${chain}_${contractName}__ProxyModule`, (m) => {
     const proxyAdminOwner = m.getAccount(0);
     const impl = m.contract(contractName);
     const proxy = m.contract("TransparentUpgradeableProxy", [
@@ -26,7 +26,7 @@ function buildProxiedContractModule(
   proxyModule: ReturnType<typeof buildModule>
 ) {
   const chain = hre.network.name.replace("-", "_");
-  return buildModule(`${chain}_${contractName}_Module`, (m) => {
+  return buildModule(`${chain}_${contractName}__Module`, (m) => {
     const { proxy, proxyAdmin } = m.useModule(proxyModule);
     const contractInstance = m.contractAt(contractName, proxy);
     return {
