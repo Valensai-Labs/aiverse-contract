@@ -3,6 +3,7 @@
     "AccountRegistrarProxy": "0x21CF9D76629A890C604DC74d847Ea72ce357286F",
     "AccountRegistrarProxyAdmin": "0x782F264a9BC68c35e325E610cf5f5745cEAb5Cd9",
     "AccountRegistrarV1_0_2": "0x97F515e9fe12Bcb76804B5DDa9b70F0A5C8E05F2",
-    "AccountRegistrarV1_0_3": "0x23b7b913D74D54e25bEA54F77C6690EaA8cb15a2"
+    "AccountRegistrarV1_0_3": "0x23b7b913D74D54e25bEA54F77C6690EaA8cb15a2",
+    "AccountRegistrarV1_0_4": "0xFC5BE4Ae58b4Ea76Ff2C1DF97C20083C70361046"
   }
 }
