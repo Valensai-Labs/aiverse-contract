@@ -8,11 +8,11 @@ async function main() {
     await hre.ignition.deploy(accountRegistrarUpgradeModule);
   console.log(accountRegistrarUpgrade.target);
   const accountRegistrarTyped = await hre.ethers.getContractAt(
-    "AccountRegistrarV1_0_4",
+    "AccountRegistrarV1_0_5",
     accountRegistrarUpgrade.target
   );
   expect(await accountRegistrarTyped.connect(otherAccount).version()).to.equal(
-    "1.0.4"
+    "1.0.5"
   );
 }
 

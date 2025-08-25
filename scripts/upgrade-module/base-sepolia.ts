@@ -71,8 +71,8 @@ export const aiverseCoinUpgradeModule = buildUpgradeContractModule(
 
 export const accountRegistrarUpgradeModule = buildUpgradeContractModule(
   "AccountRegistrar",
-  "V1_0_4",
-  buildUpgradeModule("AccountRegistrarV1_0_4", "AccountRegistrarV1_0_2")
+  "V1_0_5",
+  buildUpgradeModule("AccountRegistrarV1_0_5", "AccountRegistrarV1_0_2")
 );
 
 export const checkInManagerUpgradeModule = buildUpgradeContractModule(
