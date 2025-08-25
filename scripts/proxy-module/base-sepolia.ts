@@ -49,9 +49,9 @@ export const nodeManagerModule = buildProxiedContractModule(
   nodeManagerProxyModule
 );
 
-const aiverseCoinProxyModule = buildProxyModule("AiverseCoinV1_0_2");
+const aiverseCoinProxyModule = buildProxyModule("AiverseCoinV1_0_4");
 export const aiverseCoinModule = buildProxiedContractModule(
-  "AiverseCoinV1_0_2",
+  "AiverseCoinV1_0_4",
   aiverseCoinProxyModule
 );
 
@@ -67,8 +67,8 @@ export const checkInManagerModule = buildProxiedContractModule(
   checkInManagerProxyModule
 );
 
-const stakeControllerProxyModule = buildProxyModule("StakeControllerV1_0_6");
+const stakeControllerProxyModule = buildProxyModule("StakeControllerV1_0_8");
 export const stakeControllerModule = buildProxiedContractModule(
-  "StakeControllerV1_0_6",
+  "StakeControllerV1_0_8",
   stakeControllerProxyModule
 );

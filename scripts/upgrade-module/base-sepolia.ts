@@ -65,8 +65,8 @@ export const nodeManagerUpgradeModule = buildUpgradeContractModule(
 
 export const aiverseCoinUpgradeModule = buildUpgradeContractModule(
   "AiverseCoin",
-  "V1_0_3",
-  buildUpgradeModule("AiverseCoinV1_0_3", "AiverseCoinV1_0_2")
+  "V1_0_4",
+  buildUpgradeModule("AiverseCoinV1_0_4", "AiverseCoinV1_0_4")
 );
 
 export const accountRegistrarUpgradeModule = buildUpgradeContractModule(
@@ -83,6 +83,6 @@ export const checkInManagerUpgradeModule = buildUpgradeContractModule(
 
 export const stakeControllerUpgradeModule = buildUpgradeContractModule(
   "StakeController",
-  "V1_0_7",
-  buildUpgradeModule("StakeControllerV1_0_7", "StakeControllerV1_0_6")
+  "V1_0_8",
+  buildUpgradeModule("StakeControllerV1_0_8", "StakeControllerV1_0_8")
 );

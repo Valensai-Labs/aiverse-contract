@@ -11,7 +11,7 @@ async function main() {
   const addresses = JSON.parse(fs.readFileSync(addressPath, "utf8"));
 
   const {
-    AiverseCoinV1_0_3: implementationAddr,
+    AiverseCoinV1_0_4: implementationAddr,
     AiverseCoinProxy: proxyAddr,
     AiverseCoinProxyAdmin: proxyAdminAddr,
   } = addresses["base-sepolia"];
@@ -28,7 +28,7 @@ async function main() {
 
   console.log("Starting verification process for AiverseCoin...");
   console.log(
-    `Verifying AiverseCoinV1_0_3 (Implementation): ${implementationAddr}`
+    `Verifying AiverseCoinV1_0_4 (Implementation): ${implementationAddr}`
   );
   console.log(`Verifying TransparentUpgradeableProxy (Proxy): ${proxyAddr}`);
   console.log(`Verifying ProxyAdmin (Admin): ${proxyAdminAddr}`);
@@ -39,7 +39,7 @@ async function main() {
       address: implementationAddr,
       constructorArguments: [],
     });
-    console.log("✅ AiverseCoinV1_0_3 implementation verified.");
+    console.log("✅ AiverseCoinV1_0_4 implementation verified.");
 
     // We need the deployer address for constructor arguments
     const [deployer] = await ethers.getSigners();

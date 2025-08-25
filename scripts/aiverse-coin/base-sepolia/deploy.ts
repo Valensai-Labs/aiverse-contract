@@ -9,11 +9,11 @@ async function main() {
   );
   console.log(aiverseCoin.target);
   const aiverseCoinTyped = await hre.ethers.getContractAt(
-    "AiverseCoinV1_0_2",
+    "AiverseCoinV1_0_4",
     aiverseCoin.target
   );
   expect(await aiverseCoinTyped.connect(otherAccount).version()).to.equal(
-    "1.0.2"
+    "1.0.4"
   );
 }
 
