@@ -83,6 +83,6 @@ export const checkInManagerUpgradeModule = buildUpgradeContractModule(
 
 export const stakeControllerUpgradeModule = buildUpgradeContractModule(
   "StakeController",
-  "V1_0_8",
-  buildUpgradeModule("StakeControllerV1_0_8", "StakeControllerV1_0_8")
+  "V1_0_9",
+  buildUpgradeModule("StakeControllerV1_0_9", "StakeControllerV1_0_8")
 );

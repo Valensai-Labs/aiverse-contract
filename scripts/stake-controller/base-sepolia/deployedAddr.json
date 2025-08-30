@@ -2,6 +2,7 @@
   "base-sepolia": {
     "StakeControllerProxy": "0xE624ea11779a7CE21Fd4812F0469513F0429FceA",
     "StakeControllerProxyAdmin": "0xa0D291B76c0F33125021fC2e4Dbbd47ba4045e33",
-    "StakeControllerV1_0_8": "0xf30eF77E8485D752769B777c74Fc8Bf329607C42"
+    "StakeControllerV1_0_8": "0xf30eF77E8485D752769B777c74Fc8Bf329607C42",
+    "StakeControllerV1_0_9": "0x5e7EA7C454cB3843D5198012D9B597e68a4fD7A9"
   }
 }
