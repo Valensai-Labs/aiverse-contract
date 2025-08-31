@@ -67,8 +67,8 @@ export const checkInManagerModule = buildProxiedContractModule(
   checkInManagerProxyModule
 );
 
-const stakeControllerProxyModule = buildProxyModule("StakeControllerV1_0_8");
+const stakeControllerProxyModule = buildProxyModule("StakeControllerV1_0_10");
 export const stakeControllerModule = buildProxiedContractModule(
-  "StakeControllerV1_0_8",
+  "StakeControllerV1_0_10",
   stakeControllerProxyModule
 );
