@@ -1,7 +1,7 @@
 
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 import hre from "hardhat";
-import { buildProxyModule } from "../proxy-module/base-sepolia";
+import { buildProxyModule } from "../proxy-module/base";
 
 export function buildUpgradeModule(
   newImplementationName: string,

@@ -46,6 +46,11 @@ const config: HardhatUserConfig = {
         mnemonic: process.env.MNEMONICS,
       },
     },
+    base: {
+      chainId: 8453,
+      url: "https://mainnet.base.org",
+      accounts: [process.env.DEPLOYER_PRIVATE_KEY!],
+    }
   },
 };
 

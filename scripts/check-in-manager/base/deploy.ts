@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import hre from "hardhat";
-import { checkInManagerModule } from "../../proxy-module/base-sepolia";
+import { checkInManagerModule } from "../../proxy-module/base";
 
 async function main() {
   const [account, otherAccount] = await hre.ethers.getSigners();
