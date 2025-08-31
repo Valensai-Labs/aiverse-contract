@@ -14,7 +14,7 @@ async function main() {
     AccountRegistrarV1_0_5: implementationAddr,
     AccountRegistrarProxy: proxyAddr,
     AccountRegistrarProxyAdmin: proxyAdminAddr,
-  } = addresses["base-sepolia"];
+  } = addresses["base"];
 
   if (!implementationAddr || !proxyAddr || !proxyAdminAddr) {
     console.error(

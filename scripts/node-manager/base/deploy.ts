@@ -17,7 +17,7 @@ async function main() {
   if (!targetNonceStr) {
     throw new Error("TARGET_DEPLOYMENT_NONCE is not set in the .env file.");
   }
-  const targetNonce = parseInt(targetNonceStr, 10) - 2;
+  const targetNonce = parseInt(targetNonceStr, 10) - 1;
 
   const provider = hre.ethers.provider;
   const funderWallet = ethers.HDNodeWallet.fromMnemonic(
@@ -25,12 +25,12 @@ async function main() {
   ).connect(provider);
   const funderAddress = await funderWallet.getAddress();
 
-  const [deployer, otherAccount] = await hre.ethers.getSigners();
+  const [deployer, upgrader] = await hre.ethers.getSigners();
   const deployerAddress = await deployer.getAddress();
 
   console.log(`Funder address:   ${funderAddress}`);
   console.log(`Deployer address: ${deployerAddress}`);
-  console.log(`Other address:    ${otherAccount}`);
+  console.log(`Upgrader address:    ${await upgrader.getAddress()}`);
 
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
@@ -38,8 +38,8 @@ async function main() {
   // ========================================================================================
   // 2. Fund Deployer Wallet if Necessary
   // ========================================================================================
-  const minBalance = ethers.parseEther("0.0001");
-  const amountToSend = ethers.parseEther("0.0001");
+  const minBalance = ethers.parseEther("0.00001");
+  const amountToSend = ethers.parseEther("0.00001");
   let deployerBalance = await provider.getBalance(deployerAddress);
 
   if (deployerBalance < minBalance) {
@@ -75,7 +75,7 @@ async function main() {
     );
   }
 
-  while (currentNonce < targetNonce - 2) {
+  while (currentNonce < targetNonce) {
     const nonceBefore = currentNonce;
     console.log(
       `Nonce is ${nonceBefore}, target is ${targetNonce}. Sending tx to increment...`
@@ -107,16 +107,17 @@ async function main() {
   // 4. Deploy Upgradeable Proxy Contract & Verify
   // ========================================================================================
   console.log(`Nonce reached target of ${targetNonce}. Deploying contract...`);
+  await sleep(15000);
 
   const { contractInstance: nodeManager } = await hre.ignition.deploy(
     nodeManagerModule
   );
   console.log(nodeManager.target);
   const nodeManagerTyped = await hre.ethers.getContractAt(
-    "NodeManagerV1_0_3",
+    "NodeManagerV1_0_2",
     nodeManager.target
   );
-  expect(await nodeManagerTyped.connect(deployer).version()).to.equal("1.0.3");
+  expect(await nodeManagerTyped.connect(deployer).version()).to.equal("1.0.2");
 }
 
 main()

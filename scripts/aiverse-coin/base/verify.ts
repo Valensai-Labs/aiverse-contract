@@ -14,7 +14,7 @@ async function main() {
     AiverseCoinV1_0_4: implementationAddr,
     AiverseCoinProxy: proxyAddr,
     AiverseCoinProxyAdmin: proxyAdminAddr,
-  } = addresses["base-sepolia"];
+  } = addresses["base"];
 
   if (!implementationAddr || !proxyAddr || !proxyAdminAddr) {
     console.error(

@@ -14,7 +14,7 @@ async function main() {
     StakeControllerV1_0_10: implementationAddr,
     StakeControllerProxy: proxyAddr,
     StakeControllerProxyAdmin: proxyAdminAddr,
-  } = addresses["base-sepolia"];
+  } = addresses["base"];
 
   if (!implementationAddr || !proxyAddr || !proxyAdminAddr) {
     console.error(

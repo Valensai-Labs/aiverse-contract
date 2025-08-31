@@ -14,7 +14,7 @@ async function main() {
     PowerAssetV1_0_4: implementationAddr,
     PowerAssetProxy: proxyAddr,
     PowerAssetProxyAdmin: proxyAdminAddr,
-  } = addresses["base-sepolia"];
+  } = addresses["base"];
 
   if (!implementationAddr || !proxyAddr || !proxyAdminAddr) {
     console.error(

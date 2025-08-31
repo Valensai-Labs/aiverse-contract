@@ -14,7 +14,7 @@ async function main() {
     CheckInManagerV1_0_4: implementationAddr,
     CheckInManagerProxy: proxyAddr,
     CheckInManagerProxyAdmin: proxyAdminAddr,
-  } = addresses["base-sepolia"];
+  } = addresses["base"];
 
   if (!implementationAddr || !proxyAddr || !proxyAdminAddr) {
     console.error(
