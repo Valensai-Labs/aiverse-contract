@@ -1,7 +1,7 @@
 {
   "base": {
-    "NodeManagerProxy": "0xcccCcccA88E253Ce8E0694Dc97EB2d519Ae0EA07",
-    "NodeManagerProxyAdmin": "0xCd7464D4Bdf6ee576590451Ab6914A4C99DD7D41",
-    "NodeManagerV1_0_2": "0x4AC6C30f2b76ac747996d46442B92d0B8fE5905C"
+    "NodeManagerProxy": "0x00000004b80b9F380d66CbF50d658eCFb8213656",
+    "NodeManagerProxyAdmin": "0xcEc6dF652A2563BD769880d06E829AD5bf111f36",
+    "NodeManagerV1_0_3": "0x7a17eC55B69C344068e638320077130a5C25f306"
   }
 }

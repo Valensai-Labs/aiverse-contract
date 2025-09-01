@@ -43,9 +43,9 @@ export const powerAssetModule = buildProxiedContractModule(
   powerAssetProxyModule
 );
 
-const nodeManagerProxyModule = buildProxyModule("NodeManagerV1_0_2");
+const nodeManagerProxyModule = buildProxyModule("NodeManagerV1_0_3");
 export const nodeManagerModule = buildProxiedContractModule(
-  "NodeManagerV1_0_2",
+  "NodeManagerV1_0_3",
   nodeManagerProxyModule
 );
 

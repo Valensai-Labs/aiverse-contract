@@ -1,7 +1,7 @@
 {
   "base": {
-    "PowerAssetProxy": "",
-    "PowerAssetProxyAdmin": "",
-    "PowerAssetV1_0_4": ""
+    "PowerAssetProxy": "0x66666667e8228B00A9B3249331ce0CA3179D9d69",
+    "PowerAssetProxyAdmin": "0x3588a75C8c47f3EE34f1F7f4493626367E65f6CC",
+    "PowerAssetV1_0_4": "0x2Da6ba016f5563000957f42503ED1f0A645a5Ac1"
   }
 }

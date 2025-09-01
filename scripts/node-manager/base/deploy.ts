@@ -37,8 +37,8 @@ async function main() {
   // ========================================================================================
   // 2. Fund Deployer Wallet if Necessary
   // ========================================================================================
-  const minBalance = ethers.parseEther("0.000005");
-  const amountToSend = ethers.parseEther("0.000005");
+  const minBalance = ethers.parseEther("0.000025");
+  const amountToSend = ethers.parseEther("0.000025");
   let deployerBalance = await provider.getBalance(deployerAddress);
 
   if (deployerBalance < minBalance) {
@@ -109,19 +109,13 @@ async function main() {
   await sleep(15000);
 
   const { contractInstance: nodeManager, proxyAdmin } =
-    await hre.ignition.deploy(nodeManagerModule, {
-      parameters: {
-        [`base_NodeManagerV1_0_2_ProxyModule`]: {
-          proxyAdminOwner: deployerAddress,
-        },
-      },
-    });
+    await hre.ignition.deploy(nodeManagerModule);
   console.log(nodeManager.target);
   const nodeManagerTyped = await hre.ethers.getContractAt(
-    "NodeManagerV1_0_2",
+    "NodeManagerV1_0_3",
     nodeManager.target
   );
-  expect(await nodeManagerTyped.connect(deployer).version()).to.equal("1.0.2");
+  expect(await nodeManagerTyped.connect(deployer).version()).to.equal("1.0.3");
   console.log("Version verification successful!");
 
   // ========================================================================================

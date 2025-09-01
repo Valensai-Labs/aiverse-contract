@@ -11,7 +11,7 @@ async function main() {
   const addresses = JSON.parse(fs.readFileSync(addressPath, "utf8"));
 
   const {
-    NodeManagerV1_0_2: implementationAddr,
+    NodeManagerV1_0_3: implementationAddr,
     NodeManagerProxy: proxyAddr,
     NodeManagerProxyAdmin: proxyAdminAddr,
   } = addresses["base"];
@@ -28,7 +28,7 @@ async function main() {
 
   console.log("Starting verification process...");
   console.log(
-    `Verifying NodeManagerV1_0_2 (Implementation): ${implementationAddr}`
+    `Verifying NodeManagerV1_0_3 (Implementation): ${implementationAddr}`
   );
   console.log(`Verifying TransparentUpgradeableProxy (Proxy): ${proxyAddr}`);
   console.log(`Verifying ProxyAdmin (Admin): ${proxyAdminAddr}`);
@@ -39,7 +39,7 @@ async function main() {
       address: implementationAddr,
       constructorArguments: [],
     });
-    console.log("✅ NodeManagerV1_0_2 implementation verified.");
+    console.log("✅ NodeManagerV1_0_3 implementation verified.");
 
     // We need the deployer address for constructor arguments
     const [deployer] = await ethers.getSigners();
