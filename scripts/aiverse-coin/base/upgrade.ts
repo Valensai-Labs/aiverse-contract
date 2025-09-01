@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import hre from "hardhat";
-import { aiverseCoinUpgradeModule } from "../../upgrade-module/base-sepolia";
+import { aiverseCoinUpgradeModule } from "../../upgrade-module/base";
 
 async function main() {
   const [account, otherAccount] = await hre.ethers.getSigners();
@@ -12,7 +12,7 @@ async function main() {
     "AiverseCoinV1_0_4",
     aiverseCoinUpgrade.target
   );
-  expect(await aiverseCoinTyped.connect(otherAccount).version()).to.equal(
+  expect(await aiverseCoinTyped.connect(account).version()).to.equal(
     "1.0.4"
   );
 }

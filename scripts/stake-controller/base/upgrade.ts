@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import hre from "hardhat";
-import { stakeControllerUpgradeModule } from "../../upgrade-module/base-sepolia";
+import { stakeControllerUpgradeModule } from "../../upgrade-module/base";
 
 async function main() {
   const [account, otherAccount] = await hre.ethers.getSigners();
@@ -11,7 +11,7 @@ async function main() {
     "StakeControllerV1_0_10",
     stakeControllerUpgrade.target
   );
-  expect(await stakeControllerTyped.connect(otherAccount).version()).to.equal(
+  expect(await stakeControllerTyped.connect(account).version()).to.equal(
     "1.0.10"
   );
 }

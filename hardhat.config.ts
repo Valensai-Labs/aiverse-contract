@@ -49,10 +49,10 @@ const config: HardhatUserConfig = {
     base: {
       chainId: 8453,
       url: "https://mainnet.base.org",
-      accounts: [
-        process.env.DEPLOYER_PRIVATE_KEY!,
-        process.env.UPGRADE_PRIVATE_KEY!,
-      ],
+      accounts:
+        process.env.DEPLOY_OR_UPGRADE === "deploy"
+          ? [process.env.DEPLOYER_PRIVATE_KEY!]
+          : [process.env.UPGRADER_PRIVATE_KEY!],
     },
   },
 };

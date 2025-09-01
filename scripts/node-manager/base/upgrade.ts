@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import hre from "hardhat";
-import { nodeManagerUpgradeModule } from "../../upgrade-module/base-sepolia";
+import { nodeManagerUpgradeModule } from "../../upgrade-module/base";
 
 async function main() {
   const [account, otherAccount] = await hre.ethers.getSigners();
@@ -12,9 +12,7 @@ async function main() {
     "NodeManagerV1_0_3",
     nodeManagerUpgrade.target
   );
-  expect(await nodeManagerTyped.connect(otherAccount).version()).to.equal(
-    "1.0.3"
-  );
+  expect(await nodeManagerTyped.connect(account).version()).to.equal("1.0.3");
 }
 
 main()

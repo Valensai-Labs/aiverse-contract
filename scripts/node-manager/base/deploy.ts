@@ -25,12 +25,11 @@ async function main() {
   ).connect(provider);
   const funderAddress = await funderWallet.getAddress();
 
-  const [deployer, upgrader] = await hre.ethers.getSigners();
+  const [deployer] = await hre.ethers.getSigners();
   const deployerAddress = await deployer.getAddress();
 
   console.log(`Funder address:   ${funderAddress}`);
   console.log(`Deployer address: ${deployerAddress}`);
-  console.log(`Upgrader address:    ${await upgrader.getAddress()}`);
 
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
@@ -38,8 +37,8 @@ async function main() {
   // ========================================================================================
   // 2. Fund Deployer Wallet if Necessary
   // ========================================================================================
-  const minBalance = ethers.parseEther("0.00001");
-  const amountToSend = ethers.parseEther("0.00001");
+  const minBalance = ethers.parseEther("0.000005");
+  const amountToSend = ethers.parseEther("0.000005");
   let deployerBalance = await provider.getBalance(deployerAddress);
 
   if (deployerBalance < minBalance) {
@@ -109,15 +108,61 @@ async function main() {
   console.log(`Nonce reached target of ${targetNonce}. Deploying contract...`);
   await sleep(15000);
 
-  const { contractInstance: nodeManager } = await hre.ignition.deploy(
-    nodeManagerModule
-  );
+  const { contractInstance: nodeManager, proxyAdmin } =
+    await hre.ignition.deploy(nodeManagerModule, {
+      parameters: {
+        [`base_NodeManagerV1_0_2_ProxyModule`]: {
+          proxyAdminOwner: deployerAddress,
+        },
+      },
+    });
   console.log(nodeManager.target);
   const nodeManagerTyped = await hre.ethers.getContractAt(
     "NodeManagerV1_0_2",
     nodeManager.target
   );
   expect(await nodeManagerTyped.connect(deployer).version()).to.equal("1.0.2");
+  console.log("Version verification successful!");
+
+  // ========================================================================================
+  // 5. Transfer ProxyAdmin Ownership
+  // ========================================================================================
+  console.log("Transferring ProxyAdmin ownership to funder...");
+
+  // Get a properly typed instance of the ProxyAdmin contract
+  const proxyAdminAddress = await proxyAdmin.getAddress();
+  const typedProxyAdmin = await hre.ethers.getContractAt(
+    "ProxyAdmin",
+    proxyAdminAddress,
+    deployer
+  );
+
+  const currentOwner = await typedProxyAdmin.owner();
+  console.log(`Current ProxyAdmin owner: ${currentOwner}`);
+  console.log(`New intended ProxyAdmin owner:     ${funderAddress}`);
+
+  if (currentOwner.toLowerCase() !== funderAddress.toLowerCase()) {
+    const tx = await typedProxyAdmin.transferOwnership(funderAddress);
+    console.log(`Ownership transfer transaction sent with hash: ${tx.hash}`);
+    await tx.wait();
+    console.log(
+      "Ownership transfer transaction confirmed. Waiting for on-chain state to update..."
+    );
+
+    while (true) {
+      const newOwner = await typedProxyAdmin.owner();
+      if (newOwner.toLowerCase() === funderAddress.toLowerCase()) {
+        console.log(`Ownership successfully updated on-chain to ${newOwner}.`);
+        break;
+      }
+      console.log(
+        `Owner still ${newOwner}, waiting 3 seconds before re-checking...`
+      );
+      await sleep(3000);
+    }
+  } else {
+    console.log("ProxyAdmin ownership is already held by the funder address.");
+  }
 }
 
 main()

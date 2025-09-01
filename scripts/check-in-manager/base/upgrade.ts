@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import hre from "hardhat";
-import { checkInManagerUpgradeModule } from "../../upgrade-module/base-sepolia";
+import { checkInManagerUpgradeModule } from "../../upgrade-module/base";
 
 async function main() {
   const [account, otherAccount] = await hre.ethers.getSigners();
@@ -12,7 +12,7 @@ async function main() {
     "CheckInManagerV1_0_4",
     checkInManagerUpgrade.target
   );
-  expect(await checkInManagerTyped.connect(otherAccount).version()).to.equal(
+  expect(await checkInManagerTyped.connect(account).version()).to.equal(
     "1.0.4"
   );
 }

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import hre from "hardhat";
-import { accountRegistrarUpgradeModule } from "../../upgrade-module/base-sepolia";
+import { accountRegistrarUpgradeModule } from "../../upgrade-module/base";
 
 async function main() {
   const [account, otherAccount] = await hre.ethers.getSigners();
@@ -11,7 +11,7 @@ async function main() {
     "AccountRegistrarV1_0_5",
     accountRegistrarUpgrade.target
   );
-  expect(await accountRegistrarTyped.connect(otherAccount).version()).to.equal(
+  expect(await accountRegistrarTyped.connect(account).version()).to.equal(
     "1.0.5"
   );
 }

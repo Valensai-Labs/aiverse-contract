@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import hre from "hardhat";
-import { powerAssetUpgradeModule } from "../../upgrade-module/base-sepolia";
+import { powerAssetUpgradeModule } from "../../upgrade-module/base";
 
 async function main() {
   const [account, otherAccount] = await hre.ethers.getSigners();
@@ -12,7 +12,7 @@ async function main() {
     "PowerAssetV1_0_4",
     powerAssetUpgrade.target
   );
-  expect(await powerAssetTyped.connect(otherAccount).version()).to.equal(
+  expect(await powerAssetTyped.connect(account).version()).to.equal(
     "1.0.4"
   );
 }

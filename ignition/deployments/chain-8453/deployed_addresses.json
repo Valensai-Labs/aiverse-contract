@@ -1,6 +1,0 @@
-{
-  "base_NodeManagerV1_0_2_ProxyModule#NodeManagerV1_0_2": "0x73314AD66b74a7c511D930DA9Cfeb1b9De493E65",
-  "base_NodeManagerV1_0_2_ProxyModule#TransparentUpgradeableProxy": "0xdDDDddDbB42fA05a5CD8a521797D3Cc0d2a4671b",
-  "base_NodeManagerV1_0_2_ProxyModule#ProxyAdmin": "0x836A8D91d7bCeD8b2CF61514854B2C439A8A83d9",
-  "base_NodeManagerV1_0_2_Module#NodeManagerV1_0_2": "0xdDDDddDbB42fA05a5CD8a521797D3Cc0d2a4671b"
-}
