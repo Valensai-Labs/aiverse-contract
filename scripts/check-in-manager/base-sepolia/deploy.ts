@@ -9,11 +9,11 @@ async function main() {
   );
   console.log(checkInManager.target);
   const checkInManagerTyped = await hre.ethers.getContractAt(
-    "CheckInManagerV1_0_3",
+    "CheckInManagerV1_0_5",
     checkInManager.target
   );
   expect(await checkInManagerTyped.connect(otherAccount).version()).to.equal(
-    "1.0.3"
+    "1.0.5"
   );
 }
 

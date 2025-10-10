@@ -53,8 +53,8 @@ function buildUpgradeContractModule(
 // Upgrade TO this new version... FROM the old version
 export const powerAssetUpgradeModule = buildUpgradeContractModule(
   "PowerAsset",
-  "V1_0_4",
-  buildUpgradeModule("PowerAssetV1_0_4", "PowerAssetV1_0_3")
+  "V1_0_5",
+  buildUpgradeModule("PowerAssetV1_0_5", "PowerAssetV1_0_3")
 );
 
 export const nodeManagerUpgradeModule = buildUpgradeContractModule(
@@ -77,8 +77,8 @@ export const accountRegistrarUpgradeModule = buildUpgradeContractModule(
 
 export const checkInManagerUpgradeModule = buildUpgradeContractModule(
   "CheckInManager",
-  "V1_0_4",
-  buildUpgradeModule("CheckInManagerV1_0_4", "CheckInManagerV1_0_3")
+  "V1_0_5",
+  buildUpgradeModule("CheckInManagerV1_0_5", "CheckInManagerV1_0_5")
 );
 
 export const stakeControllerUpgradeModule = buildUpgradeContractModule(
