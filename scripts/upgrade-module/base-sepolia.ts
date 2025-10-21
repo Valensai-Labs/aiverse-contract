@@ -53,8 +53,8 @@ function buildUpgradeContractModule(
 // Upgrade TO this new version... FROM the old version
 export const powerAssetUpgradeModule = buildUpgradeContractModule(
   "PowerAsset",
-  "V1_0_5",
-  buildUpgradeModule("PowerAssetV1_0_5", "PowerAssetV1_0_3")
+  "V1_0_6",
+  buildUpgradeModule("PowerAssetV1_0_6", "PowerAssetV1_0_3")
 );
 
 export const nodeManagerUpgradeModule = buildUpgradeContractModule(

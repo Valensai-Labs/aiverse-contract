@@ -58,5 +58,7 @@
   "base_sepolia_CheckInManagerV1_0_5_ProxyModule#ProxyAdmin": "0x8240eA44c11890E57644B8A6A3f22a6D0E9C2c92",
   "base_sepolia_CheckInManagerV1_0_5_Module#CheckInManagerV1_0_5": "0x2E872f82E766EF1D4c3915D2eBB6FEF3c2209Bc9",
   "base_sepolia_PowerAssetV1_0_5_Upgrade_Module#PowerAssetV1_0_5": "0x0bba8Ba13eE178Ae87a22E9e8aB2d2e033233cD8",
-  "base_sepolia_PowerAssetV1_0_5_Upgrade_ProxyModule#PowerAssetV1_0_5": "0x85ac816F4Db875EFcc2945D5c7f4847C6D81c915"
+  "base_sepolia_PowerAssetV1_0_5_Upgrade_ProxyModule#PowerAssetV1_0_5": "0x85ac816F4Db875EFcc2945D5c7f4847C6D81c915",
+  "base_sepolia_PowerAssetV1_0_6_Upgrade_Module#PowerAssetV1_0_6": "0x0bba8Ba13eE178Ae87a22E9e8aB2d2e033233cD8",
+  "base_sepolia_PowerAssetV1_0_6_Upgrade_ProxyModule#PowerAssetV1_0_6": "0xB84D39b0b3F1ce5d502ae4d346Cfd8f265B33515"
 }
