@@ -26,5 +26,7 @@
   "base_CheckInManagerV1_0_5_ProxyModule#CheckInManagerV1_0_5": "0xcc6eaD8227410DeA5ac997B6911C9d54e9822d87",
   "base_CheckInManagerV1_0_5_ProxyModule#TransparentUpgradeableProxy": "0x33333337bFA13ffC9Bd0Bbf1544beBA1079Dae34",
   "base_CheckInManagerV1_0_5_ProxyModule#ProxyAdmin": "0x8Dc3594c847066c68B830204B269607eb95E8e97",
-  "base_CheckInManagerV1_0_5_Module#CheckInManagerV1_0_5": "0x33333337bFA13ffC9Bd0Bbf1544beBA1079Dae34"
+  "base_CheckInManagerV1_0_5_Module#CheckInManagerV1_0_5": "0x33333337bFA13ffC9Bd0Bbf1544beBA1079Dae34",
+  "base_PowerAssetV1_0_6_Upgrade_Module#PowerAssetV1_0_6": "0x66666667e8228B00A9B3249331ce0CA3179D9d69",
+  "base_PowerAssetV1_0_6_Upgrade_ProxyModule#PowerAssetV1_0_6": "0x4C42B75B6652eB6293eb0D51FaC4701519907143"
 }
