@@ -61,9 +61,9 @@ export const accountRegistrarModule = buildProxiedContractModule(
   accountRegistrarProxyModule
 );
 
-const checkInManagerProxyModule = buildProxyModule("CheckInManagerV1_0_4");
+const checkInManagerProxyModule = buildProxyModule("CheckInManagerV1_0_5");
 export const checkInManagerModule = buildProxiedContractModule(
-  "CheckInManagerV1_0_4",
+  "CheckInManagerV1_0_5",
   checkInManagerProxyModule
 );
 

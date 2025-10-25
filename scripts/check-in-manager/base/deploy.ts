@@ -112,10 +112,10 @@ async function main() {
     await hre.ignition.deploy(checkInManagerModule);
   console.log(checkInManager.target);
   const checkInManagerTyped = await hre.ethers.getContractAt(
-    "CheckInManagerV1_0_4",
+    "CheckInManagerV1_0_5",
     checkInManager.target
   );
-  expect(await checkInManagerTyped.connect(deployer).version()).to.equal("1.0.4");
+  expect(await checkInManagerTyped.connect(deployer).version()).to.equal("1.0.5");
   console.log("Version verification successful!");
 
   // ========================================================================================

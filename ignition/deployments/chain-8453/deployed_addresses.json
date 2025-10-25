@@ -22,5 +22,9 @@
   "base_StakeControllerV1_0_10_ProxyModule#StakeControllerV1_0_10": "0x0E2b235B6d3a157A3E4bf7ef2505888f260593E8",
   "base_StakeControllerV1_0_10_ProxyModule#TransparentUpgradeableProxy": "0x8888888732F7536DD1500Cef7B9da260702555FD",
   "base_StakeControllerV1_0_10_ProxyModule#ProxyAdmin": "0x37Cb09DF0959C10614D328A996924F0978c55380",
-  "base_StakeControllerV1_0_10_Module#StakeControllerV1_0_10": "0x8888888732F7536DD1500Cef7B9da260702555FD"
+  "base_StakeControllerV1_0_10_Module#StakeControllerV1_0_10": "0x8888888732F7536DD1500Cef7B9da260702555FD",
+  "base_CheckInManagerV1_0_5_ProxyModule#CheckInManagerV1_0_5": "0xcc6eaD8227410DeA5ac997B6911C9d54e9822d87",
+  "base_CheckInManagerV1_0_5_ProxyModule#TransparentUpgradeableProxy": "0x33333337bFA13ffC9Bd0Bbf1544beBA1079Dae34",
+  "base_CheckInManagerV1_0_5_ProxyModule#ProxyAdmin": "0x8Dc3594c847066c68B830204B269607eb95E8e97",
+  "base_CheckInManagerV1_0_5_Module#CheckInManagerV1_0_5": "0x33333337bFA13ffC9Bd0Bbf1544beBA1079Dae34"
 }

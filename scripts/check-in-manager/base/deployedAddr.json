@@ -1,7 +1,7 @@
 {
   "base": {
-    "CheckInManagerProxy": "0x777777752e8B2F7767EeD18F0E33d6E866b6AC1F",
-    "CheckInManagerProxyAdmin": "0x23Dc83734ceCbE56E6A4a73A4EE0EDb5ae1f7A99",
-    "CheckInManagerV1_0_4": "0x58E46c5a40CE130A7A89429F1Ea4C2F6d12fD427"
+    "CheckInManagerProxy": "0x33333337bFA13ffC9Bd0Bbf1544beBA1079Dae34",
+    "CheckInManagerProxyAdmin": "0x8Dc3594c847066c68B830204B269607eb95E8e97",
+    "CheckInManagerV1_0_5": "0xcc6eaD8227410DeA5ac997B6911C9d54e9822d87"
   }
 }
