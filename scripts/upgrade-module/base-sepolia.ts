@@ -86,3 +86,9 @@ export const stakeControllerUpgradeModule = buildUpgradeContractModule(
   "V1_0_10",
   buildUpgradeModule("StakeControllerV1_0_10", "StakeControllerV1_0_10")
 );
+
+export const aiverseFundUpgradeModule = buildUpgradeContractModule(
+  "AiverseFund",
+  "V1_0_1",
+  buildUpgradeModule("AiverseFundV1_0_1", "AiverseFund")
+);
