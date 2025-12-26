@@ -73,8 +73,8 @@ export const stakeControllerModule = buildProxiedContractModule(
   stakeControllerProxyModule
 );
 
-const aiverseFundProxyModule = buildProxyModule("AiverseFund");
+const aiverseFundProxyModule = buildProxyModule("AiverseFundV1_0_1");
 export const aiverseFundModule = buildProxiedContractModule(
-  "AiverseFund",
+  "AiverseFundV1_0_1",
   aiverseFundProxyModule
 );
