@@ -1,7 +1,7 @@
 {
   "base-sepolia": {
-    "AiverseFundProxy": "0x6aa31e2D53B674d880B72E65C0076E62B52dd68a",
-    "AiverseFundProxyAdmin": "0x591FAE31CE1E96CaBFfBF8Cc9d8785D7ba16b928",
-    "AiverseFund": "0xc68E9DC1CDe632eAB0df00060694175bb5800a6E"
+    "AiverseFundProxy": "0xDe62AB4e09f79b84F70815c65b1A838dEC4d4d92",
+    "AiverseFundProxyAdmin": "0x24F6982B1c1f0D541DD651ED39dD355a4320a0CF",
+    "AiverseFundV1_0_2": "0xf47Bc29EeB30D9C61ece8Bb08E2Ea1D36518DF64"
   }
 }

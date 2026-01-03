@@ -347,7 +347,6 @@ contract AiverseFundV1_0_2 is
         returns (bool canPurchase, string memory reason, uint256 aicoinAmount)
     {
         aicoinAmount = calculateAICOINAmount(usdcAmount);
-
         if (aicoinAmount < minPurchaseAmount) {
             return (false, "Below minimum purchase amount", 0);
         }
@@ -357,7 +356,6 @@ contract AiverseFundV1_0_2 is
         if (getUserUSDCBalance(user) < usdcAmount) {
             return (false, "Insufficient USDC balance", 0);
         }
-
         return (true, "", aicoinAmount);
     }
 

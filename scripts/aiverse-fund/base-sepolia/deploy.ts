@@ -9,11 +9,11 @@ async function main() {
   );
   console.log(aiverseFund.target);
   const aiverseFundTyped = await hre.ethers.getContractAt(
-    "AiverseFundV1_0_1",
+    "AiverseFundV1_0_2",
     aiverseFund.target
   );
   expect(await aiverseFundTyped.connect(otherAccount).version()).to.equal(
-    "1.0.1"
+    "1.0.2"
   );
 }
 
