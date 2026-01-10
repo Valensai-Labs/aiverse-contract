@@ -11,7 +11,7 @@ async function main() {
   const addresses = JSON.parse(fs.readFileSync(addressPath, "utf8"));
 
   const {
-    PowerAssetV1_0_6: implementationAddr,
+    PowerAssetV1_0_7: implementationAddr,
     PowerAssetProxy: proxyAddr,
     PowerAssetProxyAdmin: proxyAdminAddr,
   } = addresses["base-sepolia"];
@@ -28,7 +28,7 @@ async function main() {
 
   console.log("Starting verification process for PowerAsset...");
   console.log(
-    `Verifying PowerAssetV1_0_6 (Implementation): ${implementationAddr}`
+    `Verifying PowerAssetV1_0_7 (Implementation): ${implementationAddr}`
   );
   console.log(`Verifying TransparentUpgradeableProxy (Proxy): ${proxyAddr}`);
   console.log(`Verifying ProxyAdmin (Admin): ${proxyAdminAddr}`);
@@ -39,7 +39,7 @@ async function main() {
       address: implementationAddr,
       constructorArguments: [],
     });
-    console.log("✅ PowerAssetV1_0_6 implementation verified.");
+    console.log("✅ PowerAssetV1_0_7 implementation verified.");
 
     // We need the deployer address for constructor arguments
     const [deployer] = await ethers.getSigners();
