@@ -53,8 +53,8 @@ function buildUpgradeContractModule(
 // Upgrade TO this new version... FROM the old version
 export const powerAssetUpgradeModule = buildUpgradeContractModule(
   "PowerAsset",
-  "V1_0_6",
-  buildUpgradeModule("PowerAssetV1_0_6", "PowerAssetV1_0_4")
+  "V1_0_7",
+  buildUpgradeModule("PowerAssetV1_0_7", "PowerAssetV1_0_4")
 );
 
 export const nodeManagerUpgradeModule = buildUpgradeContractModule(
@@ -71,8 +71,8 @@ export const aiverseCoinUpgradeModule = buildUpgradeContractModule(
 
 export const accountRegistrarUpgradeModule = buildUpgradeContractModule(
   "AccountRegistrar",
-  "V1_0_5",
-  buildUpgradeModule("AccountRegistrarV1_0_5", "AccountRegistrarV1_0_5")
+  "V1_0_6",
+  buildUpgradeModule("AccountRegistrarV1_0_6", "AccountRegistrarV1_0_5")
 );
 
 export const checkInManagerUpgradeModule = buildUpgradeContractModule(

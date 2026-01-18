@@ -2,6 +2,7 @@
   "base": {
     "AccountRegistrarProxy": "0x11111119E0a7E930F0B531Ba15Dd9A052b8FE089",
     "AccountRegistrarProxyAdmin": "0x12a474AD610D1B8BBb26AA162a0B79417aB3ede3",
-    "AccountRegistrarV1_0_5": "0xA534c62F23058CbA528beCa459B82666746c6A60"
+    "AccountRegistrarV1_0_5": "0xA534c62F23058CbA528beCa459B82666746c6A60",
+    "AccountRegistrarV1_0_6": "0xE624ea11779a7CE21Fd4812F0469513F0429FceA"
   }
 }

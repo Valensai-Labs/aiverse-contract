@@ -28,5 +28,9 @@
   "base_CheckInManagerV1_0_5_ProxyModule#ProxyAdmin": "0x8Dc3594c847066c68B830204B269607eb95E8e97",
   "base_CheckInManagerV1_0_5_Module#CheckInManagerV1_0_5": "0x33333337bFA13ffC9Bd0Bbf1544beBA1079Dae34",
   "base_PowerAssetV1_0_6_Upgrade_Module#PowerAssetV1_0_6": "0x66666667e8228B00A9B3249331ce0CA3179D9d69",
-  "base_PowerAssetV1_0_6_Upgrade_ProxyModule#PowerAssetV1_0_6": "0x4C42B75B6652eB6293eb0D51FaC4701519907143"
+  "base_PowerAssetV1_0_6_Upgrade_ProxyModule#PowerAssetV1_0_6": "0x4C42B75B6652eB6293eb0D51FaC4701519907143",
+  "base_PowerAssetV1_0_7_Upgrade_Module#PowerAssetV1_0_7": "0x66666667e8228B00A9B3249331ce0CA3179D9d69",
+  "base_PowerAssetV1_0_7_Upgrade_ProxyModule#PowerAssetV1_0_7": "0x7adC95Ba297a00A8912D4504b96F8d6210Fee06F",
+  "base_AccountRegistrarV1_0_6_Upgrade_Module#AccountRegistrarV1_0_6": "0x11111119E0a7E930F0B531Ba15Dd9A052b8FE089",
+  "base_AccountRegistrarV1_0_6_Upgrade_ProxyModule#AccountRegistrarV1_0_6": "0xE624ea11779a7CE21Fd4812F0469513F0429FceA"
 }
