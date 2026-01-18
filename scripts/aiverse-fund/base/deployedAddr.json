@@ -1,0 +1,8 @@
+{
+  "base": {
+    "AiverseFundProxy": "0xFfFFfFFfF73dC75F81C44EfeD2A4647bfdb80849",
+    "AiverseFundProxyAdmin": "0xE97661A38e103107dE8E720532Fe374D2bd6BEF5",
+    "AiverseFundV1_0_2": "0xB680FC40d5c793aD2D006Ae55988741b91835055"
+  }
+}
+
