@@ -36,5 +36,7 @@
   "base_AiverseFundV1_0_2_ProxyModule#AiverseFundV1_0_2": "0xB680FC40d5c793aD2D006Ae55988741b91835055",
   "base_AiverseFundV1_0_2_ProxyModule#TransparentUpgradeableProxy": "0xFfFFfFFfF73dC75F81C44EfeD2A4647bfdb80849",
   "base_AiverseFundV1_0_2_ProxyModule#ProxyAdmin": "0xE97661A38e103107dE8E720532Fe374D2bd6BEF5",
-  "base_AiverseFundV1_0_2_Module#AiverseFundV1_0_2": "0xFfFFfFFfF73dC75F81C44EfeD2A4647bfdb80849"
+  "base_AiverseFundV1_0_2_Module#AiverseFundV1_0_2": "0xFfFFfFFfF73dC75F81C44EfeD2A4647bfdb80849",
+  "base_StakeControllerV1_0_11_Upgrade_Module#StakeControllerV1_0_11": "0x8888888732F7536DD1500Cef7B9da260702555FD",
+  "base_StakeControllerV1_0_11_Upgrade_ProxyModule#StakeControllerV1_0_11": "0x7F0D55cfa09316fC8C34e0b167f4C3858eadF4f6"
 }

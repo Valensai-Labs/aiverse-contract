@@ -9,11 +9,11 @@ async function main() {
   );
   console.log(stakeController.target);
   const stakeControllerTyped = await hre.ethers.getContractAt(
-    "StakeControllerV1_0_10",
+    "StakeControllerV1_0_11",
     stakeController.target
   );
   expect(await stakeControllerTyped.connect(otherAccount).version()).to.equal(
-    "1.0.10"
+    "1.0.11"
   );
 }
 
