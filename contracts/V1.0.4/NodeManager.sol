@@ -21,6 +21,7 @@ contract NodeManagerV1_0_4 is
     event NodeSignerAdded(address indexed beneficiary, address signer);
     event NodeSignerRemoved(address indexed beneficiary, address signer);
 
+    /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }

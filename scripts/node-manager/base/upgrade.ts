@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/node-manager/base/upgrade.ts --network base
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { nodeManagerUpgradeModule } from "../../upgrade-module/base";

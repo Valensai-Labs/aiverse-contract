@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/power-asset/eth-sepolia/verify.ts --network sepolia
+*/
+
 import { run, network, ethers } from "hardhat";
 import * as fs from "fs";
 import * as path from "path";

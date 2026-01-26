@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/check-in-manager/base/verify.ts --network base
+*/
+
 import * as fs from "fs";
 import { ethers, run } from "hardhat";
 import * as path from "path";

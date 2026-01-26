@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/aiverse-coin/base/upgrade.ts --network base
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { aiverseCoinUpgradeModule } from "../../upgrade-module/base";

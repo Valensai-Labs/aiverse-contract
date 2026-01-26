@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/stake-controller/eth-sepolia/deploy.ts --network sepolia
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { stakeControllerModule } from "../../proxy-module/eth-sepolia";

@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/node-manager/base-sepolia/upgrade.ts --network base-sepolia
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { nodeManagerUpgradeModule } from "../../upgrade-module/base-sepolia";
@@ -9,11 +13,11 @@ async function main() {
   );
   console.log(nodeManagerUpgrade.target);
   const nodeManagerTyped = await hre.ethers.getContractAt(
-    "NodeManagerV1_0_3",
+    "NodeManagerV1_0_4",
     nodeManagerUpgrade.target
   );
   expect(await nodeManagerTyped.connect(otherAccount).version()).to.equal(
-    "1.0.3"
+    "1.0.4"
   );
 }
 

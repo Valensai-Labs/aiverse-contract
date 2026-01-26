@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/power-asset/base-sepolia/upgrade.ts --network base-sepolia
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { powerAssetUpgradeModule } from "../../upgrade-module/base-sepolia";

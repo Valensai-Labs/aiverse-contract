@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/stake-controller/base-sepolia/upgrade.ts --network base-sepolia
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { stakeControllerUpgradeModule } from "../../upgrade-module/base-sepolia";

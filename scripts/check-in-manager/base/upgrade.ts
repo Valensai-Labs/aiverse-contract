@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/check-in-manager/base/upgrade.ts --network base
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { checkInManagerUpgradeModule } from "../../upgrade-module/base";

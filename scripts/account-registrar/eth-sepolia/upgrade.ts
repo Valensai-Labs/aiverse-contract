@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/account-registrar/eth-sepolia/upgrade.ts --network sepolia
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { accountRegistrarUpgradeModule } from "../../upgrade-module/eth-sepolia";

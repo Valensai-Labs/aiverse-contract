@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/node-manager/eth-sepolia/deploy.ts --network sepolia
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { nodeManagerModule } from "../../proxy-module/eth-sepolia";

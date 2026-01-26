@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/aiverse-coin/eth-sepolia/upgrade.ts --network sepolia
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { aiverseCoinUpgradeModule } from "../../upgrade-module/eth-sepolia";

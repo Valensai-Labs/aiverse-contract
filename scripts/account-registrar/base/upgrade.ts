@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/account-registrar/base/upgrade.ts --network base
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { accountRegistrarUpgradeModule } from "../../upgrade-module/base";

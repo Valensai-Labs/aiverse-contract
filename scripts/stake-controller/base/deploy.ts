@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/stake-controller/base/deploy.ts --network base
+*/
+
 import { expect } from "chai";
 import "dotenv/config";
 import { ethers } from "ethers";

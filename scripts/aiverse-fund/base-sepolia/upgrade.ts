@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/aiverse-fund/base-sepolia/upgrade.ts --network base-sepolia
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { aiverseFundUpgradeModule } from "../../upgrade-module/base-sepolia";

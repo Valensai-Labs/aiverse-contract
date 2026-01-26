@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/aiverse-coin/eth-sepolia/deploy.ts --network sepolia
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { aiverseCoinModule } from "../../proxy-module/eth-sepolia";

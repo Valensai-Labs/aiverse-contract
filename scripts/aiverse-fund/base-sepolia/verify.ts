@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/aiverse-fund/base-sepolia/verify.ts --network base-sepolia
+*/
+
 import * as fs from "fs";
 import { ethers, run } from "hardhat";
 import * as path from "path";

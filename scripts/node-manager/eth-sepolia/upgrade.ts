@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/node-manager/eth-sepolia/upgrade.ts --network sepolia
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { nodeManagerUpgradeModule } from "../../upgrade-module/eth-sepolia";

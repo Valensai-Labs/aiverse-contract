@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/power-asset/eth-sepolia/deploy.ts --network sepolia
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { powerAssetModule } from "../../proxy-module/eth-sepolia";

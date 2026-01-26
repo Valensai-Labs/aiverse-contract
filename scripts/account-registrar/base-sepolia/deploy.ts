@@ -1,3 +1,7 @@
+/*
+npx hardhat run scripts/account-registrar/base-sepolia/deploy.ts --network base-sepolia
+*/
+
 import { expect } from "chai";
 import hre from "hardhat";
 import { accountRegistrarModule } from "../../proxy-module/base-sepolia";
