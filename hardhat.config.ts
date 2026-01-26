@@ -1,5 +1,5 @@
 import "@nomicfoundation/hardhat-toolbox";
-import "@openzeppelin/hardhat-upgrades";
+import "@openzeppelin/hardhat-upgrades"; // ❗❗❗When verify contract, disabled it
 import * as dotenv from "dotenv";
 import "hardhat-deploy";
 import type { HardhatUserConfig } from "hardhat/config";
@@ -24,7 +24,33 @@ const config: HardhatUserConfig = {
     },
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY ?? "",
+    apiKey: process.env.BASESCAN_API_KEY ?? process.env.ETHERSCAN_API_KEY ?? "",
+    customChains: [
+      {
+        network: "base-sepolia",
+        chainId: 84532,
+        urls: {
+          apiURL: "https://api-sepolia.basescan.org/api",
+          browserURL: "https://sepolia.basescan.org",
+        },
+      },
+      {
+        network: "base",
+        chainId: 8453,
+        urls: {
+          apiURL: "https://api.basescan.org/api",
+          browserURL: "https://basescan.org",
+        },
+      },
+      {
+        network: "sepolia",
+        chainId: 11155111,
+        urls: {
+          apiURL: "https://api-sepolia.etherscan.io/api",
+          browserURL: "https://sepolia.etherscan.io",
+        },
+      },
+    ],
   },
   paths: {
     sources: "./contracts",

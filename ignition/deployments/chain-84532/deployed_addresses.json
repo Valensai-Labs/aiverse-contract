@@ -78,5 +78,7 @@
   "base_sepolia_AccountRegistrarV1_0_6_Upgrade_Module#AccountRegistrarV1_0_6": "0x21CF9D76629A890C604DC74d847Ea72ce357286F",
   "base_sepolia_AccountRegistrarV1_0_6_Upgrade_ProxyModule#AccountRegistrarV1_0_6": "0x267a737D152Cf2483a3ab67b83B0d6a989C18Ce1",
   "base_sepolia_StakeControllerV1_0_11_Upgrade_Module#StakeControllerV1_0_11": "0xa8F05E219f64ed3C6b80961d327a2b8Fd656b5eF",
-  "base_sepolia_StakeControllerV1_0_11_Upgrade_ProxyModule#StakeControllerV1_0_11": "0x2C3673ACA6313018aD3876ED009bc1057C4852Be"
+  "base_sepolia_StakeControllerV1_0_11_Upgrade_ProxyModule#StakeControllerV1_0_11": "0x2C3673ACA6313018aD3876ED009bc1057C4852Be",
+  "base_sepolia_NodeManagerV1_0_4_Upgrade_Module#NodeManagerV1_0_4": "0x01Bb8CE193Cf0fcb7f1Aa9547aCCacc7af00b405",
+  "base_sepolia_NodeManagerV1_0_4_Upgrade_ProxyModule#NodeManagerV1_0_4": "0x33d83c2Fd7581AD0cDfeCd93ac9ecB7D4e6610c0"
 }
