@@ -3,6 +3,7 @@
     "StakeControllerProxy": "0x8888888732F7536DD1500Cef7B9da260702555FD",
     "StakeControllerProxyAdmin": "0x37Cb09DF0959C10614D328A996924F0978c55380",
     "StakeControllerV1_0_10": "0x0E2b235B6d3a157A3E4bf7ef2505888f260593E8",
-    "StakeControllerV1_0_11": "0x7F0D55cfa09316fC8C34e0b167f4C3858eadF4f6"
+    "StakeControllerV1_0_11": "0x7F0D55cfa09316fC8C34e0b167f4C3858eadF4f6",
+    "StakeControllerV1_0_12": ""
   }
 }

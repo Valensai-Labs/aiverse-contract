@@ -15,7 +15,7 @@ async function main() {
   const addresses = JSON.parse(fs.readFileSync(addressPath, "utf8"));
 
   const {
-    StakeControllerV1_0_11: implementationAddr,
+    StakeControllerV1_0_12: implementationAddr,
     StakeControllerProxy: proxyAddr,
     StakeControllerProxyAdmin: proxyAdminAddr,
   } = addresses["base"];
@@ -32,7 +32,7 @@ async function main() {
 
   console.log("Starting verification process for StakeController...");
   console.log(
-    `Verifying StakeControllerV1_0_11 (Implementation): ${implementationAddr}`
+    `Verifying StakeControllerV1_0_12 (Implementation): ${implementationAddr}`
   );
   console.log(`Verifying TransparentUpgradeableProxy (Proxy): ${proxyAddr}`);
   console.log(`Verifying ProxyAdmin (Admin): ${proxyAdminAddr}`);
@@ -43,7 +43,7 @@ async function main() {
       address: implementationAddr,
       constructorArguments: [],
     });
-    console.log("✅ StakeControllerV1_0_11 implementation verified.");
+    console.log("✅ StakeControllerV1_0_12 implementation verified.");
 
     // We need the deployer address for constructor arguments
     const [deployer] = await ethers.getSigners();
