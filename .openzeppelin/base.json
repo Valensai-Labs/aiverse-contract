@@ -172,9 +172,7 @@
           ]
         }
       },
-      "allAddresses": [
-        "0x7a17eC55B69C344068e638320077130a5C25f306"
-      ]
+      "allAddresses": ["0x7a17eC55B69C344068e638320077130a5C25f306"]
     },
     "dbf47029fa40b3c6e4b90042103d555882d5b89b399eacf325396675b2c5fb53": {
       "address": "0xcc6eaD8227410DeA5ac997B6911C9d54e9822d87",
@@ -719,9 +717,7 @@
           ]
         }
       },
-      "allAddresses": [
-        "0xE624ea11779a7CE21Fd4812F0469513F0429FceA"
-      ]
+      "allAddresses": ["0xE624ea11779a7CE21Fd4812F0469513F0429FceA"]
     },
     "0828fba1a3777b6d121dca2f5c3617a580312da9c05a33db5187aa0e98971791": {
       "address": "0x7F0D55cfa09316fC8C34e0b167f4C3858eadF4f6",

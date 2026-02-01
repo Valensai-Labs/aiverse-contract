@@ -13,10 +13,10 @@ async function main() {
   );
   console.log(nodeManagerUpgrade.target);
   const nodeManagerTyped = await hre.ethers.getContractAt(
-    "NodeManagerV1_0_3",
+    "NodeManagerV1_0_4",
     nodeManagerUpgrade.target
   );
-  expect(await nodeManagerTyped.connect(account).version()).to.equal("1.0.3");
+  expect(await nodeManagerTyped.connect(account).version()).to.equal("1.0.4");
 }
 
 main()

@@ -38,5 +38,13 @@
   "base_AiverseFundV1_0_2_ProxyModule#ProxyAdmin": "0xE97661A38e103107dE8E720532Fe374D2bd6BEF5",
   "base_AiverseFundV1_0_2_Module#AiverseFundV1_0_2": "0xFfFFfFFfF73dC75F81C44EfeD2A4647bfdb80849",
   "base_StakeControllerV1_0_11_Upgrade_Module#StakeControllerV1_0_11": "0x8888888732F7536DD1500Cef7B9da260702555FD",
-  "base_StakeControllerV1_0_11_Upgrade_ProxyModule#StakeControllerV1_0_11": "0x7F0D55cfa09316fC8C34e0b167f4C3858eadF4f6"
+  "base_StakeControllerV1_0_11_Upgrade_ProxyModule#StakeControllerV1_0_11": "0x7F0D55cfa09316fC8C34e0b167f4C3858eadF4f6",
+  "base_NodeManagerV1_0_4_Upgrade_Module#NodeManagerV1_0_4": "0x00000004b80b9F380d66CbF50d658eCFb8213656",
+  "base_NodeManagerV1_0_4_Upgrade_ProxyModule#NodeManagerV1_0_4": "0x6aa31e2D53B674d880B72E65C0076E62B52dd68a",
+  "base_CheckInManagerV1_0_6_Upgrade_Module#CheckInManagerV1_0_6": "0x33333337bFA13ffC9Bd0Bbf1544beBA1079Dae34",
+  "base_CheckInManagerV1_0_6_Upgrade_ProxyModule#CheckInManagerV1_0_6": "0xDe62AB4e09f79b84F70815c65b1A838dEC4d4d92",
+  "base_StakeControllerV1_0_12_Upgrade_Module#StakeControllerV1_0_12": "0x8888888732F7536DD1500Cef7B9da260702555FD",
+  "base_StakeControllerV1_0_12_Upgrade_ProxyModule#StakeControllerV1_0_12": "0x4DC8546F877ddEf31074FBc9cb9F8ba03cB9424f",
+  "base_AccountRegistrarV1_0_7_Upgrade_Module#AccountRegistrarV1_0_7": "0x11111119E0a7E930F0B531Ba15Dd9A052b8FE089",
+  "base_AccountRegistrarV1_0_7_Upgrade_ProxyModule#AccountRegistrarV1_0_7": "0xE9D86Fd25751dcdEC2Aa79453104A02385e2B03d"
 }
