@@ -92,3 +92,9 @@ export const aiverseFundUpgradeModule = buildUpgradeContractModule(
   "V1_0_3",
   buildUpgradeModule("AiverseFundV1_0_3", "AiverseFundV1_0_2")
 );
+
+export const batchTransferUpgradeModule = buildUpgradeContractModule(
+  "BatchTransfer",
+  "V1_0_0",
+  buildUpgradeModule("BatchTransfer", "BatchTransfer")
+);

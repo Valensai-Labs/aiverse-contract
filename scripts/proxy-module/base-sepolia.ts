@@ -78,3 +78,9 @@ export const aiverseFundModule = buildProxiedContractModule(
   "AiverseFundV1_0_2",
   aiverseFundProxyModule
 );
+
+const batchTransferProxyModule = buildProxyModule("BatchTransfer");
+export const batchTransferModule = buildProxiedContractModule(
+  "BatchTransfer",
+  batchTransferProxyModule
+);
