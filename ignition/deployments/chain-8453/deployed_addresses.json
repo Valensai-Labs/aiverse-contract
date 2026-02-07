@@ -46,5 +46,9 @@
   "base_StakeControllerV1_0_12_Upgrade_Module#StakeControllerV1_0_12": "0x8888888732F7536DD1500Cef7B9da260702555FD",
   "base_StakeControllerV1_0_12_Upgrade_ProxyModule#StakeControllerV1_0_12": "0x4DC8546F877ddEf31074FBc9cb9F8ba03cB9424f",
   "base_AccountRegistrarV1_0_7_Upgrade_Module#AccountRegistrarV1_0_7": "0x11111119E0a7E930F0B531Ba15Dd9A052b8FE089",
-  "base_AccountRegistrarV1_0_7_Upgrade_ProxyModule#AccountRegistrarV1_0_7": "0xE9D86Fd25751dcdEC2Aa79453104A02385e2B03d"
+  "base_AccountRegistrarV1_0_7_Upgrade_ProxyModule#AccountRegistrarV1_0_7": "0xE9D86Fd25751dcdEC2Aa79453104A02385e2B03d",
+  "base_BatchTransfer_ProxyModule#BatchTransfer": "0xc90d2fA022e192Ed78Ff7d9639288cEb8e830279",
+  "base_BatchTransfer_ProxyModule#TransparentUpgradeableProxy": "0x4444444EFcb0AF6202d597bab1E2025B98E2627B",
+  "base_BatchTransfer_ProxyModule#ProxyAdmin": "0x7Cca4Cfe0cd4Ab6aA746aCad7E759BdA7a77A215",
+  "base_BatchTransfer_Module#BatchTransfer": "0x4444444EFcb0AF6202d597bab1E2025B98E2627B"
 }
