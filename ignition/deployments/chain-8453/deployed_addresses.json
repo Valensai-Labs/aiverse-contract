@@ -50,5 +50,7 @@
   "base_BatchTransfer_ProxyModule#BatchTransfer": "0xc90d2fA022e192Ed78Ff7d9639288cEb8e830279",
   "base_BatchTransfer_ProxyModule#TransparentUpgradeableProxy": "0x4444444EFcb0AF6202d597bab1E2025B98E2627B",
   "base_BatchTransfer_ProxyModule#ProxyAdmin": "0x7Cca4Cfe0cd4Ab6aA746aCad7E759BdA7a77A215",
-  "base_BatchTransfer_Module#BatchTransfer": "0x4444444EFcb0AF6202d597bab1E2025B98E2627B"
+  "base_BatchTransfer_Module#BatchTransfer": "0x4444444EFcb0AF6202d597bab1E2025B98E2627B",
+  "base_AccountRegistrarV1_0_8_Upgrade_Module#AccountRegistrarV1_0_8": "0x11111119E0a7E930F0B531Ba15Dd9A052b8FE089",
+  "base_AccountRegistrarV1_0_8_Upgrade_ProxyModule#AccountRegistrarV1_0_8": "0xAD2C66aeC2CBB5F511E851439123E7d547c29b0c"
 }
