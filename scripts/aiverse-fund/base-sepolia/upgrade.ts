@@ -13,11 +13,11 @@ async function main() {
   );
   console.log(aiverseFundUpgrade.target);
   const aiverseFundTyped = await hre.ethers.getContractAt(
-    "AiverseFundV1_0_2",
+    "AiverseFundV1_0_3",
     aiverseFundUpgrade.target
   );
   expect(await aiverseFundTyped.connect(otherAccount).version()).to.equal(
-    "1.0.2"
+    "1.0.3"
   );
 }
 
