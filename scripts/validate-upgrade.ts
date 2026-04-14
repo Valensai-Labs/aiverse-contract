@@ -23,7 +23,7 @@ async function main() {
     oldContractName: "AiverseFundV1_0_2",
     
     // 新版本合约名称
-    newContractName: "AiverseFundV1_0_3",
+    newContractName: "AiverseFundV1_0_4",
     
     // 代理类型: "transparent" 或 "uups"
     proxyKind: "transparent" as "transparent" | "uups",
