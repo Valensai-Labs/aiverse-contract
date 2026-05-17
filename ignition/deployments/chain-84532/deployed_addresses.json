@@ -96,5 +96,9 @@
   "base_sepolia_AiverseFundV1_0_3_Upgrade_Module#AiverseFundV1_0_3": "0xDe62AB4e09f79b84F70815c65b1A838dEC4d4d92",
   "base_sepolia_AiverseFundV1_0_3_Upgrade_ProxyModule#AiverseFundV1_0_3": "0x1F40c16E4aF50b42b401262dd27AF2135c18022E",
   "base_sepolia_AiverseFundV1_0_4_Upgrade_Module#AiverseFundV1_0_4": "0xDe62AB4e09f79b84F70815c65b1A838dEC4d4d92",
-  "base_sepolia_AiverseFundV1_0_4_Upgrade_ProxyModule#AiverseFundV1_0_4": "0x7f8d722cf7dEa63b0D808480B0728188854121a3"
+  "base_sepolia_AiverseFundV1_0_4_Upgrade_ProxyModule#AiverseFundV1_0_4": "0x7f8d722cf7dEa63b0D808480B0728188854121a3",
+  "base_sepolia_AiverseTopUp_ProxyModule#AiverseTopUp": "0x9b7Db15d9490Bb636EeDD994E48Bd8faE2b75505",
+  "base_sepolia_AiverseTopUp_ProxyModule#TransparentUpgradeableProxy": "0xC03Cdd15e2a1FF791937e0191F83FfeF342945ba",
+  "base_sepolia_AiverseTopUp_ProxyModule#ProxyAdmin": "0x3aAA91a909363F18cF1914Bcc38fE186Ee2710B9",
+  "base_sepolia_AiverseTopUp_Module#AiverseTopUp": "0xC03Cdd15e2a1FF791937e0191F83FfeF342945ba"
 }

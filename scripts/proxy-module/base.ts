@@ -84,3 +84,9 @@ export const batchTransferModule = buildProxiedContractModule(
   "BatchTransfer",
   batchTransferProxyModule
 );
+
+const aiverseTopUpProxyModule = buildProxyModule("AiverseTopUp");
+export const aiverseTopUpModule = buildProxiedContractModule(
+  "AiverseTopUp",
+  aiverseTopUpProxyModule
+);

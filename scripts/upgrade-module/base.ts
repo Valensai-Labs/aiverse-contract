@@ -98,3 +98,9 @@ export const batchTransferUpgradeModule = buildUpgradeContractModule(
   "V1_0_0",
   buildUpgradeModule("BatchTransfer", "BatchTransfer")
 );
+
+export const aiverseTopUpUpgradeModule = buildUpgradeContractModule(
+  "AiverseTopUp",
+  "V1_0_0",
+  buildUpgradeModule("AiverseTopUp", "AiverseTopUp")
+);

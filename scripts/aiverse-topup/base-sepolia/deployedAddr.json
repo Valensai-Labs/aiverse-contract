@@ -1,0 +1,7 @@
+{
+  "base-sepolia": {
+    "AiverseTopUpProxy": "0xC03Cdd15e2a1FF791937e0191F83FfeF342945ba",
+    "AiverseTopUpProxyAdmin": "0x3aAA91a909363F18cF1914Bcc38fE186Ee2710B9",
+    "AiverseTopUp": "0x9b7Db15d9490Bb636EeDD994E48Bd8faE2b75505"
+  }
+}
