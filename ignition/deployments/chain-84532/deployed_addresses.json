@@ -102,5 +102,9 @@
   "base_sepolia_AiverseTopUp_ProxyModule#ProxyAdmin": "0x3aAA91a909363F18cF1914Bcc38fE186Ee2710B9",
   "base_sepolia_AiverseTopUp_Module#AiverseTopUp": "0xC03Cdd15e2a1FF791937e0191F83FfeF342945ba",
   "base_sepolia_AiverseCoinV1_0_5_Upgrade_Module#AiverseCoinV1_0_5": "0x7adC95Ba297a00A8912D4504b96F8d6210Fee06F",
-  "base_sepolia_AiverseCoinV1_0_5_Upgrade_ProxyModule#AiverseCoinV1_0_5": "0xe50C4F6df17d95f3c7FD20337a671d55113fB2Fd"
+  "base_sepolia_AiverseCoinV1_0_5_Upgrade_ProxyModule#AiverseCoinV1_0_5": "0xe50C4F6df17d95f3c7FD20337a671d55113fB2Fd",
+  "base_sepolia_AiverseTreasuryV1_0_1_ProxyModule#AiverseTreasuryV1_0_1": "0x1730b706C79346D96b17D06b413E08BFE4747799",
+  "base_sepolia_AiverseTreasuryV1_0_1_ProxyModule#TransparentUpgradeableProxy": "0x39147628ecC7a4beA39fedf3BaDdDf60e8411552",
+  "base_sepolia_AiverseTreasuryV1_0_1_ProxyModule#ProxyAdmin": "0x7Bd2eCF875E033314050958EfB5280d077F5A8d9",
+  "base_sepolia_AiverseTreasuryV1_0_1_Module#AiverseTreasuryV1_0_1": "0x39147628ecC7a4beA39fedf3BaDdDf60e8411552"
 }

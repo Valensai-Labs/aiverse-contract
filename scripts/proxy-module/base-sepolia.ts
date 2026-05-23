@@ -90,3 +90,9 @@ export const aiverseTopUpModule = buildProxiedContractModule(
   "AiverseTopUp",
   aiverseTopUpProxyModule
 );
+
+const aiverseTreasuryProxyModule = buildProxyModule("AiverseTreasuryV1_0_1");
+export const aiverseTreasuryModule = buildProxiedContractModule(
+  "AiverseTreasuryV1_0_1",
+  aiverseTreasuryProxyModule
+);

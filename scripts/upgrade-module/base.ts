@@ -104,3 +104,9 @@ export const aiverseTopUpUpgradeModule = buildUpgradeContractModule(
   "V1_0_0",
   buildUpgradeModule("AiverseTopUp", "AiverseTopUp")
 );
+
+export const aiverseTreasuryUpgradeModule = buildUpgradeContractModule(
+  "AiverseTreasury",
+  "V1_0_1",
+  buildUpgradeModule("AiverseTreasuryV1_0_1", "AiverseTreasuryV1_0_1")
+);
