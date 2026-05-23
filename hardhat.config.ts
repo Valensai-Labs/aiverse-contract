@@ -1,5 +1,5 @@
 import "@nomicfoundation/hardhat-toolbox";
-// import "@openzeppelin/hardhat-upgrades"; // ❗❗❗When verify contract, disabled it
+import "@openzeppelin/hardhat-upgrades"; // ❗❗❗When verify contract, disabled it
 import * as dotenv from "dotenv";
 import "hardhat-deploy";
 import type { HardhatUserConfig } from "hardhat/config";
