@@ -1,7 +1,8 @@
 {
   "base": {
-    "AiverseTreasuryProxy": "",
-    "AiverseTreasuryProxyAdmin": "",
-    "AiverseTreasuryV1_0_1": ""
+    "AiverseTreasuryProxy": "0x000000010f52cf48511883ebb8c6005e79259ed4",
+    "AiverseTreasuryProxyAdmin": "0x8Bf6ab7EE6A162F053e4dB4a8e7ECD221f3d45d1",
+    "AiverseTreasuryV1_0_1": "0x5382cC62372682BDfeE4278DB8396FAb59E9f473"
   }
 }
+

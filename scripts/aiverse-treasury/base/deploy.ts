@@ -6,7 +6,11 @@ import { expect } from "chai";
 import "dotenv/config";
 import { ethers } from "ethers";
 import hre from "hardhat";
-import { aiverseTreasuryModule } from "../../proxy-module/base";
+import {
+  deployTransparentProxyWithInit,
+  optionalAddressEnv,
+  requireAddressEnv,
+} from "../../deploy-utils/atomicProxyDeploy";
 
 async function main() {
   // ========================================================================================
@@ -42,7 +46,7 @@ async function main() {
   // 2. Fund Deployer Wallet if Necessary
   // ========================================================================================
   const minBalance = ethers.parseEther("0.000025");
-  const amountToSend = ethers.parseEther("0.000025");
+  const amountToSend = ethers.parseEther("0.00006");
   let deployerBalance = await provider.getBalance(deployerAddress);
 
   if (deployerBalance < minBalance) {
@@ -107,30 +111,45 @@ async function main() {
   }
 
   // ========================================================================================
-  // 4. Deploy Upgradeable Proxy Contract & Verify
+  // 4. Deploy proxy with atomic initialize (init runs in proxy constructor)
   // ========================================================================================
-  console.log(`Nonce reached target of ${targetNonce}. Deploying contract...`);
-  await sleep(15000);
+  const initialOwner = optionalAddressEnv(
+    "TREASURY_INITIAL_OWNER",
+    funderAddress
+  );
+  const aicoin = requireAddressEnv("TREASURY_AICOIN");
 
-  const { contractInstance: aiverseTreasury, proxyAdmin } =
-    await hre.ignition.deploy(aiverseTreasuryModule);
-  console.log(aiverseTreasury.target);
+  console.log(`Nonce reached target of ${targetNonce}. Deploying contract...`);
+  console.log(`Initialize owner:    ${initialOwner}`);
+  console.log(`AICOIN:              ${aicoin}`);
+
+  const { proxyAddress, implementationAddress, proxyAdminAddress } =
+    await deployTransparentProxyWithInit(
+      hre,
+      deployer,
+      "AiverseTreasuryV1_0_1",
+      [initialOwner, aicoin],
+      deployerAddress
+    );
+
+  console.log(`Proxy:               ${proxyAddress}`);
+  console.log(`Implementation:      ${implementationAddress}`);
+  console.log(`ProxyAdmin:          ${proxyAdminAddress}`);
+
   const aiverseTreasuryTyped = await hre.ethers.getContractAt(
     "AiverseTreasuryV1_0_1",
-    aiverseTreasury.target
+    proxyAddress
   );
-  expect(await aiverseTreasuryTyped.connect(deployer).version()).to.equal(
-    "1.0.1"
-  );
-  console.log("Version verification successful!");
+  expect(await aiverseTreasuryTyped.version()).to.equal("1.0.1");
+  expect(await aiverseTreasuryTyped.owner()).to.equal(initialOwner);
+  expect(await aiverseTreasuryTyped.aicoin()).to.equal(aicoin);
+  console.log("Version and initialization verification successful!");
 
   // ========================================================================================
   // 5. Transfer ProxyAdmin Ownership
   // ========================================================================================
   console.log("Transferring ProxyAdmin ownership to funder...");
 
-  // Get a properly typed instance of the ProxyAdmin contract
-  const proxyAdminAddress = await proxyAdmin.getAddress();
   const typedProxyAdmin = await hre.ethers.getContractAt(
     "ProxyAdmin",
     proxyAdminAddress,

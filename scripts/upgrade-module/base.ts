@@ -65,8 +65,8 @@ export const nodeManagerUpgradeModule = buildUpgradeContractModule(
 
 export const aiverseCoinUpgradeModule = buildUpgradeContractModule(
   "AiverseCoin",
-  "V1_0_4",
-  buildUpgradeModule("AiverseCoinV1_0_4", "AiverseCoinV1_0_4")
+  "V1_0_5",
+  buildUpgradeModule("AiverseCoinV1_0_5", "AiverseCoinV1_0_4")
 );
 
 export const accountRegistrarUpgradeModule = buildUpgradeContractModule(

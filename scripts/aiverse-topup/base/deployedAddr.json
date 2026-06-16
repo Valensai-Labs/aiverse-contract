@@ -1,7 +1,7 @@
 {
   "base": {
-    "AiverseTopUpProxy": "",
-    "AiverseTopUpProxyAdmin": "",
-    "AiverseTopUp": ""
+    "AiverseTopUpProxy": "0x0000000670ec6A87848b2bDA55533930AAEd0EfC",
+    "AiverseTopUpProxyAdmin": "0xad43381e370230eF66b9aD30Ba18f7f36fA79dD5",
+    "AiverseTopUp": "0xd9ab0cDc191C6814fc1902863FDDab624B7f4FD4"
   }
 }

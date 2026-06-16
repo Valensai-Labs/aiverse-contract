@@ -6,7 +6,11 @@ import { expect } from "chai";
 import "dotenv/config";
 import { ethers } from "ethers";
 import hre from "hardhat";
-import { aiverseTopUpModule } from "../../proxy-module/base";
+import {
+  deployTransparentProxyWithInit,
+  optionalAddressEnv,
+  requireAddressEnv,
+} from "../../deploy-utils/atomicProxyDeploy";
 
 async function main() {
   // ========================================================================================
@@ -107,30 +111,48 @@ async function main() {
   }
 
   // ========================================================================================
-  // 4. Deploy Upgradeable Proxy Contract & Verify
+  // 4. Deploy proxy with atomic initialize (init runs in proxy constructor)
   // ========================================================================================
-  console.log(`Nonce reached target of ${targetNonce}. Deploying contract...`);
-  await sleep(15000);
+  const initialOwner = optionalAddressEnv("TOPUP_INITIAL_OWNER", funderAddress);
+  const usdc = requireAddressEnv("TOPUP_USDC");
+  const treasury = requireAddressEnv("TOPUP_TREASURY");
+  const initialPlatform = requireAddressEnv("TOPUP_INITIAL_PLATFORM");
 
-  const { contractInstance: aiverseTopUp, proxyAdmin } =
-    await hre.ignition.deploy(aiverseTopUpModule);
-  console.log(aiverseTopUp.target);
+  console.log(`Nonce reached target of ${targetNonce}. Deploying contract...`);
+  console.log(`Initialize owner:    ${initialOwner}`);
+  console.log(`USDC:                ${usdc}`);
+  console.log(`Treasury:            ${treasury}`);
+  console.log(`Initial platform:    ${initialPlatform}`);
+
+  const { proxyAddress, implementationAddress, proxyAdminAddress } =
+    await deployTransparentProxyWithInit(
+      hre,
+      deployer,
+      "AiverseTopUp",
+      [initialOwner, usdc, treasury, initialPlatform],
+      deployerAddress
+    );
+
+  console.log(`Proxy:               ${proxyAddress}`);
+  console.log(`Implementation:      ${implementationAddress}`);
+  console.log(`ProxyAdmin:          ${proxyAdminAddress}`);
+
   const aiverseTopUpTyped = await hre.ethers.getContractAt(
     "AiverseTopUp",
-    aiverseTopUp.target
+    proxyAddress
   );
-  expect(await aiverseTopUpTyped.connect(deployer).version()).to.equal("1.0.0");
-  console.log("Version verification successful!");
-  console.log(
-    "Call initialize(initialOwner, usdc_, treasury_, initialPlatform) on the proxy before use."
-  );
+  expect(await aiverseTopUpTyped.version()).to.equal("1.0.0");
+  expect(await aiverseTopUpTyped.owner()).to.equal(initialOwner);
+  expect(await aiverseTopUpTyped.treasury()).to.equal(treasury);
+  expect(await aiverseTopUpTyped.usdc()).to.equal(usdc);
+  expect(await aiverseTopUpTyped.isPlatform(initialPlatform)).to.equal(true);
+  console.log("Version and initialization verification successful!");
 
   // ========================================================================================
   // 5. Transfer ProxyAdmin Ownership
   // ========================================================================================
   console.log("Transferring ProxyAdmin ownership to funder...");
 
-  const proxyAdminAddress = await proxyAdmin.getAddress();
   const typedProxyAdmin = await hre.ethers.getContractAt(
     "ProxyAdmin",
     proxyAdminAddress,

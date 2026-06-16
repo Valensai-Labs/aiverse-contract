@@ -54,5 +54,7 @@
   "base_AccountRegistrarV1_0_8_Upgrade_Module#AccountRegistrarV1_0_8": "0x11111119E0a7E930F0B531Ba15Dd9A052b8FE089",
   "base_AccountRegistrarV1_0_8_Upgrade_ProxyModule#AccountRegistrarV1_0_8": "0xAD2C66aeC2CBB5F511E851439123E7d547c29b0c",
   "base_AiverseFundV1_0_4_Upgrade_Module#AiverseFundV1_0_4": "0xFfFFfFFfF73dC75F81C44EfeD2A4647bfdb80849",
-  "base_AiverseFundV1_0_4_Upgrade_ProxyModule#AiverseFundV1_0_4": "0x8640F3e8CFE0Dc13a00b278017E8a8554EAF8F43"
+  "base_AiverseFundV1_0_4_Upgrade_ProxyModule#AiverseFundV1_0_4": "0x8640F3e8CFE0Dc13a00b278017E8a8554EAF8F43",
+  "base_AiverseCoinV1_0_5_Upgrade_Module#AiverseCoinV1_0_5": "0x99999992158E1202249471e3E051B2e9990a7E38",
+  "base_AiverseCoinV1_0_5_Upgrade_ProxyModule#AiverseCoinV1_0_5": "0x612b269693837637fa5ED508B6ED42A5dc551573"
 }
