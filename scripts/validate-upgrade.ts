@@ -14,16 +14,16 @@ async function main() {
   // ============================================
   const CONFIG = {
     // 代理合约地址（已部署的）
-    proxyAddress: "0x99999992158E1202249471e3E051B2e9990a7E38",
+    proxyAddress: "0x11111119E0a7E930F0B531Ba15Dd9A052b8FE089",
     
     // 旧版本实现合约地址（已部署的）
-    oldImplementationAddress: "0x31CE48C718EA330275B9194aA34A641650D81590",
+    oldImplementationAddress: "0xAD2C66aeC2CBB5F511E851439123E7d547c29b0c",
     
     // 旧版本合约名称（用于 forceImport）
-    oldContractName: "AiverseCoinV1_0_4",
+    oldContractName: "AccountRegistrarV1_0_8",
     
     // 新版本合约名称
-    newContractName: "AiverseCoinV1_0_5",
+    newContractName: "AccountRegistrarV1_0_9",
     
     // 代理类型: "transparent" 或 "uups"
     proxyKind: "transparent" as "transparent" | "uups",
