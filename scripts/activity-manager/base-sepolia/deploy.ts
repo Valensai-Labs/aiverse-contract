@@ -1,7 +1,7 @@
 /*
 npx hardhat run scripts/activity-manager/base-sepolia/deploy.ts --network base-sepolia
 
-Env (optional overrides):
+Env:
   ACTIVITY_NODE_MANAGER
   ACTIVITY_POWER_ASSET
 */
@@ -11,25 +11,15 @@ import "dotenv/config";
 import hre from "hardhat";
 import {
   deployTransparentProxyWithInit,
-  optionalAddressEnv,
+  requireAddressEnv,
 } from "../../deploy-utils/atomicProxyDeploy";
-
-/** Known Base Sepolia proxies */
-const DEFAULT_NODE_MANAGER = "0x01Bb8CE193Cf0fcb7f1Aa9547aCCacc7af00b405";
-const DEFAULT_POWER_ASSET = "0x0bba8Ba13eE178Ae87a22E9e8aB2d2e033233cD8";
 
 async function main() {
   const [deployer] = await hre.ethers.getSigners();
   const deployerAddress = await deployer.getAddress();
 
-  const nodeManager = optionalAddressEnv(
-    "ACTIVITY_NODE_MANAGER",
-    DEFAULT_NODE_MANAGER
-  );
-  const powerAsset = optionalAddressEnv(
-    "ACTIVITY_POWER_ASSET",
-    DEFAULT_POWER_ASSET
-  );
+  const nodeManager = requireAddressEnv("ACTIVITY_NODE_MANAGER");
+  const powerAsset = requireAddressEnv("ACTIVITY_POWER_ASSET");
 
   console.log(`Deployer:    ${deployerAddress}`);
   console.log(`NodeManager: ${nodeManager}`);

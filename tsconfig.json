@@ -7,10 +7,9 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@openzeppelin/*": ["node_modules/@openzeppelin/*"]
+      "@openzeppelin/*": ["./node_modules/@openzeppelin/*"]
     }
   },
   "include": [

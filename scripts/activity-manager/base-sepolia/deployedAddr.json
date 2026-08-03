@@ -1,7 +1,7 @@
 {
   "base-sepolia": {
-    "ActivityManagerProxy": "",
-    "ActivityManagerProxyAdmin": "",
-    "ActivityManager": ""
+    "ActivityManagerProxy": "0x721149aBd4835d9327356f74e856665879740Daa",
+    "ActivityManagerProxyAdmin": "0x52Fcf28A203795A80348293129D6a96733098f5A",
+    "ActivityManager": "0x7F78aB5A1F429744395BdDc2970793Ee58cA13c0"
   }
 }

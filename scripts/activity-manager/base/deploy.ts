@@ -5,8 +5,8 @@ Env:
   DEPLOYER_PRIVATE_KEY
   TARGET_DEPLOYMENT_NONCE
   MNEMONICS
-  ACTIVITY_NODE_MANAGER   (optional, defaults to base NodeManager proxy)
-  ACTIVITY_POWER_ASSET    (optional, defaults to base PowerAsset proxy)
+  ACTIVITY_NODE_MANAGER
+  ACTIVITY_POWER_ASSET
 */
 
 import { expect } from "chai";
@@ -15,12 +15,8 @@ import { ethers } from "ethers";
 import hre from "hardhat";
 import {
   deployTransparentProxyWithInit,
-  optionalAddressEnv,
+  requireAddressEnv,
 } from "../../deploy-utils/atomicProxyDeploy";
-
-/** Known Base mainnet proxies */
-const DEFAULT_NODE_MANAGER = "0x00000004b80b9F380d66CbF50d658eCFb8213656";
-const DEFAULT_POWER_ASSET = "0x66666667e8228B00A9B3249331ce0CA3179D9d69";
 
 async function main() {
   // ========================================================================================
@@ -123,14 +119,8 @@ async function main() {
   // ========================================================================================
   // 4. Deploy proxy with atomic initialize (init runs in proxy constructor)
   // ========================================================================================
-  const nodeManager = optionalAddressEnv(
-    "ACTIVITY_NODE_MANAGER",
-    DEFAULT_NODE_MANAGER
-  );
-  const powerAsset = optionalAddressEnv(
-    "ACTIVITY_POWER_ASSET",
-    DEFAULT_POWER_ASSET
-  );
+  const nodeManager = requireAddressEnv("ACTIVITY_NODE_MANAGER");
+  const powerAsset = requireAddressEnv("ACTIVITY_POWER_ASSET");
 
   console.log(`Nonce reached target of ${targetNonce}. Deploying contract...`);
   console.log(`NodeManager:         ${nodeManager}`);
