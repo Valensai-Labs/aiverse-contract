@@ -96,3 +96,9 @@ export const aiverseTreasuryModule = buildProxiedContractModule(
   "AiverseTreasuryV1_0_1",
   aiverseTreasuryProxyModule
 );
+
+const activityManagerProxyModule = buildProxyModule("ActivityManager");
+export const activityManagerModule = buildProxiedContractModule(
+  "ActivityManager",
+  activityManagerProxyModule
+);
