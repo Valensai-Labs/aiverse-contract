@@ -2,9 +2,10 @@
 npx hardhat run scripts/stake-controller/eth-sepolia/verify.ts --network sepolia
 */
 
-import { run, network, ethers } from "hardhat";
 import * as fs from "fs";
+import { ethers, network } from "hardhat";
 import * as path from "path";
+import { verifyOne } from "../../deploy-utils/verify";
 
 async function main() {
   const addressPath = path.join(__dirname, "./deployedAddr.json");
@@ -15,38 +16,34 @@ async function main() {
     throw new Error(`No addresses found for network ${networkName}`);
   }
 
-  const StakeControllerAddr = networkAddrs["StakeControllerV1_0_5"];
-  const StakeControllerProxyAddr = networkAddrs["StakeControllerProxy"];
-  if (!StakeControllerAddr) {
-    throw new Error(`StakeController address not found for network ${networkName}`);
-  }
-  if (!StakeControllerProxyAddr) {
-    throw new Error(
-      `StakeController Proxy address not found for network ${networkName}`
-    );
-  }
-  console.log(`Verifying contracts on ${networkName}...`);
-  console.log("StakeController address:", StakeControllerAddr);
-  console.log("StakeControllerProxy address:", StakeControllerProxyAddr);
+  const implementationAddr = networkAddrs["StakeControllerV1_0_5"];
+  const proxyAddr = networkAddrs["StakeControllerProxy"];
 
-  try {
-    await run("verify:verify", {
-      address: StakeControllerAddr,
-    });
-    const [account, otherAccount] = await ethers.getSigners();
-    await run("verify:verify", {
-      address: StakeControllerProxyAddr,
-      constructorArguments: [StakeControllerAddr, account.address, "0x"],
-    });
-    console.log("Contract verification successful");
-  } catch (error) {
-    console.error("Contract verification failed", error);
+  if (!implementationAddr) {
+    throw new Error(`StakeControllerV1_0_5 address not found for network ${networkName}`);
   }
+  if (!proxyAddr) {
+    throw new Error(`StakeControllerProxy address not found for network ${networkName}`);
+  }
+
+  console.log(`Verifying contracts on ${networkName}...`);
+  console.log("StakeControllerV1_0_5 address:", implementationAddr);
+  console.log("StakeControllerProxy address:", proxyAddr);
+
+  const [deployer] = await ethers.getSigners();
+  await verifyOne("StakeControllerV1_0_5 implementation", implementationAddr, []);
+  await verifyOne("TransparentUpgradeableProxy", proxyAddr, [
+    implementationAddr,
+    deployer.address,
+    "0x",
+  ]);
+
+  console.log("\nAll StakeController contracts verified successfully!");
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error(error);
+    console.error("Contract verification failed:", error);
     process.exit(1);
   });

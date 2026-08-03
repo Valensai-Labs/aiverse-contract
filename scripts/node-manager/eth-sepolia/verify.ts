@@ -2,9 +2,10 @@
 npx hardhat run scripts/node-manager/eth-sepolia/verify.ts --network sepolia
 */
 
-import { run, network, ethers } from "hardhat";
 import * as fs from "fs";
+import { ethers, network } from "hardhat";
 import * as path from "path";
+import { verifyOne } from "../../deploy-utils/verify";
 
 async function main() {
   const addressPath = path.join(__dirname, "./deployedAddr.json");
@@ -15,38 +16,34 @@ async function main() {
     throw new Error(`No addresses found for network ${networkName}`);
   }
 
-  const NodeManagerAddr = networkAddrs["NodeManagerV1_0_1"];
-  const NodeManagerProxyAddr = networkAddrs["NodeManagerProxy"];
-  if (!NodeManagerAddr) {
-    throw new Error(`NodeManager address not found for network ${networkName}`);
-  }
-  if (!NodeManagerProxyAddr) {
-    throw new Error(
-      `NodeManager Proxy address not found for network ${networkName}`
-    );
-  }
-  console.log(`Verifying contracts on ${networkName}...`);
-  console.log("NodeManager address:", NodeManagerAddr);
-  console.log("NodeManagerProxy address:", NodeManagerProxyAddr);
+  const implementationAddr = networkAddrs["NodeManagerV1_0_1"];
+  const proxyAddr = networkAddrs["NodeManagerProxy"];
 
-  try {
-    await run("verify:verify", {
-      address: NodeManagerAddr,
-    });
-    const [account, otherAccount] = await ethers.getSigners();
-    await run("verify:verify", {
-      address: NodeManagerProxyAddr,
-      constructorArguments: [NodeManagerAddr, account.address, "0x"],
-    });
-    console.log("Contract verification successful");
-  } catch (error) {
-    console.error("Contract verification failed", error);
+  if (!implementationAddr) {
+    throw new Error(`NodeManagerV1_0_1 address not found for network ${networkName}`);
   }
+  if (!proxyAddr) {
+    throw new Error(`NodeManagerProxy address not found for network ${networkName}`);
+  }
+
+  console.log(`Verifying contracts on ${networkName}...`);
+  console.log("NodeManagerV1_0_1 address:", implementationAddr);
+  console.log("NodeManagerProxy address:", proxyAddr);
+
+  const [deployer] = await ethers.getSigners();
+  await verifyOne("NodeManagerV1_0_1 implementation", implementationAddr, []);
+  await verifyOne("TransparentUpgradeableProxy", proxyAddr, [
+    implementationAddr,
+    deployer.address,
+    "0x",
+  ]);
+
+  console.log("\nAll NodeManager contracts verified successfully!");
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error(error);
+    console.error("Contract verification failed:", error);
     process.exit(1);
   });

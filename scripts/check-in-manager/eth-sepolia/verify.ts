@@ -2,9 +2,10 @@
 npx hardhat run scripts/check-in-manager/eth-sepolia/verify.ts --network sepolia
 */
 
-import { run, network, ethers } from "hardhat";
 import * as fs from "fs";
+import { ethers, network } from "hardhat";
 import * as path from "path";
+import { verifyOne } from "../../deploy-utils/verify";
 
 async function main() {
   const addressPath = path.join(__dirname, "./deployedAddr.json");
@@ -15,40 +16,34 @@ async function main() {
     throw new Error(`No addresses found for network ${networkName}`);
   }
 
-  const CheckInManagerAddr = networkAddrs["CheckInManagerV1_0_2"];
-  const CheckInManagerProxyAddr = networkAddrs["CheckInManagerProxy"];
-  if (!CheckInManagerAddr) {
-    throw new Error(
-      `CheckInManager address not found for network ${networkName}`
-    );
-  }
-  if (!CheckInManagerProxyAddr) {
-    throw new Error(
-      `CheckInManager Proxy address not found for network ${networkName}`
-    );
-  }
-  console.log(`Verifying contracts on ${networkName}...`);
-  console.log("CheckInManager address:", CheckInManagerAddr);
-  console.log("CheckInManagerProxy address:", CheckInManagerProxyAddr);
+  const implementationAddr = networkAddrs["CheckInManagerV1_0_2"];
+  const proxyAddr = networkAddrs["CheckInManagerProxy"];
 
-  try {
-    await run("verify:verify", {
-      address: CheckInManagerAddr,
-    });
-    const [account, otherAccount] = await ethers.getSigners();
-    await run("verify:verify", {
-      address: CheckInManagerProxyAddr,
-      constructorArguments: [CheckInManagerAddr, account.address, "0x"],
-    });
-    console.log("Contract verification successful");
-  } catch (error) {
-    console.error("Contract verification failed", error);
+  if (!implementationAddr) {
+    throw new Error(`CheckInManagerV1_0_2 address not found for network ${networkName}`);
   }
+  if (!proxyAddr) {
+    throw new Error(`CheckInManagerProxy address not found for network ${networkName}`);
+  }
+
+  console.log(`Verifying contracts on ${networkName}...`);
+  console.log("CheckInManagerV1_0_2 address:", implementationAddr);
+  console.log("CheckInManagerProxy address:", proxyAddr);
+
+  const [deployer] = await ethers.getSigners();
+  await verifyOne("CheckInManagerV1_0_2 implementation", implementationAddr, []);
+  await verifyOne("TransparentUpgradeableProxy", proxyAddr, [
+    implementationAddr,
+    deployer.address,
+    "0x",
+  ]);
+
+  console.log("\nAll CheckInManager contracts verified successfully!");
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error(error);
+    console.error("Contract verification failed:", error);
     process.exit(1);
   });

@@ -3,8 +3,9 @@ npx hardhat run scripts/node-manager/base/verify.ts --network base
 */
 
 import * as fs from "fs";
-import { ethers, run } from "hardhat";
+import { ethers } from "hardhat";
 import * as path from "path";
+import { verifyTransparentProxyStack } from "../../deploy-utils/verify";
 
 async function main() {
   const addressPath = path.join(__dirname, "./deployedAddr.json");
@@ -30,51 +31,28 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("Starting verification process...");
+  console.log("Starting verification process for NodeManager...");
   console.log(
     `Verifying NodeManagerV1_0_4 (Implementation): ${implementationAddr}`
   );
   console.log(`Verifying TransparentUpgradeableProxy (Proxy): ${proxyAddr}`);
   console.log(`Verifying ProxyAdmin (Admin): ${proxyAdminAddr}`);
 
-  try {
-    // 1. Verify Implementation Contract
-    await run("verify:verify", {
-      address: implementationAddr,
-      constructorArguments: [],
-    });
-    console.log("✅ NodeManagerV1_0_4 implementation verified.");
+  const [deployer] = await ethers.getSigners();
+  await verifyTransparentProxyStack({
+    implementationLabel: "NodeManagerV1_0_4 implementation",
+    implementationAddr,
+    proxyAddr,
+    proxyAdminAddr,
+    proxyAdminOwner: deployer.address,
+  });
 
-    // We need the deployer address for constructor arguments
-    const [deployer] = await ethers.getSigners();
-
-    // 2. Verify ProxyAdmin Contract
-    await run("verify:verify", {
-      address: proxyAdminAddr,
-      constructorArguments: [deployer.address],
-    });
-    console.log("✅ ProxyAdmin verified.");
-
-    // 3. Verify Proxy Contract
-    await run("verify:verify", {
-      address: proxyAddr,
-      constructorArguments: [implementationAddr, deployer.address, "0x"],
-    });
-    console.log("✅ TransparentUpgradeableProxy verified.");
-
-    console.log("\nAll contracts verified successfully!");
-  } catch (error: any) {
-    if (error.message.toLowerCase().includes("already verified")) {
-      console.log("One or more contracts were already verified.");
-    } else {
-      console.error("Contract verification failed:", error);
-    }
-  }
+  console.log("\nAll NodeManager contracts verified successfully!");
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error(error);
+    console.error("Contract verification failed:", error);
     process.exit(1);
   });

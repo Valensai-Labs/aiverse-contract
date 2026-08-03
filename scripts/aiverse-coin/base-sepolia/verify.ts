@@ -3,8 +3,9 @@ npx hardhat run scripts/aiverse-coin/base-sepolia/verify.ts --network base-sepol
 */
 
 import * as fs from "fs";
-import { ethers, run } from "hardhat";
+import { ethers } from "hardhat";
 import * as path from "path";
+import { verifyTransparentProxyStack } from "../../deploy-utils/verify";
 
 async function main() {
   const addressPath = path.join(__dirname, "./deployedAddr.json");
@@ -37,44 +38,21 @@ async function main() {
   console.log(`Verifying TransparentUpgradeableProxy (Proxy): ${proxyAddr}`);
   console.log(`Verifying ProxyAdmin (Admin): ${proxyAdminAddr}`);
 
-  try {
-    // 1. Verify Implementation Contract
-    await run("verify:verify", {
-      address: implementationAddr,
-      constructorArguments: [],
-    });
-    console.log("✅ AiverseCoinV1_0_5 implementation verified.");
+  const [deployer] = await ethers.getSigners();
+  await verifyTransparentProxyStack({
+    implementationLabel: "AiverseCoinV1_0_5 implementation",
+    implementationAddr,
+    proxyAddr,
+    proxyAdminAddr,
+    proxyAdminOwner: deployer.address,
+  });
 
-    // We need the deployer address for constructor arguments
-    const [deployer] = await ethers.getSigners();
-
-    // 2. Verify ProxyAdmin Contract
-    await run("verify:verify", {
-      address: proxyAdminAddr,
-      constructorArguments: [deployer.address],
-    });
-    console.log("✅ ProxyAdmin verified.");
-
-    // 3. Verify Proxy Contract
-    await run("verify:verify", {
-      address: proxyAddr,
-      constructorArguments: [implementationAddr, deployer.address, "0x"],
-    });
-    console.log("✅ TransparentUpgradeableProxy verified.");
-
-    console.log("\nAll AiverseCoin contracts verified successfully!");
-  } catch (error: any) {
-    if (error.message.toLowerCase().includes("already verified")) {
-      console.log("One or more contracts were already verified.");
-    } else {
-      console.error("Contract verification failed:", error);
-    }
-  }
+  console.log("\nAll AiverseCoin contracts verified successfully!");
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error(error);
+    console.error("Contract verification failed:", error);
     process.exit(1);
   });

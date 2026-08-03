@@ -2,9 +2,10 @@
 npx hardhat run scripts/aiverse-coin/eth-sepolia/verify.ts --network sepolia
 */
 
-import { run, network, ethers } from "hardhat";
 import * as fs from "fs";
+import { ethers, network } from "hardhat";
 import * as path from "path";
+import { verifyOne } from "../../deploy-utils/verify";
 
 async function main() {
   const addressPath = path.join(__dirname, "./deployedAddr.json");
@@ -15,38 +16,34 @@ async function main() {
     throw new Error(`No addresses found for network ${networkName}`);
   }
 
-  const AiverseCoinAddr = networkAddrs["AiverseCoinV1_0_1"];
-  const AiverseCoinProxyAddr = networkAddrs["AiverseCoinProxy"];
-  if (!AiverseCoinAddr) {
-    throw new Error(`AiverseCoin address not found for network ${networkName}`);
-  }
-  if (!AiverseCoinProxyAddr) {
-    throw new Error(
-      `AiverseCoin Proxy address not found for network ${networkName}`
-    );
-  }
-  console.log(`Verifying contracts on ${networkName}...`);
-  console.log("AiverseCoin address:", AiverseCoinAddr);
-  console.log("AiverseCoinProxy address:", AiverseCoinProxyAddr);
+  const implementationAddr = networkAddrs["AiverseCoinV1_0_1"];
+  const proxyAddr = networkAddrs["AiverseCoinProxy"];
 
-  try {
-    await run("verify:verify", {
-      address: AiverseCoinAddr,
-    });
-    const [account, otherAccount] = await ethers.getSigners();
-    await run("verify:verify", {
-      address: AiverseCoinProxyAddr,
-      constructorArguments: [AiverseCoinAddr, account.address, "0x"],
-    });
-    console.log("Contract verification successful");
-  } catch (error) {
-    console.error("Contract verification failed", error);
+  if (!implementationAddr) {
+    throw new Error(`AiverseCoinV1_0_1 address not found for network ${networkName}`);
   }
+  if (!proxyAddr) {
+    throw new Error(`AiverseCoinProxy address not found for network ${networkName}`);
+  }
+
+  console.log(`Verifying contracts on ${networkName}...`);
+  console.log("AiverseCoinV1_0_1 address:", implementationAddr);
+  console.log("AiverseCoinProxy address:", proxyAddr);
+
+  const [deployer] = await ethers.getSigners();
+  await verifyOne("AiverseCoinV1_0_1 implementation", implementationAddr, []);
+  await verifyOne("TransparentUpgradeableProxy", proxyAddr, [
+    implementationAddr,
+    deployer.address,
+    "0x",
+  ]);
+
+  console.log("\nAll AiverseCoin contracts verified successfully!");
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error(error);
+    console.error("Contract verification failed:", error);
     process.exit(1);
   });

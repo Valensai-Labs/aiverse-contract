@@ -2,9 +2,10 @@
 npx hardhat run scripts/account-registrar/eth-sepolia/verify.ts --network sepolia
 */
 
-import { run, network, ethers } from "hardhat";
 import * as fs from "fs";
+import { ethers, network } from "hardhat";
 import * as path from "path";
+import { verifyOne } from "../../deploy-utils/verify";
 
 async function main() {
   const addressPath = path.join(__dirname, "./deployedAddr.json");
@@ -15,40 +16,34 @@ async function main() {
     throw new Error(`No addresses found for network ${networkName}`);
   }
 
-  const AccountRegistrarAddr = networkAddrs["AccountRegistrarV1_0_1"];
-  const AccountRegistrarProxyAddr = networkAddrs["AccountRegistrarProxy"];
-  if (!AccountRegistrarAddr) {
-    throw new Error(
-      `AccountRegistrar address not found for network ${networkName}`
-    );
-  }
-  if (!AccountRegistrarProxyAddr) {
-    throw new Error(
-      `AccountRegistrar Proxy address not found for network ${networkName}`
-    );
-  }
-  console.log(`Verifying contracts on ${networkName}...`);
-  console.log("AccountRegistrar address:", AccountRegistrarAddr);
-  console.log("AccountRegistrarProxy address:", AccountRegistrarProxyAddr);
+  const implementationAddr = networkAddrs["AccountRegistrarV1_0_1"];
+  const proxyAddr = networkAddrs["AccountRegistrarProxy"];
 
-  try {
-    await run("verify:verify", {
-      address: AccountRegistrarAddr,
-    });
-    const [account, otherAccount] = await ethers.getSigners();
-    await run("verify:verify", {
-      address: AccountRegistrarProxyAddr,
-      constructorArguments: [AccountRegistrarAddr, account.address, "0x"],
-    });
-    console.log("Contract verification successful");
-  } catch (error) {
-    console.error("Contract verification failed", error);
+  if (!implementationAddr) {
+    throw new Error(`AccountRegistrarV1_0_1 address not found for network ${networkName}`);
   }
+  if (!proxyAddr) {
+    throw new Error(`AccountRegistrarProxy address not found for network ${networkName}`);
+  }
+
+  console.log(`Verifying contracts on ${networkName}...`);
+  console.log("AccountRegistrarV1_0_1 address:", implementationAddr);
+  console.log("AccountRegistrarProxy address:", proxyAddr);
+
+  const [deployer] = await ethers.getSigners();
+  await verifyOne("AccountRegistrarV1_0_1 implementation", implementationAddr, []);
+  await verifyOne("TransparentUpgradeableProxy", proxyAddr, [
+    implementationAddr,
+    deployer.address,
+    "0x",
+  ]);
+
+  console.log("\nAll AccountRegistrar contracts verified successfully!");
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error(error);
+    console.error("Contract verification failed:", error);
     process.exit(1);
   });

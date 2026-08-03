@@ -10,8 +10,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@openzeppelin/*": ["node_modules/@openzeppelin/*"],
-    },
+      "@openzeppelin/*": ["node_modules/@openzeppelin/*"]
+    }
   },
   "include": [
     ".eslintrc.cjs",
