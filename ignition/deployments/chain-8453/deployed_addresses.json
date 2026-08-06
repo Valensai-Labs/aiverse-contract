@@ -60,5 +60,12 @@
   "base_PowerAssetV1_0_8_Upgrade_Module#PowerAssetV1_0_8": "0x66666667e8228B00A9B3249331ce0CA3179D9d69",
   "base_PowerAssetV1_0_8_Upgrade_ProxyModule#PowerAssetV1_0_8": "0x957ca4988d3bD4146BA086Ff4CE2FfEbD4263d09",
   "base_AccountRegistrarV1_0_9_Upgrade_Module#AccountRegistrarV1_0_9": "0x11111119E0a7E930F0B531Ba15Dd9A052b8FE089",
-  "base_AccountRegistrarV1_0_9_Upgrade_ProxyModule#AccountRegistrarV1_0_9": "0x4dC9e0D80F4c33acb1e1B976da1b355517ca6cd9"
+  "base_AccountRegistrarV1_0_9_Upgrade_ProxyModule#AccountRegistrarV1_0_9": "0x4dC9e0D80F4c33acb1e1B976da1b355517ca6cd9",
+  "base_PowerAssetV1_0_9_Upgrade_Module#PowerAssetV1_0_9": "0x66666667e8228B00A9B3249331ce0CA3179D9d69",
+  "base_PowerAssetV1_0_9_Upgrade_ProxyModule#PowerAssetV1_0_9": "0xa8997Ef2E3509902D37C7bD6B30d37A096A29ace",
+  "base_AiverseTopUpV1_0_1_Upgrade_ProxyModule#AiverseTopUpV1_0_1": "0xE05d4613C10C0b3B61320d9f8971597e41cA0571",
+  "base_AiverseTopUp_ProxyModule#AiverseTopUp": "0x43Dbf1f635fC5262245A726572C064D8Bf64263B",
+  "base_AiverseTopUp_ProxyModule#TransparentUpgradeableProxy": "0x62aa6ae2F787E6513C6A5b3956c24e51910C0588",
+  "base_AiverseTopUp_ProxyModule#ProxyAdmin": "0x1fa9F86a209Fce086ef79C3DbA4CF70029e0f0AF",
+  "base_AiverseTopUpV1_0_1_Upgrade_Module#AiverseTopUpV1_0_1": "0x62aa6ae2F787E6513C6A5b3956c24e51910C0588"
 }

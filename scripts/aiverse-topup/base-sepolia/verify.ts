@@ -16,7 +16,7 @@ async function main() {
   const addresses = JSON.parse(fs.readFileSync(addressPath, "utf8"));
 
   const {
-    AiverseTopUp: implementationAddr,
+    AiverseTopUpV1_0_1: implementationAddr,
     AiverseTopUpProxy: proxyAddr,
     AiverseTopUpProxyAdmin: proxyAdminAddr,
   } = addresses["base-sepolia"];
@@ -33,14 +33,14 @@ async function main() {
 
   console.log("Starting verification process for AiverseTopUp...");
   console.log(
-    `Verifying AiverseTopUp (Implementation): ${implementationAddr}`
+    `Verifying AiverseTopUpV1_0_1 (Implementation): ${implementationAddr}`
   );
   console.log(`Verifying TransparentUpgradeableProxy (Proxy): ${proxyAddr}`);
   console.log(`Verifying ProxyAdmin (Admin): ${proxyAdminAddr}`);
 
   const [deployer] = await ethers.getSigners();
   await verifyTransparentProxyStack({
-    implementationLabel: "AiverseTopUp implementation",
+    implementationLabel: "AiverseTopUpV1_0_1 implementation",
     implementationAddr,
     proxyAddr,
     proxyAdminAddr,

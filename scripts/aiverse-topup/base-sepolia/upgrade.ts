@@ -7,18 +7,16 @@ import hre from "hardhat";
 import { aiverseTopUpUpgradeModule } from "../../upgrade-module/base-sepolia";
 
 async function main() {
-  const [, otherAccount] = await hre.ethers.getSigners();
+  const [account] = await hre.ethers.getSigners();
   const { contractInstance: aiverseTopUpUpgrade } = await hre.ignition.deploy(
-    aiverseTopUpUpgradeModule
+    aiverseTopUpUpgradeModule,
   );
   console.log(aiverseTopUpUpgrade.target);
   const aiverseTopUpTyped = await hre.ethers.getContractAt(
-    "AiverseTopUp",
-    aiverseTopUpUpgrade.target
+    "AiverseTopUpV1_0_1",
+    aiverseTopUpUpgrade.target,
   );
-  expect(await aiverseTopUpTyped.connect(otherAccount).version()).to.equal(
-    "1.0.0"
-  );
+  expect(await aiverseTopUpTyped.connect(account).version()).to.equal("1.0.1");
 }
 
 main()

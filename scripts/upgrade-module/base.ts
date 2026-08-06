@@ -53,8 +53,8 @@ function buildUpgradeContractModule(
 // Upgrade TO this new version... FROM the old version
 export const powerAssetUpgradeModule = buildUpgradeContractModule(
   "PowerAsset",
-  "V1_0_8",
-  buildUpgradeModule("PowerAssetV1_0_8", "PowerAssetV1_0_4")
+  "V1_0_9",
+  buildUpgradeModule("PowerAssetV1_0_9", "PowerAssetV1_0_4")
 );
 
 export const nodeManagerUpgradeModule = buildUpgradeContractModule(
@@ -101,8 +101,10 @@ export const batchTransferUpgradeModule = buildUpgradeContractModule(
 
 export const aiverseTopUpUpgradeModule = buildUpgradeContractModule(
   "AiverseTopUp",
-  "V1_0_0",
-  buildUpgradeModule("AiverseTopUp", "AiverseTopUp")
+  "V1_0_1",
+  // TopUp proxy was deployed via atomicProxyDeploy, NOT this Ignition module.
+  // Use scripts/aiverse-topup/{base,base-sepolia}/upgrade.ts instead.
+  buildUpgradeModule("AiverseTopUpV1_0_1", "AiverseTopUp")
 );
 
 export const aiverseTreasuryUpgradeModule = buildUpgradeContractModule(
