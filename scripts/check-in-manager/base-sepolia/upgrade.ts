@@ -7,17 +7,17 @@ import hre from "hardhat";
 import { checkInManagerUpgradeModule } from "../../upgrade-module/base-sepolia";
 
 async function main() {
-  const [account, otherAccount] = await hre.ethers.getSigners();
+  const [, otherAccount] = await hre.ethers.getSigners();
   const { contractInstance: checkInManagerUpgrade } = await hre.ignition.deploy(
     checkInManagerUpgradeModule
   );
   console.log(checkInManagerUpgrade.target);
   const checkInManagerTyped = await hre.ethers.getContractAt(
-    "CheckInManagerV1_0_6",
+    "CheckInManagerV1_0_7",
     checkInManagerUpgrade.target
   );
   expect(await checkInManagerTyped.connect(otherAccount).version()).to.equal(
-    "1.0.6"
+    "1.0.7"
   );
 }
 

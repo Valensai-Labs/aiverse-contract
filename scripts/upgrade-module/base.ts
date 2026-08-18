@@ -77,8 +77,8 @@ export const accountRegistrarUpgradeModule = buildUpgradeContractModule(
 
 export const checkInManagerUpgradeModule = buildUpgradeContractModule(
   "CheckInManager",
-  "V1_0_6",
-  buildUpgradeModule("CheckInManagerV1_0_6", "CheckInManagerV1_0_5")
+  "V1_0_7",
+  buildUpgradeModule("CheckInManagerV1_0_7", "CheckInManagerV1_0_5")
 );
 
 export const stakeControllerUpgradeModule = buildUpgradeContractModule(
@@ -103,18 +103,22 @@ export const aiverseTopUpUpgradeModule = buildUpgradeContractModule(
   "AiverseTopUp",
   "V1_0_1",
   // TopUp proxy was deployed via atomicProxyDeploy, NOT this Ignition module.
-  // Use scripts/aiverse-topup/{base,base-sepolia}/upgrade.ts instead.
+  // Use scripts/aiverse-topup/base/upgrade.ts instead.
   buildUpgradeModule("AiverseTopUpV1_0_1", "AiverseTopUp")
 );
 
 export const aiverseTreasuryUpgradeModule = buildUpgradeContractModule(
   "AiverseTreasury",
   "V1_0_1",
+  // Treasury proxy was deployed via atomicProxyDeploy, NOT this Ignition module.
+  // Use scripts/aiverse-treasury/base/upgrade.ts instead.
   buildUpgradeModule("AiverseTreasuryV1_0_1", "AiverseTreasuryV1_0_1")
 );
 
 export const activityManagerUpgradeModule = buildUpgradeContractModule(
   "ActivityManager",
-  "V1_0_0",
-  buildUpgradeModule("ActivityManager", "ActivityManager")
+  "V1_0_1",
+  // ActivityManager proxy was deployed via atomicProxyDeploy, NOT this Ignition module.
+  // Use scripts/activity-manager/base/upgrade.ts instead.
+  buildUpgradeModule("ActivityManagerV1_0_1", "ActivityManager")
 );

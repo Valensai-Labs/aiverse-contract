@@ -16,7 +16,7 @@ async function main() {
   const addresses = JSON.parse(fs.readFileSync(addressPath, "utf8"));
 
   const {
-    CheckInManagerV1_0_6: implementationAddr,
+    CheckInManagerV1_0_7: implementationAddr,
     CheckInManagerProxy: proxyAddr,
     CheckInManagerProxyAdmin: proxyAdminAddr,
   } = addresses["base"];
@@ -33,14 +33,14 @@ async function main() {
 
   console.log("Starting verification process for CheckInManager...");
   console.log(
-    `Verifying CheckInManagerV1_0_6 (Implementation): ${implementationAddr}`
+    `Verifying CheckInManagerV1_0_7 (Implementation): ${implementationAddr}`
   );
   console.log(`Verifying TransparentUpgradeableProxy (Proxy): ${proxyAddr}`);
   console.log(`Verifying ProxyAdmin (Admin): ${proxyAdminAddr}`);
 
   const [deployer] = await ethers.getSigners();
   await verifyTransparentProxyStack({
-    implementationLabel: "CheckInManagerV1_0_6 implementation",
+    implementationLabel: "CheckInManagerV1_0_7 implementation",
     implementationAddr,
     proxyAddr,
     proxyAdminAddr,

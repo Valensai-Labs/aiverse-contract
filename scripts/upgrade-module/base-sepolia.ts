@@ -77,8 +77,8 @@ export const accountRegistrarUpgradeModule = buildUpgradeContractModule(
 
 export const checkInManagerUpgradeModule = buildUpgradeContractModule(
   "CheckInManager",
-  "V1_0_6",
-  buildUpgradeModule("CheckInManagerV1_0_6", "CheckInManagerV1_0_5")
+  "V1_0_7",
+  buildUpgradeModule("CheckInManagerV1_0_7", "CheckInManagerV1_0_5")
 );
 
 export const stakeControllerUpgradeModule = buildUpgradeContractModule(
@@ -113,6 +113,8 @@ export const aiverseTreasuryUpgradeModule = buildUpgradeContractModule(
 
 export const activityManagerUpgradeModule = buildUpgradeContractModule(
   "ActivityManager",
-  "V1_0_0",
-  buildUpgradeModule("ActivityManager", "ActivityManager")
+  "V1_0_1",
+  // ActivityManager proxy was deployed via atomicProxyDeploy, NOT this Ignition module.
+  // Use scripts/activity-manager/base-sepolia/upgrade.ts instead.
+  buildUpgradeModule("ActivityManagerV1_0_1", "ActivityManager")
 );

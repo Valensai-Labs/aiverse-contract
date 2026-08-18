@@ -16,7 +16,7 @@ async function main() {
   const addresses = JSON.parse(fs.readFileSync(addressPath, "utf8"));
 
   const {
-    ActivityManager: implementationAddr,
+    ActivityManagerV1_0_1: implementationAddr,
     ActivityManagerProxy: proxyAddr,
     ActivityManagerProxyAdmin: proxyAdminAddr,
   } = addresses.base;
@@ -33,14 +33,14 @@ async function main() {
 
   console.log("Starting verification process for ActivityManager...");
   console.log(
-    `Verifying ActivityManager (Implementation): ${implementationAddr}`
+    `Verifying ActivityManagerV1_0_1 (Implementation): ${implementationAddr}`
   );
   console.log(`Verifying TransparentUpgradeableProxy (Proxy): ${proxyAddr}`);
   console.log(`Verifying ProxyAdmin (Admin): ${proxyAdminAddr}`);
 
   const [deployer] = await ethers.getSigners();
   await verifyTransparentProxyStack({
-    implementationLabel: "ActivityManager implementation",
+    implementationLabel: "ActivityManagerV1_0_1 implementation",
     implementationAddr,
     proxyAddr,
     proxyAdminAddr,
