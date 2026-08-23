@@ -67,5 +67,7 @@
   "base_AiverseTopUp_ProxyModule#AiverseTopUp": "0x43Dbf1f635fC5262245A726572C064D8Bf64263B",
   "base_AiverseTopUp_ProxyModule#TransparentUpgradeableProxy": "0x62aa6ae2F787E6513C6A5b3956c24e51910C0588",
   "base_AiverseTopUp_ProxyModule#ProxyAdmin": "0x1fa9F86a209Fce086ef79C3DbA4CF70029e0f0AF",
-  "base_AiverseTopUpV1_0_1_Upgrade_Module#AiverseTopUpV1_0_1": "0x62aa6ae2F787E6513C6A5b3956c24e51910C0588"
+  "base_AiverseTopUpV1_0_1_Upgrade_Module#AiverseTopUpV1_0_1": "0x62aa6ae2F787E6513C6A5b3956c24e51910C0588",
+  "base_CheckInManagerV1_0_7_Upgrade_Module#CheckInManagerV1_0_7": "0x33333337bFA13ffC9Bd0Bbf1544beBA1079Dae34",
+  "base_CheckInManagerV1_0_7_Upgrade_ProxyModule#CheckInManagerV1_0_7": "0xC4e56E5B22F77deF8d89b77Bb351Dd2b10AD6DBE"
 }
