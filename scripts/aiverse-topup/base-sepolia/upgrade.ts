@@ -9,14 +9,14 @@ import { aiverseTopUpUpgradeModule } from "../../upgrade-module/base-sepolia";
 async function main() {
   const [account] = await hre.ethers.getSigners();
   const { contractInstance: aiverseTopUpUpgrade } = await hre.ignition.deploy(
-    aiverseTopUpUpgradeModule,
+    aiverseTopUpUpgradeModule
   );
   console.log(aiverseTopUpUpgrade.target);
   const aiverseTopUpTyped = await hre.ethers.getContractAt(
-    "AiverseTopUpV1_0_1",
-    aiverseTopUpUpgrade.target,
+    "AiverseTopUpV1_0_2",
+    aiverseTopUpUpgrade.target
   );
-  expect(await aiverseTopUpTyped.connect(account).version()).to.equal("1.0.1");
+  expect(await aiverseTopUpTyped.connect(account).version()).to.equal("1.0.2");
 }
 
 main()

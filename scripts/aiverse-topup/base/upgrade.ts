@@ -2,6 +2,7 @@
   TopUp was deployed via atomicProxyDeploy (not Ignition). Do NOT use
   ignition upgrade-module — it would spawn a new proxy stack.
 
+  npx hardhat run scripts/validate-upgrade.ts --network base
   npx hardhat run scripts/aiverse-topup/base/upgrade.ts --network base
 */
 
@@ -11,8 +12,8 @@ import hre from "hardhat";
 import * as path from "path";
 
 const NETWORK_KEY = "base";
-const NEW_IMPL_NAME = "AiverseTopUpV1_0_1";
-const EXPECTED_VERSION = "1.0.1";
+const NEW_IMPL_NAME = "AiverseTopUpV1_0_2";
+const EXPECTED_VERSION = "1.0.2";
 
 async function main() {
   const [account] = await hre.ethers.getSigners();
@@ -58,7 +59,7 @@ async function main() {
   console.log(`Updated ${addressPath} → ${NEW_IMPL_NAME}=${implAddr}`);
 
   console.log(
-    "Post-upgrade: setPowerAsset(powerAssetProxy); setMaxGiftAmount(3000e18); then PowerAsset.setTopUp(thisProxy).",
+    "Post-upgrade: no initialize. 1.0.1 powerAsset / maxGiftAmount keep working.",
   );
 }
 

@@ -101,8 +101,8 @@ export const batchTransferUpgradeModule = buildUpgradeContractModule(
 
 export const aiverseTopUpUpgradeModule = buildUpgradeContractModule(
   "AiverseTopUp",
-  "V1_0_1",
-  buildUpgradeModule("AiverseTopUpV1_0_1", "AiverseTopUp")
+  "V1_0_2",
+  buildUpgradeModule("AiverseTopUpV1_0_2", "AiverseTopUp")
 );
 
 export const aiverseTreasuryUpgradeModule = buildUpgradeContractModule(

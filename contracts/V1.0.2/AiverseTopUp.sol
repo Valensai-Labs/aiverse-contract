@@ -141,6 +141,21 @@ contract AiverseTopUpV1_0_2 is
     );
     event MaxGiftAmountUpdated(uint256 previousMax, uint256 newMax);
 
+    /// @notice Args for `depositWithAuthorization` (calldata struct avoids stack-too-deep).
+    struct AuthorizationDeposit {
+        bytes32 paymentId;
+        address from;
+        address to;
+        bytes32 hostOrderId;
+        uint256 amount;
+        uint256 validAfter;
+        uint256 validBefore;
+        uint256 productType;
+        uint8 v;
+        bytes32 r;
+        bytes32 s;
+    }
+
     error NotPlatform();
     error ZeroAddress();
     error ZeroTreasury();
@@ -445,68 +460,73 @@ contract AiverseTopUpV1_0_2 is
     /// @notice Platform-relayed Host payment: pull USDC into this proxy via `receiveWithAuthorization`, then transfer to `to`.
     /// @dev User EIP-3009: `to` = this proxy, `nonce` = `paymentId`. `paymentId` binds Host `to` and `hostOrderId`.
     ///      Window matches FiatToken: `block.timestamp > validAfter && block.timestamp < validBefore`.
+    ///      Calldata struct keeps this under the EVM stack limit.
     function depositWithAuthorization(
-        bytes32 paymentId,
-        address from,
-        address to,
-        bytes32 hostOrderId,
-        uint256 amount,
-        uint256 validAfter,
-        uint256 validBefore,
-        uint256 productType,
-        uint8 v,
-        bytes32 r,
-        bytes32 s
+        AuthorizationDeposit calldata d
     ) external onlyPlatform whenNotPaused nonReentrant {
-        _validateAuthorization(
-            from,
-            to,
-            hostOrderId,
-            amount,
-            validAfter,
-            validBefore
-        );
+        _lockAuthorizationPaymentId(d);
+        _receiveAndForwardUsdc(d);
+        _emitAuthorizationSettled(d);
+    }
 
+    function _lockAuthorizationPaymentId(
+        AuthorizationDeposit calldata d
+    ) internal {
+        _validateAuthorization(
+            d.from,
+            d.to,
+            d.hostOrderId,
+            d.amount,
+            d.validAfter,
+            d.validBefore
+        );
         if (
-            paymentId !=
+            d.paymentId !=
             computePaymentIdWithAuthorization(
-                from,
-                to,
-                hostOrderId,
-                amount,
-                validAfter,
-                validBefore,
-                productType
+                d.from,
+                d.to,
+                d.hostOrderId,
+                d.amount,
+                d.validAfter,
+                d.validBefore,
+                d.productType
             )
         ) revert PaymentIdMismatch();
-        if (usedPaymentId[paymentId]) revert PaymentIdAlreadyUsed();
+        if (usedPaymentId[d.paymentId]) revert PaymentIdAlreadyUsed();
+        usedPaymentId[d.paymentId] = true;
+    }
 
-        usedPaymentId[paymentId] = true;
-
-        IERC20 usdc_ = usdc;
-        IERC3009(address(usdc_)).receiveWithAuthorization(
-            from,
+    function _receiveAndForwardUsdc(
+        AuthorizationDeposit calldata d
+    ) internal {
+        IERC20 token = usdc;
+        IERC3009(address(token)).receiveWithAuthorization(
+            d.from,
             address(this),
-            amount,
-            validAfter,
-            validBefore,
-            paymentId,
-            v,
-            r,
-            s
+            d.amount,
+            d.validAfter,
+            d.validBefore,
+            d.paymentId,
+            d.v,
+            d.r,
+            d.s
         );
-        usdc_.safeTransfer(to, amount);
+        token.safeTransfer(d.to, d.amount);
+    }
 
+    function _emitAuthorizationSettled(
+        AuthorizationDeposit calldata d
+    ) internal {
         emit UsdcAuthorizationSettled(
-            paymentId,
-            from,
-            to,
-            hostOrderId,
-            address(usdc_),
-            amount,
-            validAfter,
-            validBefore,
-            productType
+            d.paymentId,
+            d.from,
+            d.to,
+            d.hostOrderId,
+            address(usdc),
+            d.amount,
+            d.validAfter,
+            d.validBefore,
+            d.productType
         );
     }
 

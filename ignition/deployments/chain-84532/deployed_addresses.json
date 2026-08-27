@@ -121,5 +121,7 @@
   "base_sepolia_ActivityManager_ProxyModule#ProxyAdmin": "0x23e54110727B84d4fc62c4750fFA5C6e08060f94",
   "base_sepolia_ActivityManagerV1_0_1_Upgrade_Module#ActivityManagerV1_0_1": "0x34cFB524c59b6C84B4685c3761b5b58D4C023d31",
   "base_sepolia_CheckInManagerV1_0_7_Upgrade_Module#CheckInManagerV1_0_7": "0x2E872f82E766EF1D4c3915D2eBB6FEF3c2209Bc9",
-  "base_sepolia_CheckInManagerV1_0_7_Upgrade_ProxyModule#CheckInManagerV1_0_7": "0xa3a552e50a694DAb0608D4b0bF9c0F9636015Adf"
+  "base_sepolia_CheckInManagerV1_0_7_Upgrade_ProxyModule#CheckInManagerV1_0_7": "0xa3a552e50a694DAb0608D4b0bF9c0F9636015Adf",
+  "base_sepolia_AiverseTopUpV1_0_2_Upgrade_Module#AiverseTopUpV1_0_2": "0xC03Cdd15e2a1FF791937e0191F83FfeF342945ba",
+  "base_sepolia_AiverseTopUpV1_0_2_Upgrade_ProxyModule#AiverseTopUpV1_0_2": "0x45e0a355629244A80C54B914E56f5e1981Df7D73"
 }

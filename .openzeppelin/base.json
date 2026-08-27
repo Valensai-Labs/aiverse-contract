@@ -26,15 +26,15 @@
       "kind": "transparent"
     },
     {
-      "address": "0x0000000670ec6A87848b2bDA55533930AAEd0EfC",
-      "kind": "transparent"
-    },
-    {
       "address": "0x7777777F6d76855bDFCD8753a9ED33F6beD7ac3C",
       "kind": "transparent"
     },
     {
       "address": "0x33333337bFA13ffC9Bd0Bbf1544beBA1079Dae34",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x0000000670ec6A87848b2bDA55533930AAEd0EfC",
       "kind": "transparent"
     }
   ],
@@ -3067,7 +3067,11 @@
             }
           ]
         }
-      }
+      },
+      "allAddresses": [
+        "0xd9ab0cDc191C6814fc1902863FDDab624B7f4FD4",
+        "0x12B3Eca4666006F093B728732706792a844048Ac"
+      ]
     },
     "afd854de00c40d7338df9168d6f01c9b6e57efbd552c3de119c46298d5d2474d": {
       "address": "0xF9D39d98F7EA250277f1241453A08fd8727fdF5B",

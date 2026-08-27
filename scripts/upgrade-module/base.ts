@@ -101,10 +101,10 @@ export const batchTransferUpgradeModule = buildUpgradeContractModule(
 
 export const aiverseTopUpUpgradeModule = buildUpgradeContractModule(
   "AiverseTopUp",
-  "V1_0_1",
+  "V1_0_2",
   // TopUp proxy was deployed via atomicProxyDeploy, NOT this Ignition module.
   // Use scripts/aiverse-topup/base/upgrade.ts instead.
-  buildUpgradeModule("AiverseTopUpV1_0_1", "AiverseTopUp")
+  buildUpgradeModule("AiverseTopUpV1_0_2", "AiverseTopUpV1_0_1")
 );
 
 export const aiverseTreasuryUpgradeModule = buildUpgradeContractModule(
