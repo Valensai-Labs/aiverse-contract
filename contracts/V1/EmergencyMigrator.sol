@@ -18,7 +18,10 @@ interface IAccountRegistrarEmergency {
 
 /// @notice Legacy StakeController emergency hook (V1.0.13+).
 interface IStakeControllerEmergency {
-    function emergencyUnstakeAndClaimAll(address oldAddr) external;
+    function emergencyUnstakeAndClaimAll(
+        address oldAddr,
+        address node
+    ) external;
 }
 
 /// @notice Legacy PowerAsset emergency hooks (V1.0.10+).
@@ -65,7 +68,7 @@ contract EmergencyMigrator is
 
     bytes32 private constant MIGRATION_TYPEHASH =
         keccak256(
-            "Migration(bytes32 operationId,bytes32 emailHash,address oldAddr,address newAddr,bytes32 scopeHash,uint256 chainId,uint256 deadline,uint256 configEpoch)"
+            "Migration(bytes32 operationId,bytes32 emailHash,address oldAddr,address newAddr,address node,bytes32 scopeHash,uint256 chainId,uint256 deadline,uint256 configEpoch)"
         );
 
     IAccountRegistrarEmergency public accountRegistrar;
@@ -85,6 +88,7 @@ contract EmergencyMigrator is
         bytes32 emailHash;
         address oldAddr;
         address newAddr;
+        address node;
         bytes32 scopeHash;
         uint256 deadline;
         uint256 configEpoch;
@@ -199,6 +203,7 @@ contract EmergencyMigrator is
         bytes32 emailHash,
         address oldAddr,
         address newAddr,
+        address node,
         bytes32 scopeHash,
         uint256 deadline,
         uint256 configEpoch_,
@@ -210,6 +215,7 @@ contract EmergencyMigrator is
             emailHash: emailHash,
             oldAddr: oldAddr,
             newAddr: newAddr,
+            node: node,
             scopeHash: scopeHash,
             deadline: deadline,
             configEpoch: configEpoch_
@@ -230,7 +236,10 @@ contract EmergencyMigrator is
         uint256 walletPowerBefore = powerAsset.balanceOf(request.oldAddr);
         uint256 walletAicoinBefore = aiverseCoin.balanceOf(request.oldAddr);
 
-        stakeController.emergencyUnstakeAndClaimAll(request.oldAddr);
+        stakeController.emergencyUnstakeAndClaimAll(
+            request.oldAddr,
+            request.node
+        );
 
         uint256 walletPowerAfterUnstake = powerAsset.balanceOf(request.oldAddr);
         uint256 walletAicoinAfterUnstake = aiverseCoin.balanceOf(
@@ -246,7 +255,7 @@ contract EmergencyMigrator is
         }
 
         powerAssetEmergency.emergencyMintCompensation(request.newAddr);
-        
+
         if (walletAicoinAfterUnstake > 0) {
             aiverseCoinEmergency.emergencyTransferFrom(
                 request.oldAddr,
@@ -339,6 +348,7 @@ contract EmergencyMigrator is
                 request.emailHash,
                 request.oldAddr,
                 request.newAddr,
+                request.node,
                 request.scopeHash,
                 block.chainid,
                 request.deadline,
