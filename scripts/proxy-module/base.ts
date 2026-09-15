@@ -102,3 +102,9 @@ export const activityManagerModule = buildProxiedContractModule(
   "ActivityManager",
   activityManagerProxyModule
 );
+
+const emergencyMigratorProxyModule = buildProxyModule("EmergencyMigrator");
+export const emergencyMigratorModule = buildProxiedContractModule(
+  "EmergencyMigrator",
+  emergencyMigratorProxyModule
+);

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -9,23 +8,22 @@ import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol";
 
-/// @notice AccountRegistrar read-only hooks used to validate Particle identity during migration.
-interface IAccountRegistrarEmergency {
+interface IAccountRegistrar {
     function emailHashToAddr(bytes32 emailHash) external view returns (address);
 
     function userEmailHash(address user) external view returns (bytes32);
 }
 
-/// @notice Legacy StakeController emergency hook (V1.0.13+).
-interface IStakeControllerEmergency {
+interface IStakeController {
     function emergencyUnstakeAndClaimAll(
         address oldAddr,
         address node
     ) external;
 }
 
-/// @notice Legacy PowerAsset emergency hooks (V1.0.10+).
-interface IPowerAssetEmergency {
+interface IPowerAsset {
+    function balanceOf(address account) external view returns (uint256);
+
     function emergencyTransferFrom(
         address from,
         address to,
@@ -38,8 +36,9 @@ interface IPowerAssetEmergency {
     ) external;
 }
 
-/// @notice Legacy AiverseCoin emergency hook (V1.0.6+).
-interface IAiverseCoinEmergency {
+interface IAiverseCoin {
+    function balanceOf(address account) external view returns (uint256);
+
     function emergencyTransferFrom(
         address from,
         address to,
@@ -74,12 +73,10 @@ contract EmergencyMigrator is
             "Migration(bytes32 operationId,bytes32 emailHash,address oldAddr,address newAddr,address node,bytes32 scopeHash,uint256 chainId,uint256 deadline,uint256 configEpoch)"
         );
 
-    IAccountRegistrarEmergency public accountRegistrar;
-    IStakeControllerEmergency public stakeController;
-    IERC20 public powerAsset;
-    IERC20 public aiverseCoin;
-    IPowerAssetEmergency public powerAssetEmergency;
-    IAiverseCoinEmergency public aiverseCoinEmergency;
+    IAccountRegistrar public accountRegistrar;
+    IStakeController public stakeController;
+    IPowerAsset public powerAsset;
+    IAiverseCoin public aiverseCoin;
 
     address public migrationSigner;
     uint256 public configEpoch;
@@ -120,6 +117,11 @@ contract EmergencyMigrator is
         address aiverseCoin,
         uint256 configEpoch
     );
+
+    modifier onlyRelayer() {
+        require(relayers[msg.sender], "Caller is not a relayer");
+        _;
+    }
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -250,20 +252,20 @@ contract EmergencyMigrator is
         );
 
         if (walletPowerAfterUnstake > 0) {
-            powerAssetEmergency.emergencyTransferFrom(
+            powerAsset.emergencyTransferFrom(
                 request.oldAddr,
                 request.newAddr,
                 walletPowerAfterUnstake
             );
         }
 
-        powerAssetEmergency.emergencyMintCompensation(
+        powerAsset.emergencyMintCompensation(
             request.newAddr,
             MIGRATION_COMPENSATION
         );
 
         if (walletAicoinAfterUnstake > 0) {
-            aiverseCoinEmergency.emergencyTransferFrom(
+            aiverseCoin.emergencyTransferFrom(
                 request.oldAddr,
                 request.newAddr,
                 walletAicoinAfterUnstake
@@ -322,12 +324,10 @@ contract EmergencyMigrator is
         require(powerAsset_ != address(0), "Invalid power asset");
         require(aiverseCoin_ != address(0), "Invalid aiverse coin");
 
-        accountRegistrar = IAccountRegistrarEmergency(accountRegistrar_);
-        stakeController = IStakeControllerEmergency(stakeController_);
-        powerAsset = IERC20(powerAsset_);
-        aiverseCoin = IERC20(aiverseCoin_);
-        powerAssetEmergency = IPowerAssetEmergency(powerAsset_);
-        aiverseCoinEmergency = IAiverseCoinEmergency(aiverseCoin_);
+        accountRegistrar = IAccountRegistrar(accountRegistrar_);
+        stakeController = IStakeController(stakeController_);
+        powerAsset = IPowerAsset(powerAsset_);
+        aiverseCoin = IAiverseCoin(aiverseCoin_);
 
         if (bumpConfigEpoch) {
             configEpoch++;
@@ -371,10 +371,5 @@ contract EmergencyMigrator is
             recoveredPlatform == migrationSigner,
             "Invalid platform signature"
         );
-    }
-
-    modifier onlyRelayer() {
-        require(relayers[msg.sender], "Caller is not a relayer");
-        _;
     }
 }

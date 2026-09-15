@@ -122,3 +122,11 @@ export const activityManagerUpgradeModule = buildUpgradeContractModule(
   // Use scripts/activity-manager/base/upgrade.ts instead.
   buildUpgradeModule("ActivityManagerV1_0_1", "ActivityManager")
 );
+
+export const emergencyMigratorUpgradeModule = buildUpgradeContractModule(
+  "EmergencyMigrator",
+  "V1_0_0",
+  // EmergencyMigrator proxy was deployed via atomicProxyDeploy, NOT this Ignition module.
+  // Use scripts/emergency-migrator/base/upgrade.ts instead.
+  buildUpgradeModule("EmergencyMigrator", "EmergencyMigrator")
+);
