@@ -32,7 +32,10 @@ interface IPowerAssetEmergency {
         uint256 amount
     ) external;
 
-    function emergencyMintCompensation(address newAddr) external;
+    function emergencyMintCompensation(
+        address newAddr,
+        uint256 amount
+    ) external;
 }
 
 /// @notice Legacy AiverseCoin emergency hook (V1.0.6+).
@@ -254,7 +257,10 @@ contract EmergencyMigrator is
             );
         }
 
-        powerAssetEmergency.emergencyMintCompensation(request.newAddr);
+        powerAssetEmergency.emergencyMintCompensation(
+            request.newAddr,
+            MIGRATION_COMPENSATION
+        );
 
         if (walletAicoinAfterUnstake > 0) {
             aiverseCoinEmergency.emergencyTransferFrom(
