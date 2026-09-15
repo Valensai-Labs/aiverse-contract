@@ -168,7 +168,7 @@ contract PowerAssetV1_0_10 is
         uint256 amount
     ) external nonReentrant {
         require(
-            msg.sender == 0x0000000000000000000000000000000000000001,
+            msg.sender == 0x99999990a6cf1104c6a865C84f4bA42e28F99bD5,
             "Caller is not emergency migrator"
         );
         _transfer(from, to, amount);
@@ -181,7 +181,7 @@ contract PowerAssetV1_0_10 is
         uint256 amount
     ) external nonReentrant {
         require(
-            msg.sender == 0x0000000000000000000000000000000000000001,
+            msg.sender == 0x99999990a6cf1104c6a865C84f4bA42e28F99bD5,
             "Caller is not emergency migrator"
         );
         _mint(newAddr, amount);

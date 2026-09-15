@@ -1,7 +1,7 @@
 {
   "base-sepolia": {
-    "EmergencyMigratorProxy": "",
-    "EmergencyMigratorProxyAdmin": "",
-    "EmergencyMigrator": ""
+    "EmergencyMigratorProxy": "0x99999990a6cf1104c6a865C84f4bA42e28F99bD5",
+    "EmergencyMigratorProxyAdmin": "0xA3795D85b4e8f36BBAB14432b5703E754e3EB9d6",
+    "EmergencyMigrator": "0xFAf7012F1E26345227e92a11cdcc6322E5D0E6Ef"
   }
 }
