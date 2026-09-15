@@ -71,9 +71,10 @@ const config: HardhatUserConfig = {
     "base-sepolia": {
       chainId: 84532,
       url: "https://sepolia.base.org",
-      accounts: {
-        mnemonic: process.env.MNEMONICS,
-      },
+      accounts:
+        process.env.DEPLOY_OR_UPGRADE === "deploy"
+          ? [process.env.DEPLOYER_PRIVATE_KEY!]
+          : [process.env.UPGRADER_PRIVATE_KEY!],
     },
     base: {
       chainId: 8453,
