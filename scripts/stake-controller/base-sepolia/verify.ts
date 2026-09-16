@@ -16,7 +16,7 @@ async function main() {
   const addresses = JSON.parse(fs.readFileSync(addressPath, "utf8"));
 
   const {
-    StakeControllerV1_0_12: implementationAddr,
+    StakeControllerV1_0_13: implementationAddr,
     StakeControllerProxy: proxyAddr,
     StakeControllerProxyAdmin: proxyAdminAddr,
   } = addresses["base-sepolia"];
@@ -33,14 +33,14 @@ async function main() {
 
   console.log("Starting verification process for StakeController...");
   console.log(
-    `Verifying StakeControllerV1_0_12 (Implementation): ${implementationAddr}`
+    `Verifying StakeControllerV1_0_13 (Implementation): ${implementationAddr}`
   );
   console.log(`Verifying TransparentUpgradeableProxy (Proxy): ${proxyAddr}`);
   console.log(`Verifying ProxyAdmin (Admin): ${proxyAdminAddr}`);
 
   const [deployer] = await ethers.getSigners();
   await verifyTransparentProxyStack({
-    implementationLabel: "StakeControllerV1_0_12 implementation",
+    implementationLabel: "StakeControllerV1_0_13 implementation",
     implementationAddr,
     proxyAddr,
     proxyAdminAddr,

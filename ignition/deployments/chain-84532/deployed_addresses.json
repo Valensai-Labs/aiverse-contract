@@ -123,5 +123,11 @@
   "base_sepolia_CheckInManagerV1_0_7_Upgrade_Module#CheckInManagerV1_0_7": "0x2E872f82E766EF1D4c3915D2eBB6FEF3c2209Bc9",
   "base_sepolia_CheckInManagerV1_0_7_Upgrade_ProxyModule#CheckInManagerV1_0_7": "0xa3a552e50a694DAb0608D4b0bF9c0F9636015Adf",
   "base_sepolia_AiverseTopUpV1_0_2_Upgrade_Module#AiverseTopUpV1_0_2": "0xC03Cdd15e2a1FF791937e0191F83FfeF342945ba",
-  "base_sepolia_AiverseTopUpV1_0_2_Upgrade_ProxyModule#AiverseTopUpV1_0_2": "0x45e0a355629244A80C54B914E56f5e1981Df7D73"
+  "base_sepolia_AiverseTopUpV1_0_2_Upgrade_ProxyModule#AiverseTopUpV1_0_2": "0x45e0a355629244A80C54B914E56f5e1981Df7D73",
+  "base_sepolia_PowerAssetV1_0_10_Upgrade_Module#PowerAssetV1_0_10": "0x0bba8Ba13eE178Ae87a22E9e8aB2d2e033233cD8",
+  "base_sepolia_PowerAssetV1_0_10_Upgrade_ProxyModule#PowerAssetV1_0_10": "0x1b4093A5f8a01f2A5700a69D2C65BEb405841992",
+  "base_sepolia_AiverseCoinV1_0_6_Upgrade_Module#AiverseCoinV1_0_6": "0x7adC95Ba297a00A8912D4504b96F8d6210Fee06F",
+  "base_sepolia_AiverseCoinV1_0_6_Upgrade_ProxyModule#AiverseCoinV1_0_6": "0xE52f5078878a21cff891DAfB77EDA4caf9B840e0",
+  "base_sepolia_StakeControllerV1_0_13_Upgrade_Module#StakeControllerV1_0_13": "0xa8F05E219f64ed3C6b80961d327a2b8Fd656b5eF",
+  "base_sepolia_StakeControllerV1_0_13_Upgrade_ProxyModule#StakeControllerV1_0_13": "0xEEAE5336895A2356a80F70a7E83a9aCF23a71528"
 }

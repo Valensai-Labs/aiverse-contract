@@ -12,11 +12,11 @@ async function main() {
     await hre.ignition.deploy(stakeControllerUpgradeModule);
   console.log(stakeControllerUpgrade.target);
   const stakeControllerTyped = await hre.ethers.getContractAt(
-    "StakeControllerV1_0_12",
+    "StakeControllerV1_0_13",
     stakeControllerUpgrade.target
   );
   expect(await stakeControllerTyped.connect(account).version()).to.equal(
-    "1.0.12"
+    "1.0.13"
   );
 }
 

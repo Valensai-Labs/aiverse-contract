@@ -16,7 +16,7 @@ async function main() {
   const addresses = JSON.parse(fs.readFileSync(addressPath, "utf8"));
 
   const {
-    PowerAssetV1_0_9: implementationAddr,
+    PowerAssetV1_0_10: implementationAddr,
     PowerAssetProxy: proxyAddr,
     PowerAssetProxyAdmin: proxyAdminAddr,
   } = addresses.base;
@@ -33,14 +33,14 @@ async function main() {
 
   console.log("Starting verification process for PowerAsset...");
   console.log(
-    `Verifying PowerAssetV1_0_9 (Implementation): ${implementationAddr}`
+    `Verifying PowerAssetV1_0_10 (Implementation): ${implementationAddr}`
   );
   console.log(`Verifying TransparentUpgradeableProxy (Proxy): ${proxyAddr}`);
   console.log(`Verifying ProxyAdmin (Admin): ${proxyAdminAddr}`);
 
   const [deployer] = await ethers.getSigners();
   await verifyTransparentProxyStack({
-    implementationLabel: "PowerAssetV1_0_9 implementation",
+    implementationLabel: "PowerAssetV1_0_10 implementation",
     implementationAddr,
     proxyAddr,
     proxyAdminAddr,
