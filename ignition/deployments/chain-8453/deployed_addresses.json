@@ -69,5 +69,11 @@
   "base_AiverseTopUp_ProxyModule#ProxyAdmin": "0x1fa9F86a209Fce086ef79C3DbA4CF70029e0f0AF",
   "base_AiverseTopUpV1_0_1_Upgrade_Module#AiverseTopUpV1_0_1": "0x62aa6ae2F787E6513C6A5b3956c24e51910C0588",
   "base_CheckInManagerV1_0_7_Upgrade_Module#CheckInManagerV1_0_7": "0x33333337bFA13ffC9Bd0Bbf1544beBA1079Dae34",
-  "base_CheckInManagerV1_0_7_Upgrade_ProxyModule#CheckInManagerV1_0_7": "0xC4e56E5B22F77deF8d89b77Bb351Dd2b10AD6DBE"
+  "base_CheckInManagerV1_0_7_Upgrade_ProxyModule#CheckInManagerV1_0_7": "0xC4e56E5B22F77deF8d89b77Bb351Dd2b10AD6DBE",
+  "base_AiverseCoinV1_0_6_Upgrade_Module#AiverseCoinV1_0_6": "0x99999992158E1202249471e3E051B2e9990a7E38",
+  "base_AiverseCoinV1_0_6_Upgrade_ProxyModule#AiverseCoinV1_0_6": "0x49a2BBde1b9B9BB5E71c6C55c857a67ae1A5d619",
+  "base_PowerAssetV1_0_10_Upgrade_Module#PowerAssetV1_0_10": "0x66666667e8228B00A9B3249331ce0CA3179D9d69",
+  "base_PowerAssetV1_0_10_Upgrade_ProxyModule#PowerAssetV1_0_10": "0x1356BB4e4F88dc9829256Cb472c52842E7779E46",
+  "base_StakeControllerV1_0_13_Upgrade_Module#StakeControllerV1_0_13": "0x8888888732F7536DD1500Cef7B9da260702555FD",
+  "base_StakeControllerV1_0_13_Upgrade_ProxyModule#StakeControllerV1_0_13": "0x9D27A7C8CB7f5765D661574236e3668525C474aB"
 }
