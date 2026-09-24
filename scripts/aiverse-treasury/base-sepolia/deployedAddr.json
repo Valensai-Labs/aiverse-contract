@@ -2,6 +2,7 @@
   "base-sepolia": {
     "AiverseTreasuryProxy": "0x39147628ecC7a4beA39fedf3BaDdDf60e8411552",
     "AiverseTreasuryProxyAdmin": "0x7Bd2eCF875E033314050958EfB5280d077F5A8d9",
-    "AiverseTreasuryV1_0_1": "0x1730b706C79346D96b17D06b413E08BFE4747799"
+    "AiverseTreasuryV1_0_1": "0x1730b706C79346D96b17D06b413E08BFE4747799",
+    "AiverseTreasuryV1_0_2": "0x02037854706a5030C65f5810bEE2dB20F68B8C37"
   }
 }

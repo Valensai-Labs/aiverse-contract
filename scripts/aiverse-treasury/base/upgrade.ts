@@ -11,8 +11,8 @@ import hre from "hardhat";
 import * as path from "path";
 
 const NETWORK_KEY = "base";
-const NEW_IMPL_NAME = "AiverseTreasuryV1_0_1";
-const EXPECTED_VERSION = "1.0.1";
+const NEW_IMPL_NAME = "AiverseTreasuryV1_0_2";
+const EXPECTED_VERSION = "1.0.2";
 
 async function main() {
   const [account] = await hre.ethers.getSigners();
