@@ -10,6 +10,24 @@ setGlobalDispatcher(proxyAgent);
 
 dotenv.config();
 
+/** Attach signer config only when the secret is present. CI compiles and tests without keys. */
+function mnemonicAccounts(mnemonic: string | undefined): { accounts?: { mnemonic: string } } {
+  const phrase = mnemonic?.trim();
+  if (!phrase) return {};
+  return { accounts: { mnemonic: phrase } };
+}
+
+function privateKeyAccounts(key: string | undefined): { accounts?: string[] } {
+  const value = key?.trim();
+  if (!value) return {};
+  return { accounts: [value] };
+}
+
+const basePrivateKey =
+  process.env.DEPLOY_OR_UPGRADE === "deploy"
+    ? process.env.DEPLOYER_PRIVATE_KEY
+    : process.env.UPGRADER_PRIVATE_KEY;
+
 const config: HardhatUserConfig = {
   // Sourcify API v1 is in brownout (503); Basescan/Etherscan verify is enough.
   sourcify: {
@@ -64,25 +82,17 @@ const config: HardhatUserConfig = {
     sepolia: {
       chainId: 11155111,
       url: "https://eth-sepolia.api.onfinality.io/public",
-      accounts: {
-        mnemonic: process.env.MNEMONICS,
-      },
+      ...mnemonicAccounts(process.env.MNEMONICS),
     },
     "base-sepolia": {
       chainId: 84532,
       url: "https://sepolia.base.org",
-      accounts:
-        process.env.DEPLOY_OR_UPGRADE === "deploy"
-          ? [process.env.DEPLOYER_PRIVATE_KEY!]
-          : [process.env.UPGRADER_PRIVATE_KEY!],
+      ...privateKeyAccounts(basePrivateKey),
     },
     base: {
       chainId: 8453,
       url: "https://mainnet.base.org",
-      accounts:
-        process.env.DEPLOY_OR_UPGRADE === "deploy"
-          ? [process.env.DEPLOYER_PRIVATE_KEY!]
-          : [process.env.UPGRADER_PRIVATE_KEY!],
+      ...privateKeyAccounts(basePrivateKey),
     },
   },
 };
