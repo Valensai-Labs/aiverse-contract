@@ -1,8 +1,0 @@
-{
-  "base": {
-    "BatchTransferProxy": "0x4444444EFcb0AF6202d597bab1E2025B98E2627B",
-    "BatchTransferProxyAdmin": "0x7Cca4Cfe0cd4Ab6aA746aCad7E759BdA7a77A215",
-    "BatchTransfer": "0xc90d2fA022e192Ed78Ff7d9639288cEb8e830279"
-  }
-}
-

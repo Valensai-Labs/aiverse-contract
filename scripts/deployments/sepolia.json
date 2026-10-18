@@ -1,0 +1,38 @@
+{
+  "account-registrar": {
+    "AccountRegistrar": "0x2F9bDbf64D5780a655641e324d88d97c0EaB7Eaf",
+    "AccountRegistrarProxy": "0xe27EC36CC61e27C2Fd3Bf9DC2510A6CBB0FB1cb9",
+    "AccountRegistrarV1_0_1": "0x337570E5A3d9a31b8774A7823A9ea976a394f695"
+  },
+  "aiverse-coin": {
+    "AiverseCoin": "0x77315d8E638f290dE65B3150870A312EA5bEdDd4",
+    "AiverseCoinProxy": "0x4d70bbcC8f8F3979cbc1D94144C0E585025e6573",
+    "AiverseCoinV1_0_1": "0x09DA18509A747d5CAE366A41CBE7cfD6a3971d99"
+  },
+  "check-in-manager": {
+    "CheckInManager": "0xd165D2e1b9FE57D4ea374bd505C4935B4CBaE44e",
+    "CheckInManagerProxy": "0x6D40724AB7745d093a89f6759C06D858ADB19583",
+    "CheckInManagerV1_0_1": "0xac9ba239f26CB61B0181dB368C65F2749436BC8a",
+    "CheckInManagerV1_0_2": "0x0c17b1e05F311E762F8aA101Ba60C7899bE429F6"
+  },
+  "node-manager": {
+    "NodeManager": "0xF4F9bBc329616B6D23937E94074D9DF65c82594C",
+    "NodeManagerProxy": "0xb008d0009535515a46fF0E6614e1A0f75aC412dd",
+    "NodeManagerV1_0_1": "0xc7218D8546165215c5B292B2bb0B79be07D73e9b"
+  },
+  "power-asset": {
+    "PowerAsset": "0x21CF9D76629A890C604DC74d847Ea72ce357286F",
+    "PowerAssetProxy": "0xe736CD4496c679352cdf5BD800107eDbb565723E",
+    "PowerAssetV1_0_1": "0x54EcbF388C687d0A03f68516F137B262b1E88FbF",
+    "PowerAssetV1_0_2": "0xCa11bb6F50fbf049Be3977D2b1fd3A8b07eD7566"
+  },
+  "stake-controller": {
+    "StakeController": "0x64dcbeF341ca540f11108B2505031578F0B0Fe7C",
+    "StakeControllerProxy": "0x6a45E45a78BB7828369bfBA1ea23111285CC0F9A",
+    "StakeControllerV1_0_1": "0x0efE9E4cbFe71BD6Be20449ca0Ab56109b64c19c",
+    "StakeControllerV1_0_2": "0xa20374B1801d39f53fd9960772ee5a2186Cf7776",
+    "StakeControllerV1_0_3": "0x4379568944E54b502b9DDCeDD4396AA83daCD118",
+    "StakeControllerV1_0_4": "0x0F68BF1DB3e07e1391e647Ad4996Fe325cF1AA2b",
+    "StakeControllerV1_0_5": "0x31712ED808621d0518d2287B45b17e2495bbd1A7"
+  }
+}

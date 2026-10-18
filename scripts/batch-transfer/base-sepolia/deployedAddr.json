@@ -1,7 +1,0 @@
-{
-  "base-sepolia": {
-    "BatchTransferProxy": "0xD2b8473D4133118f047D2bdD53eb52809BCc9fcc",
-    "BatchTransferProxyAdmin": "0x4eDB620Fe72b29C3dB714602625D894c30A01e78",
-    "BatchTransfer": "0x3a5ecc23Fb0c7581cC0C5aF4f5062E95e652a655"
-  }
-}

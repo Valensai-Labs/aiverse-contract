@@ -1,7 +1,0 @@
-{
-  "sepolia": {
-    "NodeManagerProxy": "0xb008d0009535515a46fF0E6614e1A0f75aC412dd",
-    "NodeManager": "0xF4F9bBc329616B6D23937E94074D9DF65c82594C",
-    "NodeManagerV1_0_1": "0xc7218D8546165215c5B292B2bb0B79be07D73e9b"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "sepolia": {
-    "CheckInManagerProxy": "0x6D40724AB7745d093a89f6759C06D858ADB19583",
-    "CheckInManager": "0xd165D2e1b9FE57D4ea374bd505C4935B4CBaE44e",
-    "CheckInManagerV1_0_1": "0xac9ba239f26CB61B0181dB368C65F2749436BC8a",
-    "CheckInManagerV1_0_2": "0x0c17b1e05F311E762F8aA101Ba60C7899bE429F6"
-  }
-}

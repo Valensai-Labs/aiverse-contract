@@ -1,0 +1,91 @@
+{
+  "account-registrar": {
+    "AccountRegistrarProxy": "0x21CF9D76629A890C604DC74d847Ea72ce357286F",
+    "AccountRegistrarProxyAdmin": "0x782F264a9BC68c35e325E610cf5f5745cEAb5Cd9",
+    "AccountRegistrarV1_0_2": "0x97F515e9fe12Bcb76804B5DDa9b70F0A5C8E05F2",
+    "AccountRegistrarV1_0_3": "0x23b7b913D74D54e25bEA54F77C6690EaA8cb15a2",
+    "AccountRegistrarV1_0_4": "0xFC5BE4Ae58b4Ea76Ff2C1DF97C20083C70361046",
+    "AccountRegistrarV1_0_5": "0xbF249A075A6A7457EBF1446D57d1778e747F3bA6",
+    "AccountRegistrarV1_0_6": "0x267a737D152Cf2483a3ab67b83B0d6a989C18Ce1",
+    "AccountRegistrarV1_0_7": "0x7E0CC6dE68FC634440796779fEC150A11eAc63c0",
+    "AccountRegistrarV1_0_8": "0x435d89E624Fba5D4ef6Ec66a9E59c7E40d7d8327",
+    "AccountRegistrarV1_0_9": "0x8DcbAFD17461434d5dA91bcd7507ac3f3371b444"
+  },
+  "activity-manager": {
+    "ActivityManager": "0x7F78aB5A1F429744395BdDc2970793Ee58cA13c0",
+    "ActivityManagerProxy": "0x721149aBd4835d9327356f74e856665879740Daa",
+    "ActivityManagerProxyAdmin": "0x52Fcf28A203795A80348293129D6a96733098f5A",
+    "ActivityManagerV1_0_1": "0x342FFf9b7Ac18ca6468b8D74b02d28B1373967B2"
+  },
+  "aiverse-coin": {
+    "AiverseCoinProxy": "0x7adC95Ba297a00A8912D4504b96F8d6210Fee06F",
+    "AiverseCoinProxyAdmin": "0x13D377eFF809a2F42728Bd4A8f2C1A761D12D84D",
+    "AiverseCoinV1_0_4": "0x85d7336b5364a13Bb62A1D1a0461ccf151ae12C1",
+    "AiverseCoinV1_0_5": "0xe50C4F6df17d95f3c7FD20337a671d55113fB2Fd",
+    "AiverseCoinV1_0_6": "0xE52f5078878a21cff891DAfB77EDA4caf9B840e0"
+  },
+  "aiverse-fund": {
+    "AiverseFundProxy": "0xDe62AB4e09f79b84F70815c65b1A838dEC4d4d92",
+    "AiverseFundProxyAdmin": "0x24F6982B1c1f0D541DD651ED39dD355a4320a0CF",
+    "AiverseFundV1_0_2": "0xf47Bc29EeB30D9C61ece8Bb08E2Ea1D36518DF64",
+    "AiverseFundV1_0_3": "0x1F40c16E4aF50b42b401262dd27AF2135c18022E",
+    "AiverseFundV1_0_4": "0x7f8d722cf7dEa63b0D808480B0728188854121a3"
+  },
+  "aiverse-topup": {
+    "AiverseTopUp": "0x9b7Db15d9490Bb636EeDD994E48Bd8faE2b75505",
+    "AiverseTopUpProxy": "0xC03Cdd15e2a1FF791937e0191F83FfeF342945ba",
+    "AiverseTopUpProxyAdmin": "0x3aAA91a909363F18cF1914Bcc38fE186Ee2710B9",
+    "AiverseTopUpV1_0_1": "0x3dDE572C89BD0D94F064F80D6fAda2eA4672481C",
+    "AiverseTopUpV1_0_2": "0x45e0a355629244A80C54B914E56f5e1981Df7D73"
+  },
+  "aiverse-treasury": {
+    "AiverseTreasuryProxy": "0x39147628ecC7a4beA39fedf3BaDdDf60e8411552",
+    "AiverseTreasuryProxyAdmin": "0x7Bd2eCF875E033314050958EfB5280d077F5A8d9",
+    "AiverseTreasuryV1_0_1": "0x1730b706C79346D96b17D06b413E08BFE4747799",
+    "AiverseTreasuryV1_0_2": "0x02037854706a5030C65f5810bEE2dB20F68B8C37"
+  },
+  "batch-transfer": {
+    "BatchTransfer": "0x3a5ecc23Fb0c7581cC0C5aF4f5062E95e652a655",
+    "BatchTransferProxy": "0xD2b8473D4133118f047D2bdD53eb52809BCc9fcc",
+    "BatchTransferProxyAdmin": "0x4eDB620Fe72b29C3dB714602625D894c30A01e78"
+  },
+  "check-in-manager": {
+    "CheckInManagerProxy": "0x2E872f82E766EF1D4c3915D2eBB6FEF3c2209Bc9",
+    "CheckInManagerProxyAdmin": "0x8240eA44c11890E57644B8A6A3f22a6D0E9C2c92",
+    "CheckInManagerV1_0_5": "0xe7CF22510a4c377186752408cC4A309553022c38",
+    "CheckInManagerV1_0_6": "0x66B5153C981BE8C0C28D9e4808374cCFa06CACA0",
+    "CheckInManagerV1_0_7": "0xa3a552e50a694DAb0608D4b0bF9c0F9636015Adf"
+  },
+  "emergency-migrator": {
+    "EmergencyMigrator": "0xFAf7012F1E26345227e92a11cdcc6322E5D0E6Ef",
+    "EmergencyMigratorProxy": "0x99999990a6cf1104c6a865C84f4bA42e28F99bD5",
+    "EmergencyMigratorProxyAdmin": "0xA3795D85b4e8f36BBAB14432b5703E754e3EB9d6"
+  },
+  "node-manager": {
+    "NodeManagerProxy": "0x01Bb8CE193Cf0fcb7f1Aa9547aCCacc7af00b405",
+    "NodeManagerProxyAdmin": "0x1048B6886C9eACb7AE68E7fc7ae29b10651E2292",
+    "NodeManagerV1_0_2": "0xa955853954fEE352Ef4407E4FEc1B5226093EDf9",
+    "NodeManagerV1_0_3": "0xe27EC36CC61e27C2Fd3Bf9DC2510A6CBB0FB1cb9",
+    "NodeManagerV1_0_4": "0x33d83c2Fd7581AD0cDfeCd93ac9ecB7D4e6610c0"
+  },
+  "power-asset": {
+    "PowerAssetProxy": "0x0bba8Ba13eE178Ae87a22E9e8aB2d2e033233cD8",
+    "PowerAssetProxyAdmin": "0x7e90C88a889A9089Fae5887f7373d0f5A2a8FBE3",
+    "PowerAssetV1_0_10": "0x1b4093A5f8a01f2A5700a69D2C65BEb405841992",
+    "PowerAssetV1_0_3": "0x79543ce3104aCb46a8728C4d951847467d4E1aD7",
+    "PowerAssetV1_0_4": "0x28923FE09B3164402d3A132777a17f8f69655D33",
+    "PowerAssetV1_0_5": "0x85ac816F4Db875EFcc2945D5c7f4847C6D81c915",
+    "PowerAssetV1_0_6": "0xB84D39b0b3F1ce5d502ae4d346Cfd8f265B33515",
+    "PowerAssetV1_0_7": "0x62Eb2620baFBc5e479Af8daCF55ed9873fc231a1",
+    "PowerAssetV1_0_8": "0x149B3917E9A917e7282F3284A85d3087b690Ef73",
+    "PowerAssetV1_0_9": "0x43Dbf1f635fC5262245A726572C064D8Bf64263B"
+  },
+  "stake-controller": {
+    "StakeControllerProxy": "0xa8F05E219f64ed3C6b80961d327a2b8Fd656b5eF",
+    "StakeControllerProxyAdmin": "0x0AB9E22E6EA1FC34035E8bC6F2716ff441E40758",
+    "StakeControllerV1_0_10": "0x7fd08e16d95ac2e9a0Ff788B00d277ECB7691b36",
+    "StakeControllerV1_0_11": "0x2C3673ACA6313018aD3876ED009bc1057C4852Be",
+    "StakeControllerV1_0_12": "0x1301a888A65aa941e846485284945320013cCA86",
+    "StakeControllerV1_0_13": "0xEEAE5336895A2356a80F70a7E83a9aCF23a71528"
+  }
+}

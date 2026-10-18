@@ -1,98 +1,53 @@
 /*
-   # Base 主网
-   npx hardhat run scripts/validate-upgrade.ts --network base
-   
-   # Base Sepolia 测试网
-   npx hardhat run scripts/validate-upgrade.ts --network base-sepolia
+Check storage layout before an upgrade.
+
+CONTRACT=aiverse-treasury npx hardhat run scripts/validate-upgrade.ts --network base
+
+Optional overrides:
+  OLD_CONTRACT   artifact name registered with forceImport
+  NEW_CONTRACT   artifact name to validate
+  PROXY_KIND     transparent (default) or uups
 */
 
 import hre from "hardhat";
+import { readBook } from "./lib/addresses";
+import { loadContract } from "./contracts";
 
 async function main() {
-  // ============================================
-  // 配置区域 - 请根据实际情况修改
-  // ============================================
-  const CONFIG = {
-    // 代理合约地址（已部署的）
-    proxyAddress: "0x000000010f52cf48511883ebb8c6005e79259ed4",
-    
-    // 旧版本实现合约地址（已部署的）
-    oldImplementationAddress: "0x5382cC62372682BDfeE4278DB8396FAb59E9f473",
-    
-    // 旧版本合约名称（用于 forceImport）
-    oldContractName: "AiverseTreasuryV1_0_1",
-    
-    // 新版本合约名称
-    newContractName: "AiverseTreasuryV1_0_2",
-    
-    // 代理类型: "transparent" 或 "uups"
-    proxyKind: "transparent" as "transparent" | "uups",
-  };
-  // ============================================
-
   const network = hre.network.name;
-  console.log(`\n🔍 Validating upgrade...`);
-  console.log(`Network: ${network}`);
-  console.log(`Proxy Address: ${CONFIG.proxyAddress}`);
-  console.log(`Old Implementation: ${CONFIG.oldImplementationAddress}`);
-  console.log(`New Contract: ${CONFIG.newContractName}`);
-  console.log(`Proxy Kind: ${CONFIG.proxyKind}`);
-
-  try {
-    // 获取旧版本合约工厂（用于 forceImport）
-    const OldContract = await hre.ethers.getContractFactory(
-      CONFIG.oldContractName
-    );
-
-    // 获取新版本合约工厂
-    const NewContract = await hre.ethers.getContractFactory(
-      CONFIG.newContractName
-    );
-
-    console.log(`\n📋 Registering old implementation...`);
-    
-    // 注册旧版本实现合约（如果未注册）
-    await hre.upgrades.forceImport(
-      CONFIG.proxyAddress,
-      OldContract,
-      {
-        kind: CONFIG.proxyKind,
-      }
-    );
-
-    console.log(`\n📋 Checking storage layout compatibility...`);
-
-    // 验证升级兼容性
-    await hre.upgrades.validateUpgrade(
-      CONFIG.proxyAddress,
-      NewContract,
-      {
-        kind: CONFIG.proxyKind,
-      }
-    );
-
-    console.log(`\n✅ Storage layout validation passed!`);
-    console.log(`✅ No conflicts detected. Safe to upgrade.`);
-  } catch (error: any) {
-    console.error(`\n❌ Storage layout validation failed!`);
-    console.error(`\nError details:`);
-    console.error(error.message || error);
-
-    if (error.message?.includes("New storage layout is incompatible")) {
-      console.error(`\n⚠️  Storage layout conflict detected!`);
-      console.error(`Please check:`);
-      console.error(`1. Variable order must remain the same`);
-      console.error(`2. New variables must be added at the end`);
-      console.error(`3. Existing variables cannot be removed or reordered`);
-    }
-
-    process.exit(1);
+  const { id, spec, net } = loadContract(network);
+  const proxyAddress = readBook(network)[id]?.[spec.proxyKey];
+  if (!proxyAddress) {
+    throw new Error(`Missing ${spec.proxyKey} in deployments/${network}.json (${id})`);
   }
+
+  const oldContractName = process.env.OLD_CONTRACT ?? net.upgradeFrom ?? net.deployImpl;
+  const newContractName = process.env.NEW_CONTRACT ?? net.upgradeImpl;
+  const proxyKind = (process.env.PROXY_KIND ?? "transparent") as "transparent" | "uups";
+  const oldImplementation = readBook(network)[id]?.[oldContractName];
+
+  console.log(`\nValidating upgrade of ${id} on ${network}`);
+  console.log(`Proxy:          ${proxyAddress}`);
+  console.log(`Old contract:   ${oldContractName}`);
+  if (oldImplementation) console.log(`Old impl:       ${oldImplementation}`);
+  console.log(`New contract:   ${newContractName}`);
+  console.log(`Proxy kind:     ${proxyKind}`);
+
+  const oldContract = await hre.ethers.getContractFactory(oldContractName);
+  const newContract = await hre.ethers.getContractFactory(newContractName);
+
+  console.log("\nRegistering old implementation...");
+  await hre.upgrades.forceImport(proxyAddress, oldContract, { kind: proxyKind });
+
+  console.log("\nChecking storage layout compatibility...");
+  await hre.upgrades.validateUpgrade(proxyAddress, newContract, { kind: proxyKind });
+
+  console.log("\nStorage layout validation passed.");
 }
 
 main()
   .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
+  .catch((error: unknown) => {
+    console.error(error instanceof Error ? error.message : error);
     process.exit(1);
   });

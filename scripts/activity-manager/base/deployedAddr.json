@@ -1,8 +1,0 @@
-{
-  "base": {
-    "ActivityManagerProxy": "0x7777777F6d76855bDFCD8753a9ED33F6beD7ac3C",
-    "ActivityManagerProxyAdmin": "0xae73ABbA6840bb3945Bd94DBD105f0251b5d5384",
-    "ActivityManager": "0xF9D39d98F7EA250277f1241453A08fd8727fdF5B",
-    "ActivityManagerV1_0_1": "0x4788Ad0A020A424b3633fed4aFa6339b7665C97b"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "base-sepolia": {
-    "AiverseCoinProxy": "0x7adC95Ba297a00A8912D4504b96F8d6210Fee06F",
-    "AiverseCoinProxyAdmin": "0x13D377eFF809a2F42728Bd4A8f2C1A761D12D84D",
-    "AiverseCoinV1_0_4": "0x85d7336b5364a13Bb62A1D1a0461ccf151ae12C1",
-    "AiverseCoinV1_0_5": "0xe50C4F6df17d95f3c7FD20337a671d55113fB2Fd",
-    "AiverseCoinV1_0_6": "0xE52f5078878a21cff891DAfB77EDA4caf9B840e0"
-  }
-}
