@@ -1,0 +1,20 @@
+[
+  {
+    "id": "7fbfe8b67a58d7f3360205d6433b15e1f452103109a5d8a38609c450fe31b00b",
+    "check": "arbitrary-send-erc20",
+    "impact": "High",
+    "description": "Accepted: stakeWithSig pulls the signer's own power."
+  },
+  {
+    "id": "dde9d3ec2a4384b9f1f5f4fcfcf31a04aaf743651c91a0d620ce48896d971efb",
+    "check": "arbitrary-send-erc20",
+    "impact": "High",
+    "description": "Accepted: seat purchase pulls the buyer's USDC."
+  },
+  {
+    "id": "ff1b1bc8cf0d5b707877212f3e99d0f767c314b4653908f0ce264d2a3afe7b4f",
+    "check": "arbitrary-send-erc20-permit",
+    "impact": "High",
+    "description": "Accepted: permit deposit pulls the owner's USDC into the treasury."
+  }
+]

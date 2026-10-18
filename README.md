@@ -4,8 +4,6 @@ Upgradeable Solidity contracts for the Aiverse protocol, plus the Hardhat script
 
 Solidity `0.8.28`, optimizer runs `200`. Proxies are OpenZeppelin transparent proxies. Each contract lives in a version folder such as `contracts/V1.0.6/`. Tests cover the latest version of each contract.
 
-`contracts/Lock.sol` is the stock Hardhat sample and is not part of the protocol.
-
 ## Contracts
 
 | `CONTRACT` id | Latest source | Role |
@@ -47,12 +45,14 @@ cp .example.env .env
 
 ## Tests
 
-`paths.tests` in the Hardhat config is `./tests`, and that directory does not exist. Pass the `test/` path explicitly. `pnpm test` is a stub and does not run the suite.
-
 ```shell
+pnpm test
 pnpm exec hardhat test test/aiverse-coin.test.ts
-pnpm exec hardhat test test/*.test.ts
 ```
+
+GitHub Actions runs `pnpm test` on every push and pull request. A second workflow runs Slither on the latest contract of each protocol and fails when a new high-severity finding appears. Older versions, `contracts/mocks/`, and `contracts/Proxies.sol` are excluded in `slither.config.json`. Three accepted token-pull findings are recorded in `slither.db.json`.
+
+There is no external audit report in this repository. Static analysis does not replace one. When a report is issued, add the PDF under `audits/`.
 
 ## Scripts
 
